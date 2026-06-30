@@ -39,14 +39,14 @@ export function ReasoningStream({
     <div className={compact ? "space-y-1" : "space-y-1.5"}>
       {steps.slice(0, i).map((s, idx) => (
         <motion.div key={idx} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} className="flex items-start gap-2.5">
-          <Check size={13} className="mt-0.5 shrink-0 text-lime" />
-          <span className="text-[12px] leading-snug text-ink-soft">{s}</span>
+          <Check size={13} className="mt-0.5 shrink-0 text-cyan" />
+          <span className="font-mono text-[12px] leading-snug text-content-secondary">{s}</span>
         </motion.div>
       ))}
       {running && i < steps.length && (
         <div className="flex items-start gap-2.5">
           <Loader2 size={13} className="mt-0.5 shrink-0 animate-spin text-cyan" />
-          <span className="text-[12px] leading-snug text-cyan caret">{steps[i]}</span>
+          <span className="font-mono text-[12px] leading-snug text-cyan caret">{steps[i]}</span>
         </div>
       )}
     </div>

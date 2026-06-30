@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { AlertTriangle, TrendingDown, Activity, Users, MapPin, Shield, Swords, Target, ArrowRight, Sparkles, BookOpen, ExternalLink, ChevronDown } from "lucide-react";
-import { analisisCopec, oportunidades, competidores, acentoHex, fmt, cliente, fuentesAnalisis } from "../lib/data";
+import { AlertTriangle, TrendingDown, Activity, Users, MapPin, Shield, Swords, Target, ArrowRight, Sparkles, BookOpen, ExternalLink, ChevronDown, Tv } from "lucide-react";
+import { analisis, oportunidades, competidores, acentoHex, fmt, cliente, fuentesAnalisis } from "../lib/data";
 
 const amenazaColor: Record<string, string> = { alta: "var(--color-rose)", media: "var(--color-amber)", baja: "var(--color-lime)" };
 
 export function Analisis({ onGenerar }: { onGenerar: () => void }) {
-  const a = analisisCopec;
+  const a = analisis;
   const [verFuentes, setVerFuentes] = useState(false);
   return (
     <div className="h-full overflow-y-auto px-8 py-7">
@@ -16,7 +16,7 @@ export function Analisis({ onGenerar }: { onGenerar: () => void }) {
           <div className="kicker">Análisis de marca · {cliente.marca} · respaldado por research</div>
           <button
             onClick={() => setVerFuentes((v) => !v)}
-            className="flex items-center gap-2 rounded-xl border border-line bg-surface/60 px-3.5 py-2 text-[12px] font-semibold text-ink-soft transition-colors hover:border-cyan/40 hover:text-ink"
+            className="glass glass-hover flex items-center gap-2 rounded-xl px-3.5 py-2 text-[12px] font-semibold text-content-secondary transition-colors hover:text-content"
           >
             <BookOpen size={14} className="text-cyan" /> Ver fuentes
             <span className="rounded-md bg-cyan/15 px-1.5 py-0.5 font-mono text-[10px] text-cyan">{fuentesAnalisis.length}</span>
@@ -27,26 +27,44 @@ export function Analisis({ onGenerar }: { onGenerar: () => void }) {
         <FuentesPanel open={verFuentes} />
 
         {/* crisis banner */}
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-2xl border border-rose/30 bg-[linear-gradient(120deg,rgba(255,107,139,0.12),transparent_70%)] p-5">
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="glass relative overflow-hidden rounded-2xl border-rose/30 p-5">
           <div className="absolute -right-10 -top-12 h-40 w-40 rounded-full bg-rose/15 blur-3xl" />
           <div className="relative flex items-start gap-3">
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-rose/40 bg-rose/10 text-rose"><AlertTriangle size={18} /></span>
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <span className="text-[15px] font-bold text-ink">{a.crisis.titulo}</span>
+                <span className="text-[15px] font-bold text-content">{a.crisis.titulo}</span>
                 <span className="chip py-0.5 text-rose" style={{ borderColor: "var(--color-rose)" }}>severidad {a.crisis.severidad}</span>
               </div>
-              <p className="mt-1 max-w-3xl text-[12.5px] leading-snug text-ink-soft">{a.crisis.detalle}</p>
+              <p className="mt-1 max-w-3xl text-[12.5px] leading-snug text-content-secondary">{a.crisis.detalle}</p>
             </div>
           </div>
         </motion.div>
+
+        {/* jugada destacada (hallazgo resaltado · ej. alianza Chilevisión / Mundial) */}
+        {a.jugadaDestacada && (
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="glass glass-accent relative overflow-hidden rounded-2xl p-5">
+            <div className="absolute -right-10 -top-12 h-44 w-44 rounded-full bg-cyan/20 blur-3xl" />
+            <div className="relative flex items-start gap-3">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-cyan/40 bg-cyan/10 text-cyan"><Tv size={18} /></span>
+              <div className="flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="rounded-full bg-cyan px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-void">Nuevo</span>
+                  <span className="kicker">{a.jugadaDestacada.tag}</span>
+                </div>
+                <div className="mt-1.5 font-display text-[16px] font-bold leading-tight text-content">{a.jugadaDestacada.titulo}</div>
+                <p className="mt-1 max-w-3xl text-[12.5px] leading-snug text-content-secondary">{a.jugadaDestacada.detalle}</p>
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* health KPIs */}
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           <Kpi icon={Activity} label="Sentimiento" value={`${a.sentimiento}%`} extra={`${a.tendenciaSentimiento}% vs. mes ant.`} down />
           <Kpi icon={Target} label="Share of voice" value={`${a.sov}%`} extra="líder del rubro" />
-          <Kpi icon={Users} label="Comunidad IG" value={fmt(a.seguidoresIG)} extra="vs. 126K Shell" />
-          <Kpi icon={MapPin} label="Ruta 5" value="81" extra="estaciones · líder" />
+          <Kpi icon={Users} label="Comunidad IG" value={fmt(a.seguidoresIG)} extra={a.comunidadExtra} />
+          <Kpi icon={MapPin} label={a.kpiLider.label} value={a.kpiLider.value} extra={a.kpiLider.extra} />
         </div>
 
         {/* competencia */}
@@ -54,15 +72,15 @@ export function Analisis({ onGenerar }: { onGenerar: () => void }) {
           <SectionHead icon={Swords} title="Mapa competitivo" sub="Quién ataca y por dónde" />
           <div className="grid gap-2.5 md:grid-cols-3">
             {competidores.map((k, i) => (
-              <motion.div key={k.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }} className="rounded-xl border border-line bg-surface/60 p-3.5">
+              <motion.div key={k.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }} className="glass rounded-xl p-3.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-[13.5px] font-bold text-ink">{k.nombre}</span>
+                  <span className="text-[13.5px] font-bold text-content">{k.nombre}</span>
                   <span className="font-mono text-[10px]" style={{ color: amenazaColor[k.amenaza] }}>amenaza {k.amenaza}</span>
                 </div>
-                <p className="mt-1 text-[11.5px] leading-snug text-ink-soft">{k.territorio}</p>
+                <p className="mt-1 text-[11.5px] leading-snug text-content-secondary">{k.territorio}</p>
                 <div className="mt-2.5 flex items-center gap-2">
-                  <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-void"><div className="h-full rounded-full bg-gradient-to-r from-cyan to-violet" style={{ width: `${k.sov}%` }} /></div>
-                  <span className="font-mono text-[10px] text-ink-soft">{k.sov}%</span>
+                  <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/10"><div className="h-full rounded-full bg-gradient-to-r from-cyan to-violet" style={{ width: `${k.sov}%` }} /></div>
+                  <span className="font-mono text-[10px] text-content-secondary">{k.sov}%</span>
                 </div>
               </motion.div>
             ))}
@@ -82,13 +100,13 @@ export function Analisis({ onGenerar }: { onGenerar: () => void }) {
             {oportunidades.map((o, i) => {
               const color = acentoHex[o.acento];
               return (
-                <motion.div key={o.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }} className="group flex flex-col rounded-2xl border border-line bg-surface/60 p-4 transition-colors hover:border-cyan/30">
+                <motion.div key={o.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }} className="group glass flex flex-col rounded-2xl p-4 transition-colors" style={{ borderColor: `${color}40` }}>
                   <div className="mb-2 flex items-center justify-between">
                     <span className="rounded-full px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider" style={{ background: `${color}1f`, color }}>{o.territorio}</span>
                     {o.impacto === "alto" && <span className="chip py-0.5 text-amber">impacto alto</span>}
                   </div>
-                  <div className="font-display text-[16px] font-bold leading-tight text-ink">{o.titulo}</div>
-                  <p className="mt-1 flex-1 text-[12px] leading-snug text-ink-soft">{o.detalle}</p>
+                  <div className="font-display text-[16px] font-bold leading-tight text-content">{o.titulo}</div>
+                  <p className="mt-1 flex-1 text-[12px] leading-snug text-content-secondary">{o.detalle}</p>
                   <button onClick={onGenerar} className="mt-3 flex items-center justify-center gap-2 rounded-xl border border-line py-2.5 text-[12px] font-semibold transition-colors hover:text-void" style={{ color }} onMouseEnter={(e) => (e.currentTarget.style.background = color)} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
                     <Sparkles size={14} /> Generar campaña <ArrowRight size={14} />
                   </button>
@@ -98,10 +116,10 @@ export function Analisis({ onGenerar }: { onGenerar: () => void }) {
           </div>
         </div>
 
-        <div className="flex items-center justify-between rounded-2xl border border-line bg-surface/40 p-5">
+        <div className="glass flex items-center justify-between rounded-2xl p-5">
           <div>
-            <div className="font-display text-[16px] font-bold text-ink">¿Pasamos del análisis a la acción?</div>
-            <p className="text-[12px] text-ink-soft">Sigma puede armar la campaña para {cliente.marca} a partir de estas oportunidades.</p>
+            <div className="font-display text-[16px] font-bold text-content">¿Pasamos del análisis a la acción?</div>
+            <p className="text-[12px] text-content-secondary">Sigma puede armar la campaña para {cliente.marca} a partir de estas oportunidades.</p>
           </div>
           <button onClick={onGenerar} className="group flex items-center gap-2.5 rounded-xl bg-cyan px-5 py-3 text-[13px] font-semibold text-void transition-all hover:shadow-[0_0_28px_-4px_var(--color-cyan)]">
             Crear nueva campaña <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
@@ -123,10 +141,10 @@ function FuentesPanel({ open }: { open: boolean }) {
           transition={{ duration: 0.3 }}
           className="overflow-hidden"
         >
-          <div className="rounded-2xl border border-cyan/25 bg-cyan/[0.04] p-4">
+          <div className="glass glass-accent rounded-2xl p-4">
             <div className="mb-3 flex items-center gap-2">
               <BookOpen size={15} className="text-cyan" />
-              <span className="text-[13px] font-bold text-ink">Fuentes del análisis</span>
+              <span className="text-[13px] font-bold text-content">Fuentes del análisis</span>
               <span className="kicker">de dónde salió cada lectura</span>
             </div>
             <div className="grid gap-2 md:grid-cols-2">
@@ -137,11 +155,11 @@ function FuentesPanel({ open }: { open: boolean }) {
                   <motion.div key={f.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
                     <Tag
                       {...(real ? { href: f.url, target: "_blank", rel: "noreferrer" } : {})}
-                      className={"group flex items-start gap-3 rounded-xl border border-line bg-surface/60 p-3 transition-colors " + (real ? "hover:border-cyan/40" : "")}
+                      className={"group glass flex items-start gap-3 rounded-xl p-3 transition-colors " + (real ? "glass-hover" : "")}
                     >
-                      <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 font-mono text-[10px] text-cyan">{i + 1}</span>
+                      <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-line bg-white/5 font-mono text-[10px] text-cyan">{i + 1}</span>
                       <span className="min-w-0 flex-1">
-                        <span className="block text-[12.5px] font-semibold leading-snug text-ink">{f.titulo}</span>
+                        <span className="block text-[12.5px] font-semibold leading-snug text-content">{f.titulo}</span>
                         <span className="mt-0.5 flex items-center gap-1.5 font-mono text-[10px] text-ink-mute">
                           <span className="chip py-0 text-[9px]">{f.tipo}</span>
                           {f.fuente} · {f.fecha}
@@ -165,9 +183,9 @@ function FuentesPanel({ open }: { open: boolean }) {
 
 function Kpi({ icon: Icon, label, value, extra, down }: { icon: any; label: string; value: string; extra: string; down?: boolean }) {
   return (
-    <div className="rounded-2xl border border-line bg-surface/50 p-4">
+    <div className="glass rounded-2xl p-4">
       <Icon size={16} className="text-cyan" />
-      <div className="mt-3 font-display text-[26px] font-extrabold leading-none text-ink">{value}</div>
+      <div className="mt-3 font-display text-[26px] font-extrabold leading-none text-content">{value}</div>
       <div className="kicker mt-1.5">{label}</div>
       <div className={"mt-1 font-mono text-[10px] " + (down ? "text-rose" : "text-ink-mute")}>{extra}</div>
     </div>
@@ -175,10 +193,10 @@ function Kpi({ icon: Icon, label, value, extra, down }: { icon: any; label: stri
 }
 function ListCard({ icon: Icon, title, color, items }: { icon: any; title: string; color: string; items: string[] }) {
   return (
-    <div className="rounded-2xl border border-line bg-surface/50 p-4">
-      <div className="mb-2.5 flex items-center gap-2"><Icon size={15} style={{ color }} /><span className="text-[13px] font-bold text-ink">{title}</span></div>
+    <div className="glass rounded-2xl p-4">
+      <div className="mb-2.5 flex items-center gap-2"><Icon size={15} style={{ color }} /><span className="text-[13px] font-bold text-content">{title}</span></div>
       <div className="space-y-2">
-        {items.map((it) => <div key={it} className="flex items-start gap-2 text-[12px] text-ink-soft"><span className="mt-1.5 h-1 w-1 shrink-0 rounded-full" style={{ background: color }} /> {it}</div>)}
+        {items.map((it) => <div key={it} className="flex items-start gap-2 text-[12px] text-content-secondary"><span className="mt-1.5 h-1 w-1 shrink-0 rounded-full" style={{ background: color }} /> {it}</div>)}
       </div>
     </div>
   );
@@ -186,8 +204,8 @@ function ListCard({ icon: Icon, title, color, items }: { icon: any; title: strin
 function SectionHead({ icon: Icon, title, sub }: { icon: any; title: string; sub: string }) {
   return (
     <div className="mb-3 flex items-center gap-2.5">
-      <span className="grid h-8 w-8 place-items-center rounded-lg border border-line bg-surface-2 text-cyan"><Icon size={15} /></span>
-      <div><div className="text-[14px] font-bold text-ink">{title}</div><div className="kicker">{sub}</div></div>
+      <span className="grid h-8 w-8 place-items-center rounded-lg border border-line bg-white/5 text-cyan"><Icon size={15} /></span>
+      <div><div className="text-[14px] font-bold text-content">{title}</div><div className="kicker">{sub}</div></div>
     </div>
   );
 }

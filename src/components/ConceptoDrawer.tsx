@@ -21,13 +21,13 @@ export function ConceptoDrawer({ concepto, onClose }: { concepto: Concepto | nul
     <AnimatePresence>
       {concepto && (
         <>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="absolute inset-0 z-40 bg-void/60 backdrop-blur-[2px]" />
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="absolute inset-0 z-40 bg-black/60 backdrop-blur-[2px]" />
           <motion.aside
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 280, damping: 34 }}
-            className="absolute right-0 top-0 z-50 flex h-full w-[470px] flex-col border-l border-line bg-graphite/95 backdrop-blur-xl"
+            className="glass-strong absolute right-0 top-0 z-50 flex h-full w-[470px] flex-col border-l border-line"
           >
             <Body c={concepto} onClose={onClose} />
           </motion.aside>
@@ -63,7 +63,7 @@ function Body({ c, onClose }: { c: Concepto; onClose: () => void }) {
           <Kpi icon={DollarSign} label="CPM" value={`$${c.cpm}`} color={color} />
         </div>
 
-        <div className="flex items-center justify-between rounded-xl border border-line bg-surface/60 p-3.5">
+        <div className="glass flex items-center justify-between rounded-xl p-3.5">
           <span className="text-[12px] text-ink-soft">Nivel de riesgo</span>
           <span className="font-mono text-[12px] font-bold" style={{ color: riesgoColor[c.riesgo] }}>{c.riesgo}</span>
         </div>
@@ -75,7 +75,7 @@ function Body({ c, onClose }: { c: Concepto; onClose: () => void }) {
         <Section title="Ideas de contenido">
           <div className="space-y-2">
             {c.ideasContenido.map((idea, i) => (
-              <div key={i} className="flex items-start gap-2.5 rounded-lg border border-line bg-surface/60 p-2.5">
+              <div key={i} className="glass flex items-start gap-2.5 rounded-lg p-2.5">
                 <span className="grid h-5 w-5 shrink-0 place-items-center rounded-md font-mono text-[10px]" style={{ background: `${color}26`, color }}>
                   {i + 1}
                 </span>
@@ -93,7 +93,7 @@ function Body({ c, onClose }: { c: Concepto; onClose: () => void }) {
               </span>
             ))}
           </div>
-          <div className="flex items-start gap-2 rounded-lg border border-line bg-surface/60 p-2.5">
+          <div className="glass flex items-start gap-2 rounded-lg p-2.5">
             <GraduationCap size={14} className="mt-0.5 shrink-0 text-amber" />
             <div>
               <div className="text-[12px] font-semibold text-ink">{aprendizajeById(c.aprendizaje)?.titulo}</div>
@@ -105,7 +105,7 @@ function Body({ c, onClose }: { c: Concepto; onClose: () => void }) {
         <Section title={`Bajada a influencers · ${inf.length}`}>
           <div className="space-y-2">
             {inf.map((p) => (
-              <div key={p.id} className="flex items-center gap-3 rounded-xl border border-line bg-surface/60 p-2.5">
+              <div key={p.id} className="glass flex items-center gap-3 rounded-xl p-2.5">
                 <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-surface-2 text-[18px]">{p.avatar}</span>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
@@ -128,7 +128,7 @@ function Body({ c, onClose }: { c: Concepto; onClose: () => void }) {
         </Section>
       </div>
 
-      <div className="flex shrink-0 items-center gap-3 border-t border-line bg-graphite/80 p-4">
+      <div className="flex shrink-0 items-center gap-3 border-t border-line bg-white/5 p-4">
         <button onClick={onClose} className="rounded-xl border border-line px-4 py-3 text-[12.5px] font-semibold text-ink-soft transition-colors hover:text-ink">Volver</button>
         <button className="group flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-3 text-[13px] font-bold text-void transition-all" style={{ background: color, boxShadow: `0 0 26px -6px ${color}` }}>
           <Sparkles size={15} /> Aprobar concepto <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
@@ -140,7 +140,7 @@ function Body({ c, onClose }: { c: Concepto; onClose: () => void }) {
 
 function Kpi({ icon: Icon, label, value, color }: { icon: any; label: string; value: string; color: string }) {
   return (
-    <div className="rounded-xl border border-line bg-surface/60 p-3">
+    <div className="glass rounded-xl p-3">
       <div className="mb-1.5 flex items-center gap-1.5">
         <Icon size={13} style={{ color }} />
         <span className="kicker">{label}</span>

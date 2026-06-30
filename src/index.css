@@ -8,30 +8,73 @@
   --font-sans: "Hanken Grotesk", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 
-  --color-void: #0a0708;
-  --color-graphite: #0f0a0c;
-  --color-surface: #181113;
-  --color-surface-2: #211619;
+  /* ---- Tema oscuro · "Liquid Glass" (negros/grises) + acento por marca ----
+     monocromo vidriado; el acento (--color-cyan/--color-wine-600) lo sobre-escribe
+     cada marca en .brand-* más abajo. */
+  --color-void: #050507;       /* fondos de inputs / tracks / texto-sobre-acento base */
+  --color-graphite: #0d0d11;   /* base de paneles, modales, drawers */
+  --color-surface: #141418;    /* tarjetas (con /opacity = vidrio) */
+  --color-surface-2: #1d1d23;  /* elevado / muted */
   --color-line: #ffffff14;
-  --color-line-strong: #ffffff26;
+  --color-line-strong: #ffffff2b;
 
-  --color-ink: #f4ece9;
-  --color-ink-soft: #b8a7a6;
-  --color-ink-mute: #7e6b6d;
+  --color-ink: #f4f4f7;        /* texto principal */
+  --color-ink-soft: #b4b4be;   /* texto secundario */
+  --color-ink-mute: #7e7e89;   /* texto sutil */
 
-  /* primario = vino tinto (reemplaza al cian) · secundario = oro (reemplaza al violeta) */
-  --color-cyan: #cf4d6b;
-  --color-cyan-deep: #8e1f3c;
+  /* acento (default = Betsson naranja; .brand-* lo cambia) · secundario = oro */
+  --color-cyan: #ff6a00;
+  --color-cyan-deep: #d65600;
   --color-violet: #c79a52;
   --color-violet-deep: #a87d36;
-  --color-lime: #86b04a;
-  --color-amber: #d99a4e;
-  --color-rose: #e06a86;
-  --color-coral: #d57a52;
+  --color-lime: #5ec27d;
+  --color-amber: #e0a64e;
+  --color-rose: #ff5d73;
+  --color-coral: #ff7a4d;
+
+  /* ---- Vocabulario del design system (markup WK) ---- */
+  --color-canvas: #08080a;
+  --color-surface-muted: #1c1c22;
+  --color-content: #f4f4f7;
+  --color-content-secondary: #b4b4be;
+  --color-content-muted: #7e7e89;
+  --color-content-inverted: #0a0a0c;
+  --color-negative: #ff5d5d;
+
+  /* escala "wine-*" del markup → rampa neutra/acento para tema oscuro */
+  --color-wine-50: #17171d;    /* fondo de estado activo (glass tint) */
+  --color-wine-100: #21212a;
+  --color-wine-200: #ffffff2b;
+  --color-wine-300: #ffb184;
+  --color-wine-400: #ff9559;
+  --color-wine-500: #ff7a33;
+  --color-wine-600: #ff6a00;   /* acento */
+  --color-wine-700: #ff9152;   /* texto acento sobre oscuro */
+  --color-wine-800: #15151b;   /* tile del logo (oscuro) */
+  --color-wine-900: #0c0c10;
 }
 
 :root {
   color-scheme: dark;
+}
+/* acento por marca activa (App añade brand-<id> al shell) */
+.brand-copec {
+  --color-cyan: #ef4866;
+  --color-cyan-deep: #c4203f;
+  --color-wine-600: #ef4866;
+  --color-wine-700: #ff7d95;
+}
+.brand-betsson {
+  --color-cyan: #ff6a00;
+  --color-cyan-deep: #d65600;
+  --color-wine-600: #ff6a00;
+  --color-wine-700: #ff9152;
+}
+.brand-estelarbet {
+  --color-cyan: #5b6cff;
+  --color-cyan-deep: #3a45e0;
+  --color-wine-600: #5b6cff;
+  --color-wine-700: #a3acff;
 }
 * {
   border-color: var(--color-line);
@@ -43,15 +86,15 @@ body,
 }
 body {
   margin: 0;
-  background: var(--color-void);
-  color: var(--color-ink);
+  background: var(--color-canvas);
+  color: var(--color-content);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow: hidden;
 }
 ::selection {
-  background: color-mix(in srgb, var(--color-cyan) 35%, transparent);
+  background: color-mix(in srgb, var(--color-cyan) 30%, transparent);
   color: #fff;
 }
 ::-webkit-scrollbar {
@@ -62,14 +105,135 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #ffffff18;
+  background: #ffffff1a;
   border-radius: 99px;
   border: 2px solid transparent;
   background-clip: content-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #ffffff30;
+  background: #ffffff33;
   background-clip: content-box;
+}
+
+/* scrollbar delgada para el nav del sidebar (markup: scroll-slim) */
+.scroll-slim::-webkit-scrollbar {
+  width: 6px;
+}
+.scroll-slim::-webkit-scrollbar-thumb {
+  background: #ffffff1f;
+  background-clip: content-box;
+}
+
+/* anillo de foco accesible (markup: focus-visible:focus-ring) */
+@utility focus-ring {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   Liquid Glass — superficies vidriadas (frosted) sobre el oscuro
+   ============================================================ */
+.glass {
+  background: rgba(255, 255, 255, 0.045);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.07),
+    0 18px 50px -28px rgba(0, 0, 0, 0.85);
+}
+.glass-strong {
+  background: rgba(255, 255, 255, 0.075);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
+    0 26px 64px -30px rgba(0, 0, 0, 0.92);
+}
+/* barra lateral / superficies "frame" más oscuras y sólidas */
+.glass-rail {
+  background: rgba(13, 13, 17, 0.72);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  backdrop-filter: blur(24px) saturate(140%);
+}
+.glass-hover {
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.glass-hover:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+/* brillo de borde sutil con el acento (para CTAs / piezas destacadas) */
+.glass-accent {
+  border-color: color-mix(in srgb, var(--color-cyan) 45%, transparent);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.12),
+    0 0 0 1px color-mix(in srgb, var(--color-cyan) 22%, transparent),
+    0 20px 60px -26px color-mix(in srgb, var(--color-cyan) 40%, transparent);
+}
+
+/* ---- Escenario del cerebro (panel oscuro inmersivo · estilo "product viewer") ----
+   el cerebro usa partículas emisivas con additive blending → necesita fondo oscuro
+   para tener contraste y protagonismo dentro del tema claro. */
+.brain-stage {
+  position: relative;
+  border-radius: 40px;
+  background:
+    radial-gradient(120% 115% at 50% 34%, #1a1a20 0%, #101014 46%, #0a0a0d 72%, #060608 100%);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+    inset 0 0 130px -26px color-mix(in srgb, var(--color-cyan) 42%, transparent),
+    inset 0 -60px 120px -60px rgba(0, 0, 0, 0.65),
+    0 50px 120px -50px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+}
+/* aro interno tenue (vidrio + acento) */
+.brain-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 0 0 0 1px color-mix(in srgb, var(--color-cyan) 10%, transparent);
+}
+/* sutil grilla de puntos dentro del escenario (textura tech, muy leve) */
+.brain-stage-dots {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 26px 26px;
+  mask-image: radial-gradient(70% 70% at 50% 45%, #000 35%, transparent 78%);
+  -webkit-mask-image: radial-gradient(70% 70% at 50% 45%, #000 35%, transparent 78%);
+}
+/* halo de bloom que respira alrededor del cerebro */
+@keyframes stage-bloom {
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.85; transform: translate(-50%, -50%) scale(1.06); }
+}
+.brain-bloom {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 78%;
+  aspect-ratio: 1;
+  pointer-events: none;
+  border-radius: 9999px;
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--color-cyan) 48%, transparent) 0%,
+    color-mix(in srgb, var(--color-cyan) 16%, transparent) 38%,
+    transparent 66%);
+  filter: blur(10px);
+  animation: stage-bloom 6s ease-in-out infinite;
+}
+.brain-bloom.is-thinking {
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--color-cyan) 65%, transparent) 0%,
+    color-mix(in srgb, var(--color-cyan) 28%, transparent) 40%,
+    transparent 68%);
+  animation-duration: 3.4s;
 }
 
 /* ---- Ambient ---- */
@@ -97,13 +261,15 @@ body {
 
 /* ---- Surfaces ---- */
 .panel {
-  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  background: rgba(255, 255, 255, 0.045);
   border: 1px solid var(--color-line);
   border-radius: 16px;
-  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06), 0 18px 50px -28px rgba(0, 0, 0, 0.85);
 }
 .panel-2 {
-  background: var(--color-surface-2);
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--color-line);
   border-radius: 14px;
 }
@@ -127,7 +293,7 @@ body {
 }
 .input {
   width: 100%;
-  background: var(--color-void);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--color-line);
   border-radius: 12px;
   padding: 10px 12px;
@@ -277,7 +443,7 @@ body {
   }
 }
 .skeleton {
-  background: linear-gradient(90deg, #ffffff08 25%, #ffffff18 37%, #ffffff08 63%);
+  background: linear-gradient(90deg, #ffffff0a 25%, #ffffff1a 37%, #ffffff0a 63%);
   background-size: 200% 100%;
   animation: shimmer 2.2s ease-in-out infinite;
   border-radius: 6px;
@@ -309,7 +475,7 @@ body {
    React Flow overrides
    ============================================================ */
 .react-flow {
-  --xy-edge-stroke-default: #ffffff20;
+  --xy-edge-stroke-default: #ffffff22;
   --xy-background-color-default: transparent;
 }
 .react-flow__attribution {
@@ -337,7 +503,7 @@ body {
   height: 30px;
 }
 .react-flow__controls-button:hover {
-  background: #ffffff10;
+  background: #ffffff14;
 }
 .react-flow__controls-button svg {
   fill: currentColor;

@@ -2,15 +2,8 @@ import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Mic, FileUp, ClipboardPaste, Sparkles, ArrowRight, Quote, TrendingUp, GraduationCap, Loader2, Check, FileAudio } from "lucide-react";
 import { ReasoningStream } from "../components/ReasoningStream";
-import { pasosTranscripcion, insightsReunion, tendencias, aprendizajes } from "../lib/data";
+import { transcript, pasosTranscripcion, insightsReunion, tendencias, aprendizajes } from "../lib/data";
 import { cn } from "../lib/cn";
-
-const TRANSCRIPT = `[00:04] Cliente (Copec): nos preocupa Aramco, está creciendo muy rápido en la Ruta 5 con sus "Pit Stop". No podemos descuidar el verano.
-[05:21] Cliente: el verano es clave, ahí se dispara el tráfico. Queremos estar donde la gente planifica el viaje.
-[09:48] Agencia: ¿el foco es bencina o algo más?
-[10:05] Cliente: que usen la App. Pagar, juntar beneficios... eso es lo que queremos empujar, no solo cargar.
-[16:30] Cliente: y por favor, nada corporativo. Lo que funcionó fue darles libertad a los creadores.
-[21:10] Cliente: ojo con la transparencia. Después del tema con el SERNAC, todo tiene que ir marcado como publicidad.`;
 
 type Phase = "import" | "loading" | "ready" | "running" | "done";
 
@@ -37,7 +30,7 @@ export function Insights({ onContinue, onThinking }: { onContinue: () => void; o
   return (
     <div className="flex h-full flex-col">
       {/* sticky top action bar */}
-      <div className="z-20 flex shrink-0 items-center gap-4 border-b border-line bg-graphite/60 px-8 py-3 backdrop-blur-xl">
+      <div className="z-20 flex shrink-0 items-center gap-4 border-b border-line glass-rail px-8 py-3">
         <div className="flex items-center gap-2.5">
           <span className="grid h-8 w-8 place-items-center rounded-lg border border-line bg-surface-2 text-cyan"><Quote size={15} /></span>
           <div>
@@ -63,7 +56,7 @@ export function Insights({ onContinue, onThinking }: { onContinue: () => void; o
         <div className="mx-auto grid max-w-6xl grid-cols-12 gap-5">
           {/* left: import / transcript */}
           <div className="col-span-12 lg:col-span-5">
-            <div className="rounded-2xl border border-line bg-surface/40 p-5">
+            <div className="glass rounded-2xl p-5">
               <div className="mb-3 flex items-center gap-2.5">
                 <span className="grid h-9 w-9 place-items-center rounded-lg border border-line bg-surface-2 text-cyan"><Mic size={16} /></span>
                 <div>
@@ -78,7 +71,7 @@ export function Insights({ onContinue, onThinking }: { onContinue: () => void; o
               {/* import state */}
               {(phase === "import" || phase === "loading") && (
                 <div
-                  className="rounded-xl border border-dashed border-line bg-void/40 p-6 text-center transition-colors hover:border-cyan/40"
+                  className="rounded-xl border border-dashed border-line bg-white/5 p-6 text-center transition-colors hover:border-cyan/40"
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={(e) => { e.preventDefault(); const f = e.dataTransfer.files?.[0]; if (f) importar(f.name); }}
                 >
@@ -108,8 +101,8 @@ export function Insights({ onContinue, onThinking }: { onContinue: () => void; o
                     <Check size={13} /> transcripción importada
                     {fileName && <span className="flex items-center gap-1 rounded-md border border-line bg-surface/60 px-1.5 py-0.5 font-mono text-[10px] text-ink-soft"><FileAudio size={10} className="text-cyan" /> {fileName}</span>}
                   </div>
-                  <div className="max-h-[240px] overflow-y-auto rounded-xl border border-line bg-void/50 p-3.5 font-mono text-[11px] leading-relaxed text-ink-soft">
-                    {TRANSCRIPT.split("\n").map((l, i) => <p key={i} className="mb-1.5">{l}</p>)}
+                  <div className="max-h-[240px] overflow-y-auto rounded-xl border border-line bg-white/5 p-3.5 font-mono text-[11px] leading-relaxed text-ink-soft">
+                    {transcript.split("\n").map((l, i) => <p key={i} className="mb-1.5">{l}</p>)}
                   </div>
 
                   {phase === "ready" && (
@@ -118,7 +111,7 @@ export function Insights({ onContinue, onThinking }: { onContinue: () => void; o
                     </button>
                   )}
                   {(phase === "running" || phase === "done") && (
-                    <div className="mt-4 rounded-xl border border-line bg-void/40 p-3.5">
+                    <div className="mt-4 rounded-xl border border-line bg-white/5 p-3.5">
                       <ReasoningStream steps={pasosTranscripcion} running={phase === "running"} perStep={1100} onDone={() => { setPhase("done"); onThinking(false); }} />
                     </div>
                   )}
@@ -137,7 +130,7 @@ export function Insights({ onContinue, onThinking }: { onContinue: () => void; o
             {phase !== "done" ? (
               <div className="grid gap-2.5">
                 {[0, 1, 2, 3].map((i) => (
-                  <div key={i} className="rounded-xl border border-line bg-surface/40 p-4">
+                  <div key={i} className="glass rounded-xl p-4">
                     <div className="skeleton mb-2 h-2.5 w-1/4" />
                     <div className="skeleton h-3 w-5/6" />
                   </div>
@@ -146,7 +139,7 @@ export function Insights({ onContinue, onThinking }: { onContinue: () => void; o
             ) : (
               <div className="grid gap-2.5">
                 {insightsReunion.map((r, i) => (
-                  <motion.div key={r.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.16 }} className="rounded-xl border border-line bg-surface/60 p-4">
+                  <motion.div key={r.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.16 }} className="glass rounded-xl p-4">
                     <span className="chip py-0.5 text-cyan" style={{ borderColor: "var(--color-cyan)" }}>{r.tag}</span>
                     <p className="mt-1.5 text-[13px] leading-snug text-ink">“{r.texto}”</p>
                   </motion.div>
@@ -172,7 +165,7 @@ export function Insights({ onContinue, onThinking }: { onContinue: () => void; o
 
 function MiniList({ icon: Icon, title, items }: { icon: any; title: string; items: string[] }) {
   return (
-    <div className="rounded-xl border border-line bg-surface/50 p-4">
+    <div className="glass rounded-xl p-4">
       <div className="mb-2 flex items-center gap-2"><Icon size={14} className="text-cyan" /><span className="text-[12px] font-bold text-ink">{title}</span></div>
       <div className="space-y-1.5">
         {items.map((it) => <div key={it} className="flex items-start gap-2 text-[11.5px] text-ink-soft"><span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-cyan" /> {it}</div>)}

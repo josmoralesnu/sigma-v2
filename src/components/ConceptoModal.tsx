@@ -31,13 +31,13 @@ export function ConceptoModal({ concepto, initialBudget = BUDGET_DEFAULT, onApro
     <AnimatePresence>
       {concepto && (
         <div className="absolute inset-0 z-50 grid place-items-center p-4 sm:p-8">
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="absolute inset-0 bg-void/75 backdrop-blur-md" />
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="absolute inset-0 bg-black/60 backdrop-blur-md" />
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 18 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.97, y: 10 }}
             transition={{ type: "spring", stiffness: 260, damping: 28 }}
-            className="relative z-10 flex max-h-[88vh] w-full max-w-5xl flex-col overflow-hidden rounded-3xl border border-line-strong bg-graphite/95 shadow-2xl backdrop-blur-xl"
+            className="glass-strong relative z-10 flex max-h-[88vh] w-full max-w-5xl flex-col overflow-hidden rounded-3xl shadow-2xl"
           >
             <Body c={concepto} initialBudget={initialBudget} onAprobar={onAprobar} onClose={onClose} />
           </motion.div>
@@ -115,7 +115,7 @@ function Body({ c, initialBudget, onAprobar, onClose }: { c: Concepto; initialBu
               <div className="space-y-2">
                 <AnimatePresence mode="popLayout">
                   {ideas.map((idea, i) => (
-                    <motion.div key={idea} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }} transition={{ delay: i * 0.08 }} className="flex items-start gap-2.5 rounded-lg border border-line bg-surface/50 p-2.5">
+                    <motion.div key={idea} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }} transition={{ delay: i * 0.08 }} className="glass flex items-start gap-2.5 rounded-lg p-2.5">
                       <span className="grid h-5 w-5 shrink-0 place-items-center rounded-md font-mono text-[10px]" style={{ background: `${color}26`, color }}>{i + 1}</span>
                       <span className="text-[12.5px] leading-snug text-ink-soft">{idea}</span>
                     </motion.div>
@@ -133,7 +133,7 @@ function Body({ c, initialBudget, onAprobar, onClose }: { c: Concepto; initialBu
                 </span>
               ))}
             </div>
-            <div className="flex items-start gap-2 rounded-lg border border-line bg-surface/50 p-2.5">
+            <div className="glass flex items-start gap-2 rounded-lg p-2.5">
               <GraduationCap size={14} className="mt-0.5 shrink-0 text-amber" />
               <div>
                 <div className="text-[12px] font-semibold text-ink">{aprendizajeById(c.aprendizaje)?.titulo}</div>
@@ -152,7 +152,7 @@ function Body({ c, initialBudget, onAprobar, onClose }: { c: Concepto; initialBu
           </div>
 
           {/* budget */}
-          <div className="rounded-2xl border border-line bg-surface/50 p-4">
+          <div className="glass rounded-2xl p-4">
             <div className="mb-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Wallet size={15} style={{ color }} />
@@ -175,7 +175,7 @@ function Body({ c, initialBudget, onAprobar, onClose }: { c: Concepto; initialBu
 
             {/* controles de paquete: piezas + derecho a imagen */}
             <div className="mt-3 grid grid-cols-2 gap-2">
-              <div className="flex items-center justify-between rounded-lg border border-line bg-void/40 px-2.5 py-2">
+              <div className="flex items-center justify-between rounded-lg border border-line bg-white/5 px-2.5 py-2">
                 <span className="text-[10.5px] leading-tight text-ink-soft">Piezas<br /><span className="text-ink-mute">1 reel + 2 hist.</span></span>
                 <div className="flex items-center gap-1.5">
                   <button onClick={() => setPieces((p) => Math.max(1, p - 1))} className="grid h-5 w-5 place-items-center rounded-md border border-line text-ink-soft transition-colors hover:text-ink"><Minus size={11} /></button>
@@ -219,7 +219,7 @@ function Body({ c, initialBudget, onAprobar, onClose }: { c: Concepto; initialBu
                <Mini icon={Gauge} label="CPM" value={`$${fmtCLP(plan.cpm)}`} color={color} />
              </div>
              <div className="absolute inset-0 grid place-items-center">
-               <span className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-graphite/85 px-4 py-2 text-[11.5px] font-semibold text-ink shadow-xl backdrop-blur-md"><Lock size={13} className="text-cyan" /> Resultados proyectados · {CONFIDENCIAL}</span>
+               <span className="glass-strong inline-flex items-center gap-2 rounded-full px-4 py-2 text-[11.5px] font-semibold text-ink shadow-xl"><Lock size={13} className="text-cyan" /> Resultados proyectados · {CONFIDENCIAL}</span>
              </div>
            </div>
          </div>
@@ -227,10 +227,10 @@ function Body({ c, initialBudget, onAprobar, onClose }: { c: Concepto; initialBu
          {/* bajada de talento · censurado */}
          <div>
            <div className="mb-2 flex items-center gap-1.5"><Lock size={12} className="text-ink-mute" /><span className="kicker">bajada de talento · confidencial</span></div>
-           <div className="relative overflow-hidden rounded-xl border border-line bg-surface/40 p-4">
+           <div className="glass relative overflow-hidden rounded-xl p-4">
              <div aria-hidden className="pointer-events-none flex select-none flex-wrap gap-2 blur-[7px]" style={{ opacity: 0.5 }}>
                {plan.elegidos.slice(0, 6).map((e) => (
-                 <div key={e.inf.id} className="flex items-center gap-2.5 rounded-xl border border-line bg-surface/60 p-2.5">
+                 <div key={e.inf.id} className="glass flex items-center gap-2.5 rounded-xl p-2.5">
                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl text-[20px]" style={{ background: `${color}18` }}>{e.inf.avatar}</span>
                    <div className="space-y-1.5"><div className="h-2.5 w-24 rounded bg-ink/20" /><div className="h-2 w-16 rounded bg-ink/10" /></div>
                  </div>
@@ -238,7 +238,7 @@ function Body({ c, initialBudget, onAprobar, onClose }: { c: Concepto; initialBu
              </div>
              <div className="absolute inset-0 grid place-items-center px-4 text-center">
                <div>
-                 <span className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-graphite/85 px-4 py-2 text-[11.5px] font-semibold text-ink shadow-xl backdrop-blur-md"><Lock size={13} className="text-cyan" /> Talento reservado · {CONFIDENCIAL}</span>
+                 <span className="glass-strong inline-flex items-center gap-2 rounded-full px-4 py-2 text-[11.5px] font-semibold text-ink shadow-xl"><Lock size={13} className="text-cyan" /> Talento reservado · {CONFIDENCIAL}</span>
                  <p className="mx-auto mt-2 max-w-sm text-[10.5px] text-ink-mute">No exponemos los creadores que proponemos a la marca en el demo.</p>
                </div>
              </div>
@@ -248,7 +248,7 @@ function Body({ c, initialBudget, onAprobar, onClose }: { c: Concepto; initialBu
       </div>
 
       {/* footer */}
-      <div className="flex shrink-0 items-center gap-3 border-t border-line bg-graphite/80 p-4">
+      <div className="flex shrink-0 items-center gap-3 border-t border-line bg-white/5 p-4">
         <div className="flex items-center gap-2 font-mono text-[10px] text-ink-mute">
           <Check size={12} className="text-lime" /> plan listo · CLP {fmtCLP(plan.totalFee)} asignado · <span className="inline-flex items-center gap-1"><Lock size={10} /> resultados confidenciales</span>
         </div>
@@ -286,7 +286,7 @@ function Block({ icon: Icon, title, color, action, children }: { icon: any; titl
 }
 function Mini({ icon: Icon, label, value, color }: { icon: any; label: string; value: string; color: string }) {
   return (
-    <div className="rounded-xl border border-line bg-surface/50 p-2.5">
+    <div className="glass rounded-xl p-2.5">
       <div className="mb-1 flex items-center gap-1.5"><Icon size={12} style={{ color }} /><span className="kicker">{label}</span></div>
       <div className="font-display text-[17px] font-bold text-ink">{value}</div>
     </div>
@@ -304,14 +304,14 @@ function DesgloseInversion({ plan }: { plan: Plan }) {
     .map((t) => ({ t, value: plan.inversionPorTier[t], count: plan.porTier[t], color: acentoHex[TIER_CONFIG[t].color] }));
 
   if (total <= 0 || segs.length === 0) {
-    return <div className="mt-3 rounded-xl border border-dashed border-line bg-void/30 px-3 py-4 text-center text-[11px] text-ink-mute">Sube el presupuesto para ver la mezcla de inversión.</div>;
+    return <div className="mt-3 rounded-xl border border-dashed border-line bg-white/5 px-3 py-4 text-center text-[11px] text-ink-mute">Sube el presupuesto para ver la mezcla de inversión.</div>;
   }
 
   const R = 42, SW = 13, C = 2 * Math.PI * R;
   let acc = 0;
 
   return (
-    <div className="mt-3 rounded-xl border border-line bg-void/30 p-3">
+    <div className="mt-3 rounded-xl border border-line bg-white/5 p-3">
       <div className="kicker mb-2.5">inversión en creadores · por categoría</div>
       <div className="flex items-center gap-4">
         <div className="relative h-[104px] w-[104px] shrink-0">

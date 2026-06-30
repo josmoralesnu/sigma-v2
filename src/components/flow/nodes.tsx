@@ -13,18 +13,18 @@ import {
   type Concepto,
 } from "../../lib/data";
 import { planificar, BUDGET_DEFAULT } from "../../lib/budget";
-import { Brain3D } from "../Brain3D";
+import { Brain3D, BrainStage } from "../Brain3D";
 
 /* -------- Contexto (ingesta) -------- */
 export function ContextoNode({ data }: NodeProps) {
   const d = data as any;
   return (
-    <div className="w-[196px] rounded-2xl border border-line bg-surface/80 p-4 backdrop-blur-md">
+    <div className="glass w-[196px] rounded-2xl p-4">
       <div className="kicker mb-2">contexto cargado</div>
-      <div className="font-display text-[14px] font-bold leading-tight text-ink">{d.titulo}</div>
+      <div className="font-display text-[14px] font-bold leading-tight text-content">{d.titulo}</div>
       <div className="mt-2.5 space-y-1.5">
         {d.items?.map((it: string) => (
-          <div key={it} className="flex items-center gap-1.5 text-[10.5px] text-ink-soft">
+          <div key={it} className="flex items-center gap-1.5 text-[10.5px] text-content-secondary">
             <span className="h-1 w-1 rounded-full bg-cyan" /> {it}
           </div>
         ))}
@@ -39,17 +39,17 @@ export function CerebroNode({ data }: NodeProps) {
   const d = data as any;
   const thinking = d.thinking ?? false;
   return (
-    <div className="relative grid w-[320px] place-items-center">
-      {/* halo void: funde el canvas cuadrado del Brain3D con el fondo (sin "cuadrado") */}
-      <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ width: 560, height: 560, background: "radial-gradient(circle, var(--color-void) 60%, transparent 85%)" }} />
-      <div className={"relative grid h-80 w-80 place-items-center rounded-full " + (thinking ? "pulse-ring pulse-ring-strong" : "pulse-ring")}>
-        <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_50%_45%,rgba(207,77,107,0.24),transparent_64%)]" />
-        <div className="absolute inset-4 rounded-full border border-cyan/15 spin-slow" style={{ borderStyle: "dashed" }} />
-        <div className="absolute inset-12 rounded-full border border-violet/10 spin-rev" style={{ borderStyle: "dotted" }} />
-        <Brain3D size={300} thinking={thinking} />
+    <div className="relative grid w-[360px] place-items-center">
+      {/* bloom suave que difumina el disco contra el canvas claro */}
+      <div className="pointer-events-none absolute left-1/2 top-[150px] h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(207,77,107,0.18), transparent 68%)" }} />
+      {/* escenario oscuro inmersivo: da contraste y protagonismo al cerebro */}
+      <div className={"relative grid h-[340px] w-[340px] place-items-center rounded-full " + (thinking ? "pulse-ring pulse-ring-strong" : "pulse-ring")}>
+        <BrainStage variant="disc" thinking={thinking} className="absolute inset-0 grid place-items-center">
+          <Brain3D size={320} thinking={thinking} />
+        </BrainStage>
       </div>
-      <div className="-mt-2 text-center">
-        <div className="font-display text-[15px] font-bold text-ink">Cerebro Sigma</div>
+      <div className="mt-3 text-center">
+        <div className="font-display text-[15px] font-bold text-content">Cerebro Sigma</div>
         {thinking ? (
           <div className="mt-1 flex items-center justify-center gap-1">
             {[0, 1, 2].map((i) => (
@@ -90,7 +90,7 @@ export function ConceptoNode({ data, selected }: NodeProps) {
   return (
     <div
       onClick={() => stage >= 5 && onOpen?.(c.id)}
-      className="w-[330px] rounded-2xl border bg-surface/85 p-4 backdrop-blur-md transition-all duration-300"
+      className="glass-strong w-[330px] rounded-2xl border p-4 transition-all duration-300"
       style={{
         borderColor: isSel ? color : "var(--color-line)",
         boxShadow: isSel ? `0 0 0 1px ${color}, 0 0 34px -6px ${color}` : undefined,
@@ -161,7 +161,7 @@ export function ConceptoNode({ data, selected }: NodeProps) {
                   initial={{ opacity: 0, x: -6 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.15 * i }}
-                  className="flex items-start gap-2 rounded-lg border border-line bg-void/40 px-2.5 py-1.5"
+                  className="flex items-start gap-2 rounded-lg border border-line bg-white/5 px-2.5 py-1.5"
                 >
                   <span className="mt-0.5 font-mono text-[9px]" style={{ color }}>{String(i + 1).padStart(2, "0")}</span>
                   <span className="text-[11px] leading-snug text-ink-soft">{idea}</span>
@@ -186,7 +186,7 @@ export function ConceptoNode({ data, selected }: NodeProps) {
                 );
               })}
             </div>
-            <div className="flex items-start gap-1.5 rounded-lg border border-line bg-void/40 px-2.5 py-1.5">
+            <div className="flex items-start gap-1.5 rounded-lg border border-line bg-white/5 px-2.5 py-1.5">
               <GraduationCap size={12} className="mt-0.5 shrink-0 text-amber" />
               <span className="text-[10.5px] leading-snug text-ink-soft">
                 <span className="text-amber">aprendizaje: </span>
@@ -210,7 +210,7 @@ export function ConceptoNode({ data, selected }: NodeProps) {
               </div>
               <div className="flex -space-x-2">
                 {inf.slice(0, 4).map((p) => (
-                  <span key={p.id} className="grid h-6 w-6 place-items-center rounded-full border border-surface bg-surface-2 text-[11px]" title={p.nombre}>
+                  <span key={p.id} className="grid h-6 w-6 place-items-center rounded-full border border-white/10 bg-white/10 text-[11px]" title={p.nombre}>
                     {p.avatar}
                   </span>
                 ))}

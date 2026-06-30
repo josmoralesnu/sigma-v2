@@ -16,10 +16,12 @@ import { Maximize2, RefreshCw, Sparkles, PlusCircle, AlertTriangle, ArrowRight, 
 import { ContextoNode, CerebroNode, ConceptoNode } from "../components/flow/nodes";
 import { BeamEdge } from "../components/flow/BeamEdge";
 import { ConceptoModal } from "../components/ConceptoModal";
-import { Brain3D } from "../components/Brain3D";
+import { Brain3D, BrainStage } from "../components/Brain3D";
 import {
   conceptosPorNivel, acentoHex, NIVEL_LABEL, conceptos, cliente,
-  oportunidades, influencers, influencerById, type Nivel, type Concepto, type Acento,
+  oportunidades, influencers, influencerById, tendencias, competidores,
+  contextoItems, guiarPlaceholders,
+  type Nivel, type Concepto, type Acento,
 } from "../lib/data";
 import type { Plan } from "../lib/budget";
 
@@ -38,7 +40,7 @@ function buildConcepto(form: { idea: string; bajada: string; refId: string; terr
     arquetipo: ref?.arquetipo ?? "viajes",
     acento,
     nivel: 1,
-    rationale: `${form.bajada.trim() ? form.bajada.trim() + ". " : ""}Concepto guiado por el equipo. Sigma lo aterrizó cruzando los insights de Copec${ref ? ` y tomando como referencia a ${ref.nombre} (${ref.arquetipo})` : ""}.`,
+    rationale: `${form.bajada.trim() ? form.bajada.trim() + ". " : ""}Concepto guiado por el equipo. Sigma lo aterrizó cruzando los insights de ${cliente.marca}${ref ? ` y tomando como referencia a ${ref.nombre} (${ref.arquetipo})` : ""}.`,
     ideasContenido: [
       `Reel principal alrededor de “${form.idea.trim() || "la idea"}”`,
       form.bajada.trim() ? `Bajada: “${form.bajada.trim()}”` : "Serie corta duetable para amplificar",
@@ -103,7 +105,7 @@ function CerebroCanvas(props: CerebroProps) {
   // build nodes/edges
   useEffect(() => {
     const ns: Node[] = [
-      { id: "contexto", type: "contexto", position: contextoPos, data: { titulo: "Ingesta + Insights", items: ["Brief Copec", "Reunión", "6 tendencias", "Aprendizajes"] }, draggable: false },
+      { id: "contexto", type: "contexto", position: contextoPos, data: { titulo: "Ingesta + Insights", items: contextoItems }, draggable: false },
       { id: "cerebro", type: "cerebro", position: cerebroPos, data: { thinking, sub: `${list.length} conceptos` }, draggable: false },
       ...list.map((c, i): Node => ({ id: c.id, type: "concepto", position: pos(i), data: { concepto: c, born: bornIds.includes(c.id), selected: c.id === selectedId, onOpen } })),
     ];
@@ -193,33 +195,33 @@ function CerebroCanvas(props: CerebroProps) {
         proOptions={{ hideAttribution: true }}
         nodesDraggable={false}
       >
-        <Background variant={BackgroundVariant.Dots} gap={26} size={1} color="#ffffff14" />
+        <Background variant={BackgroundVariant.Dots} gap={26} size={1} color="#ffffff12" />
         <Controls showInteractive={false} position="bottom-right" />
       </ReactFlow>
 
       <div className="pointer-events-none absolute left-6 top-5 z-10 max-w-sm">
         <div className="kicker mb-1">Sigma · generación en vivo</div>
-        <h2 className="font-display text-[20px] font-bold leading-tight text-ink">{thinking ? "El cerebro está construyendo conceptos…" : "Conceptos listos para revisar."}</h2>
-        <p className="mt-1 text-[12px] text-ink-soft">Cada concepto nace del cerebro con su rationale, ideas de contenido, tendencias y un aprendizaje pasado.</p>
+        <h2 className="font-display text-[20px] font-bold leading-tight text-content">{thinking ? "El cerebro está construyendo conceptos…" : "Conceptos listos para revisar."}</h2>
+        <p className="mt-1 text-[12px] text-content-secondary">Cada concepto nace del cerebro con su rationale, ideas de contenido, tendencias y un aprendizaje pasado.</p>
       </div>
 
       <div className="absolute right-6 top-5 z-10 flex items-center gap-2">
-        <div className="flex items-center gap-1 rounded-xl border border-line bg-surface/80 p-1 backdrop-blur-md">
+        <div className="glass flex items-center gap-1 rounded-xl p-1">
           {([1, 2, 3] as Nivel[]).map((n) => (
-            <button key={n} onClick={() => cambiarNivel(n)} className={"rounded-lg px-3 py-1.5 text-[11.5px] font-semibold transition-colors " + (nivel === n ? "bg-cyan/15 text-cyan" : "text-ink-soft hover:text-ink")}>{NIVEL_LABEL[n]}</button>
+            <button key={n} onClick={() => cambiarNivel(n)} className={"rounded-lg px-3 py-1.5 text-[11.5px] font-semibold transition-colors " + (nivel === n ? "bg-white/10 text-cyan" : "text-content-secondary hover:text-content")}>{NIVEL_LABEL[n]}</button>
           ))}
         </div>
-        <button onClick={() => runGeneration(nivel)} className="flex items-center gap-2 rounded-xl border border-line bg-surface/80 px-3.5 py-2.5 text-[12px] font-semibold text-ink-soft backdrop-blur-md transition-colors hover:border-cyan/40 hover:text-ink">
+        <button onClick={() => runGeneration(nivel)} className="glass glass-hover flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-[12px] font-semibold text-content-secondary transition-colors hover:text-content">
           <Sparkles size={14} className="text-cyan" /> Regenerar <RefreshCw size={13} />
         </button>
-        <button onClick={() => fitView({ padding: 0.22, duration: 900 })} className="grid h-[38px] w-[38px] place-items-center rounded-xl border border-line bg-surface/80 text-ink-soft backdrop-blur-md transition-colors hover:text-ink" title="Ver todo"><Maximize2 size={15} /></button>
+        <button onClick={() => fitView({ padding: 0.22, duration: 900 })} className="glass glass-hover grid h-[38px] w-[38px] place-items-center rounded-xl text-content-secondary transition-colors hover:text-content" title="Ver todo"><Maximize2 size={15} /></button>
         <button onClick={() => setGuiar(true)} className="group flex items-center gap-2 rounded-xl bg-cyan px-4 py-2.5 text-[12px] font-bold text-void transition-all hover:shadow-[0_0_24px_-6px_var(--color-cyan)]">
           <Wand2 size={14} /> Nuevo concepto
         </button>
       </div>
 
       <div className="pointer-events-none absolute bottom-6 left-1/2 z-10 -translate-x-1/2">
-        <div className="flex items-center gap-2 rounded-full border border-line bg-surface/80 px-4 py-2 backdrop-blur-md">
+        <div className="glass flex items-center gap-2 rounded-full px-4 py-2">
           <span className="font-mono text-[10px] text-ink-mute">nivel creativo</span>
           <span className="text-[12px] font-semibold text-cyan">{NIVEL_LABEL[nivel]}</span>
           <span className="font-mono text-[10px] text-ink-mute">· {list.length} conceptos</span>
@@ -243,13 +245,13 @@ function GuiarModal({ open, onClose, onGenerar }: { open: boolean; onClose: () =
     <AnimatePresence>
       {open && (
         <div className="absolute inset-0 z-50 grid place-items-center p-4 sm:p-8">
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="absolute inset-0 bg-void/75 backdrop-blur-md" />
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="absolute inset-0 bg-black/60 backdrop-blur-md" />
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.97, y: 10 }}
             transition={{ type: "spring", stiffness: 260, damping: 28 }}
-            className="relative z-10 w-full max-w-lg overflow-hidden rounded-3xl border border-cyan/30 bg-graphite/95 shadow-2xl backdrop-blur-xl"
+            className="glass-strong relative z-10 w-full max-w-lg overflow-hidden rounded-3xl border border-cyan/30 shadow-2xl"
           >
             <div className="relative border-b border-line p-5" style={{ background: "linear-gradient(160deg, rgba(207,77,107,0.14), transparent 65%)" }}>
               <button onClick={onClose} className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-lg border border-line text-ink-soft transition-colors hover:text-ink"><X size={16} /></button>
@@ -265,7 +267,7 @@ function GuiarModal({ open, onClose, onGenerar }: { open: boolean; onClose: () =
             <div className="space-y-3.5 p-5">
               <label className="block">
                 <span className="kicker mb-1.5 block">Concepto que imaginan *</span>
-                <input value={form.idea} onChange={set("idea")} placeholder="Ej: La parada secreta de la Ruta 5" className="input" autoFocus />
+                <input value={form.idea} onChange={set("idea")} placeholder={guiarPlaceholders.idea} className="input" autoFocus />
               </label>
               <label className="block">
                 <span className="kicker mb-1.5 block">Bajada / tono (opcional)</span>
@@ -283,13 +285,13 @@ function GuiarModal({ open, onClose, onGenerar }: { open: boolean; onClose: () =
                 </label>
                 <label className="block">
                   <span className="kicker mb-1.5 block">Territorio (opcional)</span>
-                  <input value={form.territorio} onChange={set("territorio")} placeholder="Ej: Viajes · Ruta 5" className="input" />
+                  <input value={form.territorio} onChange={set("territorio")} placeholder={guiarPlaceholders.territorio} className="input" />
                 </label>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 border-t border-line bg-graphite/80 p-4">
-              <span className="flex-1 font-mono text-[10px] text-ink-mute">el cerebro cruzará tu guía con los insights de Copec</span>
+            <div className="flex items-center gap-3 border-t border-line bg-white/5 p-4">
+              <span className="flex-1 font-mono text-[10px] text-ink-mute">el cerebro cruzará tu guía con los insights de {cliente.marca}</span>
               <button onClick={onClose} className="rounded-xl border border-line px-4 py-2.5 text-[12.5px] font-semibold text-ink-soft transition-colors hover:text-ink">Cancelar</button>
               <button
                 onClick={() => { if (puede) { onGenerar(form); setForm({ idea: "", bajada: "", refId: "", territorio: "" }); } }}
@@ -307,44 +309,43 @@ function GuiarModal({ open, onClose, onGenerar }: { open: boolean; onClose: () =
 }
 
 /* ============================ Idle (reposo) ============================ */
-const RED_TAGS = ["App Copec", "Ruta 5", "Voltex", "#ad / SERNAC", "verano", "Pronto", "Shell “rinde más”"];
+/* etiquetas flotantes = señales del cliente activo (se computan por marca dentro del componente) */
 const TAG_POS = [
-  { top: "4%", left: "12%" }, { top: "0%", left: "62%" }, { top: "30%", left: "92%" },
-  { top: "74%", left: "86%" }, { top: "92%", left: "50%" }, { top: "72%", left: "4%" }, { top: "28%", left: "-2%" },
+  { top: "11%", left: "17%" }, { top: "7%", left: "70%" }, { top: "34%", left: "89%" },
+  { top: "67%", left: "87%" }, { top: "89%", left: "52%" }, { top: "70%", left: "11%" }, { top: "35%", left: "9%" },
 ];
 
 function IdleStandby({ onActivate, onGoNueva, onGoAnalisis }: { onActivate: () => void; onGoNueva: () => void; onGoAnalisis: () => void }) {
+  const RED_TAGS = [
+    ...tendencias.slice(0, 4).map((t) => t.nombre.split(/[/·]/)[0].trim()),
+    ...competidores.slice(0, 3).map((k) => k.nombre.split(/[·]/)[0].trim()),
+  ].map((s) => (s.length > 18 ? s.slice(0, 17) + "…" : s));
   return (
-    <div className="relative grid h-full place-items-center overflow-hidden px-6">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_50%_at_50%_42%,rgba(207,77,107,0.10),transparent_70%)]" />
+    <div className="relative grid h-full place-items-center overflow-y-auto overflow-x-hidden px-6 py-8">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_55%_at_50%_38%,rgba(207,77,107,0.10),transparent_72%)]" />
       <div className="relative w-full max-w-2xl text-center">
-        {/* brain protagonista · interactivo (arrastra para girar) */}
-        <div className="mx-auto mb-2 grid place-items-center">
-          <div className="relative h-[380px] w-[380px]">
-            <div className="pointer-events-none absolute inset-2 rounded-full border border-cyan/10 spin-slow" style={{ borderStyle: "dashed" }} />
-            <div className="pointer-events-none absolute inset-12 rounded-full border border-violet/10 spin-rev" style={{ borderStyle: "dotted" }} />
-            <div className="pointer-events-none pulse-ring absolute inset-16 rounded-full" />
-            <div className="absolute inset-0 grid place-items-center">
-              <Brain3D size={360} thinking={false} interactive />
-            </div>
+        {/* brain protagonista · escenario inmersivo · interactivo (arrastra para girar) */}
+        <div className="mx-auto mb-6 w-full max-w-[560px]">
+          <BrainStage thinking={false} className="relative mx-auto grid h-[440px] place-items-center">
+            <Brain3D size={400} thinking={false} interactive />
             {RED_TAGS.map((tag, i) => (
-              <span key={tag} className="float-soft pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-line bg-surface/80 px-2 py-1 font-mono text-[9px] text-ink-soft backdrop-blur-sm" style={{ top: TAG_POS[i].top, left: TAG_POS[i].left, animationDelay: `${i * 0.5}s` }}>
-                <span className="mr-1 inline-block h-1 w-1 rounded-full bg-cyan align-middle think-dot" style={{ animationDelay: `${i * 0.3}s` }} />{tag}
+              <span key={tag} className="float-soft pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/15 bg-white/10 px-2.5 py-1 font-mono text-[9.5px] text-white/85 backdrop-blur-md" style={{ top: TAG_POS[i].top, left: TAG_POS[i].left, animationDelay: `${i * 0.5}s` }}>
+                <span className="mr-1 inline-block h-1 w-1 rounded-full bg-rose align-middle think-dot" style={{ animationDelay: `${i * 0.3}s` }} />{tag}
               </span>
             ))}
-          </div>
+          </BrainStage>
         </div>
 
         <div className="kicker mb-1">cerebro en reposo · aprendiendo</div>
-        <h2 className="font-display text-[24px] font-extrabold leading-tight text-ink">Formando redes con los insights de Copec.</h2>
+        <h2 className="font-display text-[24px] font-extrabold leading-tight text-ink">Formando redes con los insights de {cliente.marca}.</h2>
         <p className="mx-auto mt-1.5 max-w-md text-[13px] text-ink-soft">
           El cerebro está absorbiendo el análisis, las tendencias y los aprendizajes. Elige una oportunidad para que arme la campaña.
         </p>
 
         {/* análisis reciente */}
-        <button onClick={onGoAnalisis} className="mx-auto mt-4 flex max-w-lg items-center gap-2.5 rounded-xl border border-rose/30 bg-rose/8 px-4 py-2.5 text-left transition-colors hover:border-rose/50">
+        <button onClick={onGoAnalisis} className="glass mx-auto mt-4 flex max-w-lg items-center gap-2.5 rounded-xl border-rose/30 px-4 py-2.5 text-left transition-colors hover:border-rose/50">
           <AlertTriangle size={15} className="shrink-0 text-rose" />
-          <span className="flex-1 text-[12px] text-ink-soft"><span className="font-semibold text-rose">Análisis reciente:</span> crisis reputacional + Shell ataca con “rinde más”.</span>
+          <span className="flex-1 text-[12px] text-ink-soft"><span className="font-semibold text-rose">Análisis reciente:</span> {competidores[0]?.nombre.split("·")[0].trim()} presiona en {competidores[0]?.territorio.split(/[·/]/)[0].trim().toLowerCase()}.</span>
           <span className="flex items-center gap-1 text-[11.5px] font-semibold text-rose">ver análisis <ArrowRight size={13} /></span>
         </button>
 
@@ -355,7 +356,7 @@ function IdleStandby({ onActivate, onGoNueva, onGoAnalisis }: { onActivate: () =
             {oportunidades.map((o) => {
               const color = acentoHex[o.acento];
               return (
-                <button key={o.id} onClick={onActivate} className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11.5px] font-medium text-ink-soft transition-colors hover:text-ink" style={{ borderColor: `${color}40` }}>
+                <button key={o.id} onClick={onActivate} className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11.5px] font-medium text-content-secondary transition-colors hover:text-content" style={{ borderColor: `${color}40` }}>
                   <span className="h-1.5 w-1.5 rounded-full" style={{ background: color }} /> {o.titulo}
                 </button>
               );
@@ -364,7 +365,7 @@ function IdleStandby({ onActivate, onGoNueva, onGoAnalisis }: { onActivate: () =
         </div>
 
         <div className="mt-6 flex items-center justify-center gap-3">
-          <button onClick={onGoNueva} className="flex items-center gap-2 rounded-xl border border-line px-4 py-3 text-[12.5px] font-semibold text-ink-soft transition-colors hover:text-ink"><PlusCircle size={15} /> Nueva campaña</button>
+          <button onClick={onGoNueva} className="glass glass-hover flex items-center gap-2 rounded-xl px-4 py-3 text-[12.5px] font-semibold text-content-secondary transition-colors hover:text-content"><PlusCircle size={15} /> Nueva campaña</button>
           <button onClick={onActivate} className="group flex items-center gap-2.5 rounded-xl bg-cyan px-5 py-3 text-[13px] font-semibold text-void transition-all hover:shadow-[0_0_28px_-4px_var(--color-cyan)]">
             <Sparkles size={16} /> Generar conceptos
           </button>

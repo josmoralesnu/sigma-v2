@@ -20,7 +20,7 @@ const estadoColor: Record<string, string> = {
 export function Campañas({ campañas }: { campañas: Campaña[] }) {
   return (
     <Wrap>
-      <div className="mb-4 flex items-center gap-2 rounded-xl border border-line bg-surface/40 px-3.5 py-2.5 text-[11.5px] text-ink-soft">
+      <div className="mb-4 flex items-center gap-2 rounded-xl glass px-3.5 py-2.5 text-[11.5px] text-ink-soft">
         <ShieldCheck size={14} className="text-cyan" />
         Solo se muestran las campañas creadas en esta sesión. El portafolio histórico está protegido por confidencialidad.
       </div>
@@ -28,7 +28,7 @@ export function Campañas({ campañas }: { campañas: Campaña[] }) {
         {campañas.map((c, i) => {
           const reveal = c.id.startsWith("cu"); // creadas en sesión
           return (
-          <motion.div key={c.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="flex items-center gap-4 rounded-2xl border border-line bg-surface/50 p-4">
+          <motion.div key={c.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="glass flex items-center gap-4 rounded-2xl p-4">
             <span className="h-2 w-2 rounded-full" style={{ background: estadoColor[c.estado] }} />
             <div className="min-w-0 flex-1">
               {reveal ? (
@@ -50,7 +50,7 @@ export function Campañas({ campañas }: { campañas: Campaña[] }) {
             </div>
             <div className="w-32">
               <div className="mb-1 flex justify-between font-mono text-[9px] text-ink-mute"><span>avance</span><span>{c.progreso}%</span></div>
-              <div className="h-1.5 overflow-hidden rounded-full bg-void"><div className="h-full rounded-full bg-gradient-to-r from-cyan to-violet" style={{ width: `${c.progreso}%` }} /></div>
+              <div className="h-1.5 overflow-hidden rounded-full bg-white/10"><div className="h-full rounded-full bg-gradient-to-r from-cyan to-violet" style={{ width: `${c.progreso}%` }} /></div>
             </div>
           </motion.div>
           );
@@ -94,7 +94,7 @@ export function Talento() {
 
         {/* overlay confidencial */}
         <div className="absolute inset-0 grid place-items-center">
-          <div className="max-w-md rounded-2xl border border-line-strong bg-graphite/90 p-8 text-center shadow-2xl backdrop-blur-xl">
+          <div className="glass-strong max-w-md rounded-2xl p-8 text-center shadow-2xl">
             <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl border border-cyan/30 bg-cyan/10 text-cyan"><Lock size={24} /></div>
             <div className="font-display text-[20px] font-bold text-ink">Talento reservado</div>
             <div className="kicker mt-1">{CONFIDENCIAL}</div>
@@ -113,7 +113,7 @@ export function Tendencias() {
     <Wrap>
       <div className="space-y-2.5">
         {tendencias.map((t, i) => (
-          <motion.div key={t.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }} className="rounded-xl border border-line bg-surface/60 p-4">
+          <motion.div key={t.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }} className="glass rounded-xl p-4">
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
                 <span className="text-[14px] font-semibold text-ink">{t.nombre}</span>
@@ -121,7 +121,7 @@ export function Tendencias() {
               </div>
               <div className="text-right"><div className="font-mono text-[15px] font-bold text-lime">+{t.momentum}%</div><div className="font-mono text-[10px] text-ink-mute">{t.volumen}</div></div>
             </div>
-            <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-void"><motion.div initial={{ width: 0 }} animate={{ width: `${Math.min(100, t.momentum / 1.5)}%` }} transition={{ delay: 0.2 + i * 0.06, duration: 0.7 }} className="h-full rounded-full bg-gradient-to-r from-cyan to-violet" /></div>
+            <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-white/10"><motion.div initial={{ width: 0 }} animate={{ width: `${Math.min(100, t.momentum / 1.5)}%` }} transition={{ delay: 0.2 + i * 0.06, duration: 0.7 }} className="h-full rounded-full bg-gradient-to-r from-cyan to-violet" /></div>
           </motion.div>
         ))}
       </div>
@@ -135,7 +135,7 @@ export function Aprendizajes() {
     <Wrap>
       <div className="grid gap-3 md:grid-cols-2">
         {aprendizajes.map((a, i) => (
-          <motion.div key={a.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }} className="rounded-2xl border border-line bg-surface/60 p-4">
+          <motion.div key={a.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }} className="glass rounded-2xl p-4">
             <div className="text-[14px] font-bold text-ink">{a.titulo}</div>
             <p className="mt-1.5 text-[12px] leading-snug text-ink-soft">{a.detalle}</p>
             <div className="mt-2.5 font-mono text-[10px] text-ink-mute">↳ {a.fuente}</div>
@@ -151,7 +151,7 @@ export function Reportes() {
   return (
     <Wrap>
       <div className="grid min-h-[60vh] place-items-center">
-        <div className="max-w-md rounded-2xl border border-line-strong bg-graphite/80 p-10 text-center shadow-2xl">
+        <div className="glass-strong max-w-md rounded-2xl p-10 text-center shadow-2xl">
           <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl border border-cyan/30 bg-cyan/10 text-cyan"><Lock size={24} /></div>
           <div className="font-display text-[20px] font-bold text-ink">Reportes</div>
           <div className="kicker mt-1">{CONFIDENCIAL}</div>

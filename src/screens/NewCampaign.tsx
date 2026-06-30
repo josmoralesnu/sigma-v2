@@ -25,6 +25,11 @@ import {
   cliente,
   fmt,
   fmtCLP,
+  espacioBlanco,
+  objetivoDefault,
+  refLinks,
+  briefDefault,
+  kpiPrincipal,
   type Marca,
 } from "../lib/data";
 import { PRESETS, BUDGET_MIN, BUDGET_MAX, BUDGET_STEP } from "../lib/budget";
@@ -61,7 +66,7 @@ export function NewCampaign({ marca, presupuesto, setPresupuesto, onFinish, onTh
                   <span
                     className={cn(
                       "grid h-9 w-9 place-items-center rounded-xl border transition-all",
-                      active ? "border-cyan/50 bg-cyan/15 text-cyan glow-cyan" : done ? "border-lime/40 bg-lime/10 text-lime" : "border-line text-ink-mute"
+                      active ? "border-cyan/50 bg-white/10 text-cyan glass glow-cyan" : done ? "border-lime/40 bg-lime/10 text-lime" : "border-line text-ink-mute"
                     )}
                   >
                     {done ? <Check size={16} /> : <Icon size={16} />}
@@ -96,7 +101,7 @@ export function NewCampaign({ marca, presupuesto, setPresupuesto, onFinish, onTh
             <button
               onClick={() => setStep((s) => Math.max(0, s - 1))}
               disabled={step === 0}
-              className="flex items-center gap-2 rounded-xl border border-line px-4 py-3 text-[12.5px] font-semibold text-ink-soft transition-colors hover:text-ink disabled:opacity-30"
+              className="flex items-center gap-2 rounded-xl glass glass-hover px-4 py-3 text-[12.5px] font-semibold text-ink-soft transition-colors hover:text-ink disabled:opacity-30"
             >
               <ArrowLeft size={15} /> Atrás
             </button>
@@ -144,7 +149,7 @@ function StepMarca({ marca, presupuesto, setPresupuesto }: { marca: Marca; presu
         </div>
         <div className="mt-2 flex gap-1.5">
           {PRESETS.map((p) => (
-            <button key={p.label} onClick={() => setPresupuesto(p.value)} className={"flex-1 rounded-lg border px-2 py-1.5 text-[11px] font-semibold transition-colors " + (presupuesto === p.value ? "border-cyan bg-cyan text-void" : "border-line text-ink-soft hover:text-ink")}>
+            <button key={p.label} onClick={() => setPresupuesto(p.value)} className={"flex-1 rounded-lg border px-2 py-1.5 text-[11px] font-semibold transition-colors " + (presupuesto === p.value ? "border-cyan bg-cyan text-void" : "glass glass-hover text-ink-soft hover:text-ink")}>
               {p.label} <span className="opacity-70">· {fmtCLP(p.value)}</span>
             </button>
           ))}
@@ -152,7 +157,7 @@ function StepMarca({ marca, presupuesto, setPresupuesto }: { marca: Marca; presu
         <p className="mt-2.5 text-[11px] text-ink-soft">Sigma usará este monto para recomendar la mezcla de talento en cada concepto (más adelante puedes ajustarlo por estrategia).</p>
       </div>
 
-      <div className="flex items-center gap-2 rounded-xl border border-line bg-surface/40 p-3">
+      <div className="flex items-center gap-2 rounded-xl glass p-3">
         <Check size={14} className="text-lime" />
         <p className="text-[11.5px] text-ink-soft"><span className="font-semibold text-ink">Memoria de marca encontrada:</span> {marca.campañasActivas} campañas previas, tono y aprendizajes disponibles para el cerebro.</p>
       </div>
@@ -166,7 +171,7 @@ function StepCompetencia() {
   const [done, setDone] = useState(false);
   return (
     <Card title="Analizando la competencia" sub="Sigma rastrea el rubro y busca el espacio en blanco.">
-      <div className="rounded-xl border border-line bg-void/40 p-4">
+      <div className="rounded-xl border border-line bg-white/5 p-4">
         <ReasoningStream steps={pasosCompetencia} running={running} perStep={1000} onDone={() => { setRunning(false); setDone(true); }} />
       </div>
 
@@ -174,7 +179,7 @@ function StepCompetencia() {
         {done && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2.5">
             {competidores.map((k, i) => (
-              <motion.div key={k.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.12 }} className="rounded-xl border border-line bg-surface/60 p-3.5">
+              <motion.div key={k.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.12 }} className="glass rounded-xl p-3.5">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-[13.5px] font-bold text-ink">{k.nombre}</span>
@@ -183,7 +188,7 @@ function StepCompetencia() {
                   <span className="font-mono text-[11px]" style={{ color: amenazaColor[k.amenaza] }}>amenaza {k.amenaza}</span>
                 </div>
                 <div className="mt-2 flex items-center gap-3">
-                  <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-void">
+                  <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/10">
                     <motion.div initial={{ width: 0 }} animate={{ width: `${k.sov}%` }} transition={{ delay: 0.2 + i * 0.1, duration: 0.7 }} className="h-full rounded-full bg-gradient-to-r from-cyan to-violet" />
                   </div>
                   <span className="font-mono text-[11px] text-ink-soft">{k.sov}% SOV</span>
@@ -193,8 +198,8 @@ function StepCompetencia() {
             <div className="mt-1 flex items-start gap-2.5 rounded-xl border border-lime/30 bg-lime/10 p-3.5">
               <Target size={16} className="mt-0.5 shrink-0 text-lime" />
               <div>
-                <div className="text-[13px] font-semibold text-lime">Espacio en blanco para Copec</div>
-                <p className="text-[12px] text-ink-soft">Nadie ocupa el territorio <span className="font-semibold text-ink">“rendimiento real + beneficios de la App”</span> frente al claim “rinde más” de Shell. Copec puede atacar ahí con utilidad y datos —no precio— apalancando App, Pronto y Voltex.</p>
+                <div className="text-[13px] font-semibold text-lime">{espacioBlanco.titulo}</div>
+                <p className="text-[12px] text-ink-soft">{espacioBlanco.detalle}</p>
               </div>
             </div>
           </motion.div>
@@ -208,7 +213,7 @@ function StepCompetencia() {
 function StepImportar() {
   const prev = campañas.filter((c) => c.marca === cliente.marca);
   const [picked, setPicked] = useState<string[]>(prev.map((p) => p.id));
-  const [links, setLinks] = useState<string[]>(["tiktok.com/@mike_milfort/video/…", "instagram.com/reel/aramco-pitstop…"]);
+  const [links, setLinks] = useState<string[]>(refLinks);
   const [draft, setDraft] = useState("");
 
   return (
@@ -222,7 +227,7 @@ function StepImportar() {
               <button
                 key={p.id}
                 onClick={() => setPicked((s) => (on ? s.filter((x) => x !== p.id) : [...s, p.id]))}
-                className={cn("flex w-full items-center gap-3 rounded-xl border p-3 text-left transition-colors", on ? "border-cyan/40 bg-cyan/5" : "border-line bg-surface/40 hover:border-line-strong")}
+                className={cn("flex w-full items-center gap-3 rounded-xl border p-3 text-left transition-colors", on ? "border-cyan/40 bg-cyan/5" : "glass glass-hover hover:border-line-strong")}
               >
                 <span className={cn("grid h-5 w-5 place-items-center rounded-md border", on ? "border-cyan bg-cyan text-void" : "border-line")}>{on && <Check size={12} />}</span>
                 <span className="flex-1">
@@ -239,7 +244,7 @@ function StepImportar() {
         <div className="kicker mb-2">Links de referencia</div>
         <div className="mb-2 flex flex-wrap gap-2">
           {links.map((l) => (
-            <span key={l} className="flex items-center gap-1.5 rounded-lg border border-line bg-surface/60 px-2.5 py-1.5 font-mono text-[11px] text-ink-soft">
+            <span key={l} className="flex items-center gap-1.5 rounded-lg glass px-2.5 py-1.5 font-mono text-[11px] text-ink-soft">
               <Link2 size={11} className="text-cyan" /> {l}
               <button onClick={() => setLinks((s) => s.filter((x) => x !== l))} className="text-ink-mute hover:text-rose"><X size={12} /></button>
             </span>
@@ -247,7 +252,7 @@ function StepImportar() {
         </div>
         <div className="flex gap-2">
           <input value={draft} onChange={(e) => setDraft(e.target.value)} placeholder="Pega un link de TikTok, Reel, web…" className="input flex-1" onKeyDown={(e) => { if (e.key === "Enter" && draft) { setLinks((s) => [...s, draft]); setDraft(""); } }} />
-          <button onClick={() => { if (draft) { setLinks((s) => [...s, draft]); setDraft(""); } }} className="flex items-center gap-1.5 rounded-xl border border-line px-3.5 text-[12.5px] font-semibold text-ink-soft transition-colors hover:text-ink">
+          <button onClick={() => { if (draft) { setLinks((s) => [...s, draft]); setDraft(""); } }} className="flex items-center gap-1.5 rounded-xl glass glass-hover px-3.5 text-[12.5px] font-semibold text-ink-soft transition-colors hover:text-ink">
             <Plus size={14} /> Agregar
           </button>
         </div>
@@ -277,7 +282,7 @@ function StepBrief() {
             <button onClick={() => setFile(null)} className="grid h-7 w-7 place-items-center rounded-lg border border-line text-ink-mute transition-colors hover:text-rose"><X size={14} /></button>
           </div>
         ) : (
-          <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-line bg-void/30 px-4 py-7 text-center transition-colors hover:border-cyan/40 hover:bg-cyan/[0.03]">
+          <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-line bg-white/5 px-4 py-7 text-center transition-colors hover:border-cyan/40 hover:bg-cyan/[0.03]">
             <span className="grid h-11 w-11 place-items-center rounded-xl border border-line bg-surface-2 text-cyan"><Upload size={20} /></span>
             <span className="text-[12.5px] font-semibold text-ink">Arrastra el brief o haz clic para subir</span>
             <span className="font-mono text-[10px] text-ink-mute">PDF · hasta 10&nbsp;MB</span>
@@ -294,14 +299,14 @@ function StepBrief() {
 
       <Field label="Brief">
         <textarea
-          defaultValue={`Campaña "Copec en Ruta · Verano". Objetivo: defender el liderazgo en la Ruta 5 frente a Aramco e impulsar el uso de la App Copec (pago + beneficios) durante la temporada de viajes. Tono cercano y con humor, evitando sonar corporativo. Importante: todo contenido de creadores debe ir declarado como publicidad (aprendizaje caso SERNAC). Aprovechar Pronto y Voltex como diferenciales.`}
+          defaultValue={briefDefault}
           rows={5}
           className="input resize-none leading-relaxed"
         />
       </Field>
       <div className="grid grid-cols-3 gap-3">
-        <Field label="Objetivo"><input defaultValue="Liderazgo Ruta 5 + uso App" className="input" /></Field>
-        <Field label="KPI principal"><input defaultValue="Alcance + uso de App" className="input" /></Field>
+        <Field label="Objetivo"><input defaultValue={objetivoDefault} className="input" /></Field>
+        <Field label="KPI principal"><input defaultValue={kpiPrincipal} className="input" /></Field>
         <Field label="Ventana"><input defaultValue={cliente.ventana} className="input" /></Field>
       </div>
     </Card>
@@ -323,13 +328,13 @@ function StepAnalizar({ onFinish, onThinking }: { onFinish: () => void; onThinki
       <div className="flex flex-col items-center py-4">
         <div className="pulse-ring relative mb-4 grid h-28 w-28 place-items-center rounded-full">
           <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_50%_40%,rgba(207,77,107,0.3),transparent_60%)]" />
-          <div className="relative grid h-20 w-20 place-items-center rounded-full border border-cyan/40 bg-surface-2/90 breathe">
+          <div className="relative grid h-20 w-20 place-items-center rounded-full border border-cyan/40 glass-strong breathe">
             <span className="font-display text-3xl font-extrabold text-cyan text-glow-cyan">Σ</span>
           </div>
         </div>
       </div>
 
-      <div className="rounded-xl border border-line bg-void/40 p-4">
+      <div className="rounded-xl border border-line bg-white/5 p-4">
         <ReasoningStream steps={pasosBrief} running={running} perStep={1200} onDone={() => { setRunning(false); setDone(true); onThinking(false); }} />
       </div>
 
@@ -356,7 +361,7 @@ function StepAnalizar({ onFinish, onThinking }: { onFinish: () => void; onThinki
 /* ---------------- shared ---------------- */
 function Card({ title, sub, children }: { title: string; sub: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-line bg-surface/40 p-6">
+    <div className="glass rounded-2xl p-6">
       <h2 className="font-display text-[20px] font-bold leading-tight text-ink">{title}</h2>
       <p className="mt-1 text-[12.5px] text-ink-soft">{sub}</p>
       <div className="mt-5 space-y-4">{children}</div>
