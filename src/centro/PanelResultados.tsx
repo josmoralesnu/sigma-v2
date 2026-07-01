@@ -6,12 +6,15 @@ import {
   TrendingUp, TrendingDown, BadgeCheck, BarChart3, Images, Play, ArrowUpDown, ArrowUp, ArrowDown,
 } from "lucide-react";
 import { Wrap, PageHeader, Chip, card, container, item } from "./parts";
+import { ConfProvider, Conf, ConfToggle } from "./confid";
 import {
-  kpis, embudo, conectores, conversionTotal, creadores, recomendaciones,
-  fondoDe, short, pesos, type Kpi, type Calidad, type CreadorRow,
+  kpis, embudo, conectores, conversionTotal, creadores, recomendaciones, vocab,
+  short, pesos, type Kpi, type Calidad, type CreadorRow,
 } from "./panel";
+import { Thumb } from "./Thumb";
 import { cliente } from "../lib/data";
 import { useCentro } from "./store";
+import { CampaignPicker } from "./CampaignPicker";
 
 const KPI_ICON: Record<string, any> = {
   inversion: DollarSign, alcance: Users, impresiones: Eye, engagement: Heart,
@@ -35,10 +38,10 @@ function KpiCard({ k }: { k: Kpi }) {
         <span className="flex-1 text-[12.5px] font-medium text-ink-soft">{k.label}</span>
         <Info size={13} className="text-ink-mute/60" />
       </div>
-      <div className="font-display text-[24px] font-bold leading-none tracking-tight text-ink">{k.valor}</div>
+      <div className="font-display text-[24px] font-bold leading-none tracking-tight text-ink"><Conf px={8}>{k.valor}</Conf></div>
       <div className="mt-3 flex items-center gap-1.5">
         <Trend size={14} className="text-lime" />
-        <span className="text-[12px] font-semibold text-lime">{k.delta}</span>
+        <span className="text-[12px] font-semibold text-lime"><Conf px={5}>{k.delta}</Conf></span>
       </div>
       <div className="mt-0.5 text-[11px] text-ink-mute">{k.sub}</div>
     </motion.div>
@@ -49,7 +52,7 @@ function Embudo() {
   return (
     <div className={`${card} p-5`}>
       <div className="mb-5 flex items-center gap-2">
-        <h3 className="text-[15px] font-bold text-ink">Embudo de conversión: del influencer al FTD</h3>
+        <h3 className="text-[15px] font-bold text-ink">{vocab.embudoTitulo}</h3>
         <Info size={14} className="text-ink-mute/60" />
       </div>
 
@@ -74,8 +77,8 @@ function Embudo() {
               >
                 <Icon size={20} className="text-cyan" />
                 <div className="text-[12px] font-medium text-ink-soft">{p.label}</div>
-                <div className="font-display text-[15px] font-bold text-ink">{p.valor}</div>
-                <div className="text-[12px] font-semibold text-cyan">{p.pct}</div>
+                <div className="font-display text-[15px] font-bold text-ink"><Conf px={6}>{p.valor}</Conf></div>
+                <div className="text-[12px] font-semibold text-cyan"><Conf px={5}>{p.pct}</Conf></div>
               </div>
               {!isLast && (
                 <div className="absolute right-[-7px] top-1/2 z-10 -translate-y-1/2 text-cyan/70">
@@ -96,14 +99,14 @@ function Embudo() {
               <span className="h-px flex-1 bg-white/10" />
             </div>
             <div className="mt-1 text-[11px] text-ink-soft">{c.label}</div>
-            <div className="text-[13px] font-bold text-cyan">{c.valor}</div>
+            <div className="text-[13px] font-bold text-cyan"><Conf px={5}>{c.valor}</Conf></div>
           </div>
         ))}
       </div>
 
       <div className="mt-5 flex justify-center">
         <div className="rounded-lg bg-cyan/10 px-4 py-2 text-[13px] font-semibold text-cyan ring-1 ring-cyan/20">
-          Conversión total alcance → FTD: {conversionTotal}
+          {vocab.conversionTotalLabel}: <Conf px={5}>{conversionTotal}</Conf>
         </div>
       </div>
     </div>
@@ -114,15 +117,15 @@ function ChevronChev() {
 }
 
 type SortKey = "alcance" | "er" | "clics" | "ftd" | "costo";
-const COLS: { key: SortKey; label: string; fmt: (c: CreadorRow) => string }[] = [
-  { key: "alcance", label: "Alcance", fmt: (c) => short(c.alcance) },
-  { key: "er", label: "ER", fmt: (c) => c.er.toFixed(1) + "%" },
-  { key: "clics", label: "Clics", fmt: (c) => c.clics.toLocaleString("es-CL") },
-  { key: "ftd", label: "FTD", fmt: (c) => String(c.ftd) },
-  { key: "costo", label: "Costo/FTD", fmt: (c) => pesos(c.costo) },
-];
 
 function Tabla() {
+  const COLS: { key: SortKey; label: string; fmt: (c: CreadorRow) => string }[] = [
+    { key: "alcance", label: "Alcance", fmt: (c) => short(c.alcance) },
+    { key: "er", label: "ER", fmt: (c) => c.er.toFixed(1) + "%" },
+    { key: "clics", label: "Clics", fmt: (c) => c.clics.toLocaleString("es-CL") },
+    { key: "ftd", label: vocab.conv, fmt: (c) => String(c.ftd) },
+    { key: "costo", label: "Costo/" + vocab.conv, fmt: (c) => pesos(c.costo) },
+  ];
   const [sort, setSort] = useState<{ key: SortKey; dir: "asc" | "desc" }>({ key: "ftd", dir: "desc" });
   const sorted = [...creadores].sort((a, b) => {
     const d = a[sort.key] - b[sort.key];
@@ -168,16 +171,16 @@ function Tabla() {
                   <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white/5 text-[16px] ring-1 ring-white/10">{c.avatar}</div>
                   <div className="min-w-0 leading-tight">
                     <div className="flex items-center gap-1 text-[13px] font-semibold text-ink">
-                      <span className="truncate">{c.nombre}</span>
+                      <Conf px={5} className="max-w-full truncate">{c.nombre}</Conf>
                       <BadgeCheck size={13} className="shrink-0 text-cyan" />
                     </div>
-                    <div className="truncate text-[11px] text-ink-mute">{c.handle}</div>
+                    <div className="text-[11px] text-ink-mute"><Conf px={4}>{c.handle}</Conf></div>
                   </div>
                 </div>
               </td>
               {COLS.map((col) => (
                 <td key={col.key} className={`whitespace-nowrap text-right text-[12.5px] font-medium tabular-nums ${sort.key === col.key ? "text-ink" : "text-ink-soft"}`}>
-                  {col.fmt(c)}
+                  <Conf px={5}>{col.fmt(c)}</Conf>
                 </td>
               ))}
               <td className="py-3 pl-2 text-right">
@@ -198,24 +201,25 @@ function ContenidoTop() {
     <div className={`${card} p-5`}>
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-[15px] font-bold text-ink">Contenido con mayor rendimiento</h3>
-        <span className="inline-flex items-center gap-1.5 text-[12px] text-ink-mute"><Images size={14} /> top 3 por FTD</span>
+        <span className="inline-flex items-center gap-1.5 text-[12px] text-ink-mute"><Images size={14} /> {vocab.topLabel}</span>
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {top.map((c) => (
           <div key={c.id} className="overflow-hidden rounded-xl ring-1 ring-white/10">
-            <div className="relative grid h-28 place-items-center" style={c.img ? { backgroundImage: `url(${c.img})`, backgroundSize: "cover", backgroundPosition: "center" } : { background: fondoDe(c.tipo) }}>
-              <span className="absolute left-2.5 top-2.5 rounded-md bg-black/45 px-2 py-0.5 text-[10px] font-semibold text-white/90 backdrop-blur">{c.tipo}</span>
-              {c.promo && <span className="absolute right-2.5 top-2.5 rounded-md bg-cyan/85 px-1.5 py-0.5 text-[9px] font-bold text-content-inverted">PROMO</span>}
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-white/90 text-content-inverted"><Play size={16} className="translate-x-px fill-current" /></div>
+            <div className="relative grid h-28 place-items-center overflow-hidden">
+              <Thumb img={c.img} tipo={c.tipo} />
+              <span className="absolute left-2.5 top-2.5 z-10 rounded-md bg-black/45 px-2 py-0.5 text-[10px] font-semibold text-white/90 backdrop-blur">{c.tipo}</span>
+              {c.promo && <span className="absolute right-2.5 top-2.5 z-10 rounded-md bg-cyan/85 px-1.5 py-0.5 text-[9px] font-bold text-content-inverted">PROMO</span>}
+              <div className="relative z-10 grid h-10 w-10 place-items-center rounded-full bg-white/90 text-content-inverted"><Play size={16} className="translate-x-px fill-current" /></div>
             </div>
             <div className="p-3">
               <div className="truncate text-[12.5px] font-semibold text-ink">{c.titulo}</div>
-              <div className="mb-2.5 text-[11px] text-ink-mute">{c.autor}</div>
+              <div className="mb-2.5 text-[11px] text-ink-mute"><Conf px={4}>{c.autor}</Conf></div>
               <div className="grid grid-cols-4 gap-x-1.5 border-t border-line pt-2.5 text-center">
-                {[["Alc", short(c.alcance)], ["ER", c.er + "%"], ["Clics", short(c.clics)], ["FTD", String(c.ftd)]].map(([l, v]) => (
+                {[["Alc", short(c.alcance)], ["ER", c.er + "%"], ["Clics", short(c.clics)], [vocab.conv, String(c.ftd)]].map(([l, v]) => (
                   <div key={l} className="min-w-0 leading-tight">
                     <div className="text-[8px] uppercase tracking-wide text-ink-mute">{l}</div>
-                    <div className="mt-0.5 whitespace-nowrap text-[10px] font-bold tabular-nums text-ink-soft">{v}</div>
+                    <div className="mt-0.5 whitespace-nowrap text-[10px] font-bold tabular-nums text-ink-soft"><Conf px={4}>{v}</Conf></div>
                   </div>
                 ))}
               </div>
@@ -233,14 +237,15 @@ function Insights() {
         <div className="grid h-9 w-9 place-items-center rounded-xl bg-amber/15 text-amber ring-1 ring-amber/25"><Lightbulb size={18} /></div>
         <h3 className="text-[15px] font-bold text-ink">Insights clave</h3>
       </div>
-      <p className="text-[13px] leading-relaxed text-ink-soft">
-        Los <span className="font-semibold text-ink">Reels con código promocional</span> y engagement rate sobre 6% generan{" "}
-        <span className="font-semibold text-cyan">2.3x más FTD</span> que el promedio de la campaña.
-      </p>
+      <p className="text-[13px] leading-relaxed text-ink-soft">{vocab.panelInsight.cuerpo}</p>
       <div className="mt-4 rounded-xl bg-white/[0.04] p-3.5 ring-1 ring-white/10">
         <div className="mb-2 text-[12px] font-semibold text-ink">Impacto estimado</div>
-        <div className="flex items-center gap-2 text-[13px]"><TrendingUp size={15} className="text-lime" /><span className="font-semibold text-lime">+1.480 FTD adicionales</span></div>
-        <div className="mt-1.5 flex items-center gap-2 text-[13px]"><TrendingDown size={15} className="text-lime" /><span className="font-semibold text-lime">−$640 costo por FTD</span></div>
+        {vocab.panelInsight.impactos.map((txt, i) => (
+          <div key={i} className={`flex items-center gap-2 text-[13px] ${i ? "mt-1.5" : ""}`}>
+            {i ? <TrendingDown size={15} className="text-lime" /> : <TrendingUp size={15} className="text-lime" />}
+            <span className="font-semibold text-lime"><Conf px={5}>{txt}</Conf></span>
+          </div>
+        ))}
       </div>
       <button className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-cyan/10 px-4 py-2.5 text-[13px] font-semibold text-cyan ring-1 ring-cyan/25 transition-colors hover:bg-cyan/15">
         Ver recomendaciones <ArrowRight size={15} />
@@ -272,21 +277,27 @@ function Recs() {
 }
 
 export function PanelResultados() {
+  const [reveal, setReveal] = useState(false);
+  const [camp, setCamp] = useState(() => ({ nombre: cliente.campania, ventana: cliente.ventana }));
   return (
+    <ConfProvider revealed={reveal}>
     <Wrap>
       <PageHeader
         icon={<Target size={24} />}
         titulo="Centro de optimización"
         subtitulo={<>
-          <span>{cliente.campania}</span>
+          <CampaignPicker value={camp.nombre} onChange={(nombre, ventana) => setCamp({ nombre, ventana: nombre === cliente.campania ? cliente.ventana : ventana })} />
           <span className="text-ink-mute">·</span>
-          <span>{cliente.ventana}</span>
+          <span>{camp.ventana}</span>
           <Chip>Últimos 7 días <ChevronDown size={13} /></Chip>
         </>}
         right={
-          <button className="glass glass-hover inline-flex items-center gap-2 rounded-xl px-3.5 py-2 text-[13px] font-semibold text-ink">
-            <FileDown size={15} className="text-cyan" /> Exportar reporte
-          </button>
+          <>
+            <ConfToggle revealed={reveal} onToggle={() => setReveal((v) => !v)} />
+            <button className="glass glass-hover inline-flex items-center gap-2 rounded-xl px-3.5 py-2 text-[13px] font-semibold text-ink">
+              <FileDown size={15} className="text-cyan" /> Exportar reporte
+            </button>
+          </>
         }
       />
 
@@ -307,9 +318,10 @@ export function PanelResultados() {
 
       <footer className="mt-6 flex items-center justify-between text-[12px] text-ink-mute">
         <span>Métricas agregadas de los últimos 7 días · inversión en CLP.</span>
-        <span className="flex items-center gap-1.5 font-medium text-ink-soft"><Zap size={13} className="text-cyan" /> Optimiza. Escala. Juega responsable.</span>
+        <span className="flex items-center gap-1.5 font-medium text-ink-soft"><Zap size={13} className="text-cyan" /> {vocab.footerTag}</span>
         <span className="w-48" />
       </footer>
     </Wrap>
+    </ConfProvider>
   );
 }

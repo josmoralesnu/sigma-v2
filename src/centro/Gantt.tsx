@@ -8,6 +8,7 @@ import {
 } from "./panel";
 import { cliente } from "../lib/data";
 import { useCentro } from "./store";
+import { DatosPruebaBadge } from "./confid";
 
 const ACENTO: Record<AcentoGantt, string> = {
   cyan: "var(--color-cyan)", violet: "var(--color-violet)", lime: "var(--color-lime)",
@@ -149,6 +150,7 @@ export function Gantt() {
         subtitulo={<><span>{tareas.length} fases · {hitos.length} hitos</span><span className="text-ink-mute">·</span><span>{cliente.campania}</span></>}
         right={
           <>
+            <DatosPruebaBadge />
             <button onClick={() => setHitoModal(true)} className="glass glass-hover inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[13px] font-semibold text-ink"><Flag size={14} className="text-cyan" /> Hito</button>
             <button onClick={() => setFaseModal({})} className="inline-flex items-center gap-2 rounded-xl bg-cyan px-3.5 py-2 text-[13px] font-bold text-content-inverted transition-opacity hover:opacity-90"><Plus size={15} /> Nueva fase</button>
           </>

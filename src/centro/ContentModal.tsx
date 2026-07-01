@@ -3,9 +3,10 @@ import { motion, AnimatePresence } from "motion/react";
 import { X, Upload, Play, Image as ImageIcon, Trash2, Link2, Sparkles } from "lucide-react";
 import { useCentro } from "./store";
 import {
-  roster, fondoDe, detectFromUrl, TIPOS, PLATAFORMAS, ESTADOS,
+  roster, detectFromUrl, vocab, TIPOS, PLATAFORMAS, ESTADOS,
   type Post, type TipoContenido, type Plataforma, type EstadoContenido,
 } from "./panel";
+import { Thumb } from "./Thumb";
 
 export interface ModalInit {
   post?: Post | null;            // editar (si viene)
@@ -97,11 +98,12 @@ export function ContentModal({ init, onClose }: { init: ModalInit; onClose: () =
           <div className="grid grid-cols-1 gap-5 p-5 sm:grid-cols-[200px_1fr]">
             {/* preview + upload */}
             <div>
-              <div className="relative grid h-44 place-items-center overflow-hidden rounded-xl ring-1 ring-white/10" style={img ? { backgroundImage: `url(${img})`, backgroundSize: "cover", backgroundPosition: "center" } : { background: fondoDe(tipo) }}>
-                <span className="absolute left-2.5 top-2.5 rounded-md bg-black/50 px-2 py-0.5 text-[10px] font-semibold text-white/90 backdrop-blur">{tipo}</span>
-                {promo && <span className="absolute right-2.5 top-2.5 rounded-md bg-cyan/85 px-1.5 py-0.5 text-[9px] font-bold text-content-inverted">PROMO</span>}
-                {!img && <div className="grid h-11 w-11 place-items-center rounded-full bg-white/90 text-content-inverted"><Play size={16} className="translate-x-px fill-current" /></div>}
-                <span className="absolute bottom-2.5 left-2.5 text-[24px] drop-shadow">{autor.avatar}</span>
+              <div className="relative grid h-44 place-items-center overflow-hidden rounded-xl ring-1 ring-white/10">
+                <Thumb img={img} tipo={tipo} />
+                <span className="absolute left-2.5 top-2.5 z-10 rounded-md bg-black/50 px-2 py-0.5 text-[10px] font-semibold text-white/90 backdrop-blur">{tipo}</span>
+                {promo && <span className="absolute right-2.5 top-2.5 z-10 rounded-md bg-cyan/85 px-1.5 py-0.5 text-[9px] font-bold text-content-inverted">PROMO</span>}
+                <div className="relative z-10 grid h-11 w-11 place-items-center rounded-full bg-white/90 text-content-inverted"><Play size={16} className="translate-x-px fill-current" /></div>
+                <span className="absolute bottom-2.5 left-2.5 z-10 text-[24px] drop-shadow">{autor.avatar}</span>
               </div>
               <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => onFile(e.target.files?.[0])} />
               <div className="mt-2 flex gap-2">
@@ -160,7 +162,7 @@ export function ContentModal({ init, onClose }: { init: ModalInit; onClose: () =
               </div>
 
               <button onClick={() => setPromo((v) => !v)} className="flex w-full items-center justify-between rounded-xl border border-white/12 bg-white/[0.05] px-3 py-2.5">
-                <span className="text-[13px] font-medium text-ink-soft">Incluye código promocional / CTA registro</span>
+                <span className="text-[13px] font-medium text-ink-soft">{vocab.promoLabel}</span>
                 <span className={`relative h-5 w-9 rounded-full transition-colors ${promo ? "bg-cyan" : "bg-white/20"}`}>
                   <span className={`absolute top-0.5 h-4 w-4 rounded-full bg-white transition-all ${promo ? "left-[18px]" : "left-0.5"}`} />
                 </span>

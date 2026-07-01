@@ -18,6 +18,7 @@ function CountUp({ to, className }: { to: number; className?: string }) {
 import {
   sentimiento, temas, comentarios, alertaSent, ventana, type SentLabel, type TemaSent,
 } from "./panel";
+import { DatosPruebaBadge } from "./confid";
 
 const SENT: Record<SentLabel, { color: string; icon: any; label: string; cls: string }> = {
   positivo: { color: "var(--color-lime)", icon: Smile, label: "Positivo", cls: "bg-lime/12 text-lime ring-lime/25" },
@@ -120,6 +121,7 @@ export function Sentimiento() {
         icon={<MessageCircle size={24} />}
         titulo="Análisis de sentimiento"
         subtitulo={<><span>{sentimiento.totalComentarios.toLocaleString("es-CL")} comentarios analizados</span><span className="text-ink-mute">·</span><span>{ventana}</span></>}
+        right={<DatosPruebaBadge />}
       />
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">

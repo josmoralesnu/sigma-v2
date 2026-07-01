@@ -746,7 +746,7 @@ export let briefDefault = COPEC.briefDefault;
 export let kpiPrincipal = COPEC.kpiPrincipal;
 
 /* acento de marca (hex) para piezas que no usan tokens CSS, p. ej. el cerebro 3D */
-const BRAND_ACCENT: Record<string, string> = { copec: "#ef4866", betsson: "#ff6a00", estelarbet: "#5b6cff" };
+const BRAND_ACCENT: Record<string, string> = { copec: "#1f7aed", betsson: "#ff6a00", estelarbet: "#5b6cff" };
 export let accentHex = BRAND_ACCENT.copec;
 
 /* Cambia el cliente activo — las pantallas se remontan (key={marca.id}) y releen estos bindings. */

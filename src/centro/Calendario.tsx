@@ -6,6 +6,7 @@ import { calendarioMes, estadoToEvento, type Post, type EstadoEvento } from "./p
 import { cliente } from "../lib/data";
 import { useCentro } from "./store";
 import { ContentModal, type ModalInit } from "./ContentModal";
+import { DatosPruebaBadge } from "./confid";
 
 const DIAS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
 const EST_DOT: Record<EstadoEvento, string> = {
@@ -41,6 +42,7 @@ export function Calendario() {
         subtitulo={<><span>{delMes.length} publicaciones · {programadas} programadas</span><span className="text-ink-mute">·</span><span>{cliente.marca}</span></>}
         right={
           <>
+            <DatosPruebaBadge />
             <div className="glass flex items-center gap-1 rounded-xl p-1">
               <button className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-white/5"><ChevronLeft size={16} /></button>
               <span className="px-2 text-[13px] font-semibold text-ink">{nombre}</span>

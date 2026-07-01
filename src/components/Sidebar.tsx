@@ -5,7 +5,6 @@ import {
   Sparkles,
   Network,
   Megaphone,
-  Users,
   FileBarChart,
   Gauge,
   Images,
@@ -13,6 +12,7 @@ import {
   GanttChartSquare,
   MessageCircle,
   Target,
+  Sprout,
   UsersRound,
   ChevronsUpDown,
   Check,
@@ -30,6 +30,7 @@ export type View =
   | "nueva"
   | "insights"
   | "cerebro"
+  | "produccion"
   | "tendencias"
   | "aprendizajes"
   | "campañas"
@@ -41,9 +42,11 @@ export type View =
   | "gantt"
   | "sentimiento"
   | "atribucion"
+  | "organico"
   | "roster";
 
-const GRUPOS: { titulo: string; items: { id: View; label: string; icon: any; badge?: string }[] }[] = [
+type Item = { id: View; label: string; icon: any; badge?: string; betting?: boolean };
+const GRUPOS: { titulo: string; items: Item[] }[] = [
   {
     titulo: "Operación",
     items: [
@@ -59,6 +62,12 @@ const GRUPOS: { titulo: string; items: { id: View; label: string; icon: any; bad
     ],
   },
   {
+    titulo: "Producción",
+    items: [
+      { id: "produccion", label: "Aprobación", icon: Images, badge: "Σ" },
+    ],
+  },
+  {
     titulo: "Medición",
     items: [
       { id: "panel", label: "Centro de optimización", icon: Gauge, badge: "live" },
@@ -66,7 +75,8 @@ const GRUPOS: { titulo: string; items: { id: View; label: string; icon: any; bad
       { id: "calendario", label: "Calendario", icon: CalendarDays },
       { id: "gantt", label: "Carta Gantt", icon: GanttChartSquare },
       { id: "sentimiento", label: "Sentimiento", icon: MessageCircle },
-      { id: "atribucion", label: "Atribución FTD", icon: Target },
+      { id: "atribucion", label: "Conversiones", icon: Target, betting: true },
+      { id: "organico", label: "Orgánico", icon: Sprout },
       { id: "roster", label: "Roster", icon: UsersRound },
     ],
   },
@@ -74,7 +84,6 @@ const GRUPOS: { titulo: string; items: { id: View; label: string; icon: any; bad
     titulo: "Activos",
     items: [
       { id: "campañas", label: "Campañas", icon: Megaphone },
-      { id: "talento", label: "Talento", icon: Users },
     ],
   },
   {
@@ -88,11 +97,13 @@ export function Sidebar({
   setView,
   marca,
   setMarca,
+  betting = true,
 }: {
   view: View;
   setView: (v: View) => void;
   marca: Marca;
   setMarca: (m: Marca) => void;
+  betting?: boolean;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -119,7 +130,7 @@ export function Sidebar({
               {g.titulo}
             </p>
             <div className="space-y-0.5">
-              {g.items.map((item) => {
+              {g.items.filter((it) => !it.betting || betting).map((item) => {
                 const active = view === item.id;
                 const Icon = item.icon;
                 return (
@@ -172,7 +183,7 @@ export function Sidebar({
           </button>
 
           {open && (
-            <div className="glass-strong absolute bottom-full left-0 right-0 z-40 mb-1.5 overflow-hidden rounded-xl shadow-xl">
+            <div className="absolute bottom-full left-0 right-0 z-40 mb-1.5 overflow-hidden rounded-xl bg-[#16161d] shadow-2xl ring-1 ring-white/12">
               {marcas.map((m) => {
                 const locked = !m.disponible; // demo: solo los clientes activos se pueden abrir
                 return (

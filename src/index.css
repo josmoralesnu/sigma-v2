@@ -59,10 +59,10 @@
 }
 /* acento por marca activa (App añade brand-<id> al shell) */
 .brand-copec {
-  --color-cyan: #ef4866;
-  --color-cyan-deep: #c4203f;
-  --color-wine-600: #ef4866;
-  --color-wine-700: #ff7d95;
+  --color-cyan: #1f7aed;
+  --color-cyan-deep: #1257c4;
+  --color-wine-600: #1f7aed;
+  --color-wine-700: #74acff;
 }
 .brand-betsson {
   --color-cyan: #ff6a00;

@@ -13,6 +13,7 @@ import {
 } from "./panel";
 import { cliente } from "../lib/data";
 import { useCentro } from "./store";
+import { DatosPruebaBadge } from "./confid";
 
 /* metadatos visuales por tipo de fuente */
 const TIPO_META: Record<FuenteTipo, { icon: any; cls: string; bar: string; chip: string; desc: string }> = {
@@ -269,10 +270,11 @@ export function Atribucion() {
     <Wrap>
       <PageHeader
         icon={<Target size={24} />}
-        titulo="Atribución de FTD"
+        titulo="Conversiones"
         subtitulo={<><span>{atribuciones.length} fuentes · {short(tot.ftd)} FTD atribuidos</span><span className="text-ink-mute">·</span><span>{cliente.marca}</span></>}
         right={
           <>
+            <DatosPruebaBadge />
             <button onClick={() => setImportar(true)} className="inline-flex items-center gap-2 rounded-xl border border-white/12 bg-white/[0.04] px-3.5 py-2 text-[13px] font-semibold text-ink-soft transition-colors hover:bg-white/[0.08] hover:text-ink">
               <FileSpreadsheet size={15} /> Importar Excel
             </button>

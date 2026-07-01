@@ -8,6 +8,7 @@ import { Wrap, PageHeader, card, container, item } from "./parts";
 import { pesos, pesosK, short, PLATAFORMAS, type RosterItem, type RosterEstado, type Plataforma } from "./panel";
 import { tierOf, tierLabel } from "../lib/data";
 import { useCentro } from "./store";
+import { ConfProvider, Conf, ConfToggle } from "./confid";
 
 const ESTADOS: RosterEstado[] = ["Activo", "Prospecto", "Pausado"];
 const EST_CLS: Record<RosterEstado, string> = {
@@ -104,12 +105,12 @@ function RosterModal({ item, onClose }: { item?: RosterItem | null; onClose: () 
 }
 
 /* ---------------- KPI mini ---------------- */
-function Stat({ icon: Icon, label, valor }: { icon: any; label: string; valor: string }) {
+function Stat({ icon: Icon, label, valor, conf }: { icon: any; label: string; valor: string; conf?: boolean }) {
   return (
     <motion.div variants={item} whileHover={{ y: -3 }} transition={{ type: "spring", stiffness: 400, damping: 25 }} className={`${card} flex items-center gap-3 p-4`}>
       <div className="grid h-10 w-10 place-items-center rounded-xl bg-cyan/12 text-cyan ring-1 ring-cyan/20"><Icon size={18} /></div>
       <div className="leading-tight">
-        <div className="font-display text-[20px] font-bold text-ink">{valor}</div>
+        <div className="font-display text-[20px] font-bold text-ink">{conf ? <Conf px={7}>{valor}</Conf> : valor}</div>
         <div className="text-[11px] text-ink-mute">{label}</div>
       </div>
     </motion.div>
@@ -121,6 +122,7 @@ type SortKey = "seguidores" | "fee" | "nombre";
 export function Roster() {
   const { roster, removeRoster } = useCentro();
   const [modal, setModal] = useState<{ item?: RosterItem | null } | null>(null);
+  const [reveal, setReveal] = useState(false);
   const [sort, setSort] = useState<{ key: SortKey; dir: "asc" | "desc" }>({ key: "fee", dir: "desc" });
 
   const sorted = [...roster].sort((a, b) => {
@@ -138,23 +140,27 @@ export function Roster() {
   const Arrow = (key: SortKey) => (sort.key !== key ? ArrowUpDown : sort.dir === "asc" ? ArrowUp : ArrowDown);
 
   return (
+    <ConfProvider revealed={reveal}>
     <Wrap>
       <PageHeader
         icon={<Users size={24} />}
         titulo="Roster"
-        subtitulo={<><span>{roster.length} creadores · {activos} activos</span><span className="text-ink-mute">·</span><span>inversión en talento {pesosK(totalFee)} CLP</span></>}
+        subtitulo={<><span>{roster.length} creadores · {activos} activos</span><span className="text-ink-mute">·</span><span>inversión en talento <Conf px={5}>{pesosK(totalFee)}</Conf> CLP</span></>}
         right={
-          <button onClick={() => setModal({})} className="inline-flex items-center gap-2 rounded-xl bg-cyan px-3.5 py-2 text-[13px] font-bold text-content-inverted transition-opacity hover:opacity-90">
-            <Plus size={16} /> Agregar influencer
-          </button>
+          <>
+            <ConfToggle revealed={reveal} onToggle={() => setReveal((v) => !v)} />
+            <button onClick={() => setModal({})} className="inline-flex items-center gap-2 rounded-xl bg-cyan px-3.5 py-2 text-[13px] font-bold text-content-inverted transition-opacity hover:opacity-90">
+              <Plus size={16} /> Agregar influencer
+            </button>
+          </>
         }
       />
 
       <motion.section variants={container} initial="hidden" animate="show" className="mb-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Stat icon={Users} label="Creadores" valor={String(roster.length)} />
         <Stat icon={UserCheck} label="Activos" valor={String(activos)} />
-        <Stat icon={Wallet} label="Inversión en talento" valor={pesosK(totalFee)} />
-        <Stat icon={Receipt} label="Pago promedio" valor={pesosK(ticket)} />
+        <Stat icon={Wallet} label="Inversión en talento" valor={pesosK(totalFee)} conf />
+        <Stat icon={Receipt} label="Pago promedio" valor={pesosK(ticket)} conf />
       </motion.section>
 
       <div className={`${card} overflow-hidden`}>
@@ -182,14 +188,14 @@ export function Roster() {
                   <div className="flex items-center gap-3">
                     <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white/5 text-[17px] ring-1 ring-white/10">{r.avatar}</div>
                     <div className="leading-tight">
-                      <div className="flex items-center gap-1 text-[13px] font-semibold text-ink">{r.nombre}<BadgeCheck size={13} className="text-cyan" /></div>
-                      <div className="text-[11px] text-ink-mute">{r.handle}</div>
+                      <div className="flex items-center gap-1 text-[13px] font-semibold text-ink"><Conf px={5}>{r.nombre}</Conf><BadgeCheck size={13} className="text-cyan" /></div>
+                      <div className="text-[11px] text-ink-mute"><Conf px={4}>{r.handle}</Conf></div>
                     </div>
                   </div>
                 </td>
                 <td className="px-3 py-3 text-[12.5px] text-ink-soft">{r.plataforma}</td>
-                <td className="px-3 py-3 text-right text-[12.5px] tabular-nums text-ink-soft">{short(r.seguidores)} <span className="text-ink-mute">· {tierLabel(tierOf(r.seguidores))}</span></td>
-                <td className="px-3 py-3 text-right text-[13px] font-semibold tabular-nums text-ink">{pesos(r.fee)}</td>
+                <td className="px-3 py-3 text-right text-[12.5px] tabular-nums text-ink-soft"><Conf px={5}>{short(r.seguidores)} · {tierLabel(tierOf(r.seguidores))}</Conf></td>
+                <td className="px-3 py-3 text-right text-[13px] font-semibold tabular-nums text-ink"><Conf px={6}>{pesos(r.fee)}</Conf></td>
                 <td className="px-3 py-3 text-center"><span className={`inline-flex rounded-md px-2 py-1 text-[10.5px] font-semibold ring-1 ${EST_CLS[r.estado]}`}>{r.estado}</span></td>
                 <td className="px-5 py-3">
                   <div className="flex items-center justify-end gap-1 opacity-0 transition-opacity group-hover:opacity-100">
@@ -211,5 +217,6 @@ export function Roster() {
 
       {modal && <RosterModal item={modal.item} onClose={() => setModal(null)} />}
     </Wrap>
+    </ConfProvider>
   );
 }

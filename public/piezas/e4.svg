@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" font-family="'Helvetica Neue',Arial,sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a0b1a"/><stop offset="0.55" stop-color="#12142e"/><stop offset="1" stop-color="#0a0b1a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.75" cy="0.7" r="0.7">
+      <stop offset="0" stop-color="#5b6cff" stop-opacity="0.6"/><stop offset="1" stop-color="#5b6cff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="star" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5b6cff"/><stop offset="1" stop-color="#3a45e0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1350" fill="url(#bg)"/>
+  <rect width="1080" height="1350" fill="url(#glow)"/>
+  <path d="M880.0 -90.0L962.3 136.7L1203.4 144.9L1013.1 293.3L1079.8 525.1L880.0 390.0L680.2 525.1L746.9 293.3L556.6 144.9L797.7 136.7Z" fill="#5b6cff" opacity="0.10"/>
+  <path d="M210.0 970.0L246.4 1069.8L352.7 1073.6L269.0 1139.2L298.2 1241.4L210.0 1182.0L121.8 1241.4L151.0 1139.2L67.3 1073.6L173.6 1069.8Z" fill="#5b6cff" opacity="0.12"/>
+  <rect x="70" y="86" rx="16" width="396" height="60" fill="#5b6cff" fill-opacity="0.16" stroke="#5b6cff" stroke-opacity="0.5"/>
+  <text x="98" y="126" fill="#5b6cff" font-size="30" font-weight="700" letter-spacing="3">REGISTRO EXPRESS</text>
+  <rect x="852" y="86" rx="14" width="158" height="52" fill="#ffffff" fill-opacity="0.08" stroke="#ffffff" stroke-opacity="0.18"/>
+  <text x="931" y="120" text-anchor="middle" fill="#cfd2ff" font-size="24" font-weight="700" letter-spacing="4">MUESTRA</text>
+  
+  <text x="70" y="740" fill="#ffffff" font-size="320" font-weight="800" letter-spacing="-6">APP</text>
+  <text x="74" y="838" fill="#c9ccf5" font-size="46" font-weight="600">Creá tu cuenta en 2 minutos</text>
+  <g transform="translate(70,1236)">
+    <path d="M24.0 -26.0L30.5 -8.9L48.7 -8.0L34.5 3.4L39.3 21.0L24.0 11.0L8.7 21.0L13.5 3.4L-0.7 -8.0L17.5 -8.9Z" fill="url(#star)"/>
+    <text x="66" y="14" fill="#ffffff" font-size="44" font-weight="800" letter-spacing="1">ESTELARBET</text>
+  </g>
+  <text x="1010" y="1250" text-anchor="end" fill="#8b90c8" font-size="30" font-weight="600">estelar.bet</text>
+</svg>

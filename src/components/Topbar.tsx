@@ -13,12 +13,14 @@ const TITLES: Record<View, { title: string; desc: string }> = {
   campañas: { title: "Campañas", desc: "Todo el portafolio de la marca" },
   talento: { title: "Talento", desc: "Creadores por afinidad y mood" },
   reportes: { title: "Reportes", desc: "Resultados y performance" },
-  panel: { title: "Centro de optimización", desc: "Rendimiento de la campaña en vivo · FTD" },
+  panel: { title: "Centro de optimización", desc: "Rendimiento de la campaña en vivo" },
   contenidos: { title: "Contenidos", desc: "Galería de piezas y su performance" },
   calendario: { title: "Calendario", desc: "Publicaciones programadas y publicadas" },
   gantt: { title: "Carta Gantt", desc: "Fases y cadencia de la campaña" },
   sentimiento: { title: "Sentimiento", desc: "Análisis de comentarios de los posts" },
-  atribucion: { title: "Atribución FTD", desc: "FTD por link de contenido, bio y código promo" },
+  atribucion: { title: "Conversiones", desc: "Registros/depósitos por link de contenido, bio y código promo" },
+  organico: { title: "Orgánico", desc: "Alcance, engagement y crecimiento del contenido orgánico" },
+  produccion: { title: "Producción", desc: "Aprobá o descartá las piezas creativas por medio" },
   roster: { title: "Roster", desc: "Influencers de la campaña y su pago" },
 };
 

@@ -5,20 +5,20 @@ import {
   Plus, Pencil, Trash2,
 } from "lucide-react";
 import { Wrap, PageHeader, container, item } from "./parts";
-import { fondoDe, short, type Post, type EstadoContenido } from "./panel";
+import { short, vocab, type Post, type EstadoContenido } from "./panel";
+import { Thumb } from "./Thumb";
 import { cliente } from "../lib/data";
 import { useCentro } from "./store";
 import { ContentModal, type ModalInit } from "./ContentModal";
+import { platMeta } from "./plataformas";
+import { DatosPruebaBadge } from "./confid";
 
-const PLATAFORMA_COLOR: Record<string, string> = {
-  TikTok: "text-ink", Instagram: "text-rose", YouTube: "text-negative", Twitch: "text-violet",
-};
 const ESTADO: Record<EstadoContenido, { cls: string; icon: any }> = {
   "Publicado": { cls: "bg-lime/12 text-lime ring-lime/25", icon: CheckCircle2 },
   "Programado": { cls: "bg-cyan/12 text-cyan ring-cyan/25", icon: Clock },
   "En revisión": { cls: "bg-amber/12 text-amber ring-amber/25", icon: Clock },
 };
-const FILTROS = ["Todos", "Reel", "Video", "Carrusel", "Live", "Historia"] as const;
+const FILTROS = ["Todos", "Reel", "Video", "Carrusel", "Live", "Historia", "Post"] as const;
 
 function fmtFecha(iso: string): string {
   const [, m, d] = iso.split("-");
@@ -40,22 +40,20 @@ function PostCard({ p, onEdit, onDelete }: { p: Post; onEdit: () => void; onDele
   const est = ESTADO[p.estado];
   const EstIcon = est.icon;
   const publicado = p.estado === "Publicado";
-  const bg = p.img ? { backgroundImage: `url(${p.img})`, backgroundSize: "cover", backgroundPosition: "center" } : { background: fondoDe(p.tipo) };
   return (
     <div className="glass group overflow-hidden rounded-2xl">
-      <div className="relative grid h-40 place-items-center" style={bg}>
-        <span className="absolute left-3 top-3 rounded-md bg-black/45 px-2 py-0.5 text-[10px] font-semibold text-white/90 backdrop-blur">{p.tipo}</span>
-        {p.promo && <span className="absolute right-3 top-3 rounded-md bg-cyan/85 px-1.5 py-0.5 text-[9px] font-bold text-content-inverted">PROMO</span>}
-        {!p.img && (
-          <div className="grid h-12 w-12 place-items-center rounded-full bg-white/90 text-content-inverted transition-transform group-hover:scale-110">
-            <Play size={18} className="translate-x-px fill-current" />
-          </div>
-        )}
-        <span className="absolute bottom-3 left-3 text-[26px] drop-shadow">{p.avatar}</span>
-        <span className={`absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-md bg-black/50 px-2 py-0.5 text-[10px] font-semibold backdrop-blur ${PLATAFORMA_COLOR[p.plataforma] ?? "text-white"}`}>{p.plataforma}</span>
+      <div className="relative grid h-40 place-items-center overflow-hidden">
+        <Thumb img={p.img} tipo={p.tipo} />
+        <span className="absolute left-3 top-3 z-10 rounded-md bg-black/45 px-2 py-0.5 text-[10px] font-semibold text-white/90 backdrop-blur">{p.tipo}</span>
+        {p.promo && <span className="absolute right-3 top-3 z-10 rounded-md bg-cyan/85 px-1.5 py-0.5 text-[9px] font-bold text-content-inverted">PROMO</span>}
+        <div className="relative z-10 grid h-12 w-12 place-items-center rounded-full bg-white/90 text-content-inverted transition-transform group-hover:scale-110">
+          <Play size={18} className="translate-x-px fill-current" />
+        </div>
+        <span className="absolute bottom-3 left-3 z-10 text-[26px] drop-shadow">{p.avatar}</span>
+        <span className={`absolute bottom-3 right-3 z-10 inline-flex items-center gap-1 rounded-md bg-black/50 px-2 py-0.5 text-[10px] font-semibold backdrop-blur ${platMeta(p.plataforma).text}`}>{p.plataforma}</span>
 
         {/* acciones (hover) */}
-        <div className="absolute right-2 top-9 flex flex-col gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+        <div className="absolute right-2 top-9 z-10 flex flex-col gap-1 opacity-0 transition-opacity group-hover:opacity-100">
           <button onClick={onEdit} title="Editar" className="grid h-7 w-7 place-items-center rounded-lg bg-black/55 text-white backdrop-blur hover:bg-black/75"><Pencil size={13} /></button>
           <button onClick={onDelete} title="Eliminar" className="grid h-7 w-7 place-items-center rounded-lg bg-black/55 text-white backdrop-blur hover:bg-negative/80"><Trash2 size={13} /></button>
         </div>
@@ -78,7 +76,7 @@ function PostCard({ p, onEdit, onDelete }: { p: Post; onEdit: () => void; onDele
           <div className="grid grid-cols-4 gap-2 border-t border-line pt-3">
             <Metric icon={Eye} label="Alcance" v={short(p.alcance)} />
             <Metric icon={MousePointerClick} label="Clics" v={short(p.clics)} />
-            <Metric icon={Trophy} label="FTD" v={String(p.ftd)} />
+            <Metric icon={Trophy} label={vocab.conv} v={String(p.ftd)} />
             <Metric icon={Bookmark} label="Guard." v={short(p.guardados)} />
           </div>
         ) : (
@@ -111,6 +109,7 @@ export function Contenidos() {
         subtitulo={<><span>{publicados} publicados · {posts.length - publicados} en pipeline</span><span className="text-ink-mute">·</span><span>{cliente.campania}</span></>}
         right={
           <>
+            <DatosPruebaBadge />
             <div className="glass flex items-center gap-2 rounded-xl px-3 py-2">
               <Search size={15} className="text-ink-mute" />
               <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar…" className="w-36 bg-transparent text-[13px] text-ink outline-none placeholder:text-ink-mute" />
