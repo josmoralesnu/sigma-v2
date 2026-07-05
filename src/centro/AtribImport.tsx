@@ -188,19 +188,19 @@ export function ImportModal({ onClose, onDone }: { onClose: () => void; onDone: 
         <div className="absolute inset-0 bg-black/72 backdrop-blur-md" onClick={onClose} />
         <motion.div initial={{ opacity: 0, y: 16, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 12 }}
           transition={{ type: "spring", stiffness: 320, damping: 28 }}
-          className="relative z-10 flex max-h-[88vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl ring-1 ring-white/12 shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)]" style={{ background: "#101016" }}>
+          className="relative z-10 flex max-h-[88vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl ring-1 ring-[var(--ln-1)] shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)]" style={{ background: "#101016" }}>
           <div className="flex items-center justify-between border-b border-line px-5 py-4">
             <div className="flex items-center gap-2.5">
               <span className="grid h-8 w-8 place-items-center rounded-lg bg-cyan/12 text-cyan ring-1 ring-cyan/20"><FileSpreadsheet size={16} /></span>
               <h3 className="font-display text-[17px] font-bold text-ink">Importar FTD masivo</h3>
             </div>
-            <button onClick={onClose} className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-white/10 hover:text-ink"><X size={17} /></button>
+            <button onClick={onClose} className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-[var(--hov)] hover:text-ink"><X size={17} /></button>
           </div>
 
           <div className="min-h-0 flex-1 space-y-4 overflow-y-auto p-5">
             {/* tabs */}
             <div className="flex items-center justify-between gap-3">
-              <div className="inline-flex rounded-xl border border-white/10 bg-white/[0.03] p-1">
+              <div className="inline-flex rounded-xl border border-[var(--ln-1)] bg-[var(--sf-1)] p-1">
                 {([["pegar", "Pegar desde Excel", ClipboardPaste], ["archivo", "Subir archivo", Upload]] as const).map(([id, txt, Icon]) => (
                   <button key={id} onClick={() => setTab(id)}
                     className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12.5px] font-semibold transition-colors ${tab === id ? "bg-cyan/15 text-cyan" : "text-ink-mute hover:text-ink-soft"}`}>
@@ -215,14 +215,14 @@ export function ImportModal({ onClose, onDone }: { onClose: () => void; onDone: 
               <div>
                 <textarea value={text} onChange={(e) => onText(e.target.value)} rows={5}
                   placeholder={"Copia el rango desde Excel (Ctrl/Cmd+C) y pégalo aquí.\nPrimera fila = encabezados (destino, clics, registros, ftd, deposito…)"}
-                  className="w-full resize-none rounded-xl border border-white/12 bg-white/[0.05] px-3 py-2.5 font-mono text-[12px] text-ink outline-none transition-colors focus:border-cyan/60 focus:bg-white/[0.08] placeholder:text-ink-mute/70" />
+                  className="w-full resize-none rounded-xl border border-[var(--ln-1)] bg-[var(--sf-1)] px-3 py-2.5 font-mono text-[12px] text-ink outline-none transition-colors focus:border-cyan/60 focus:bg-[var(--sf-2)] placeholder:text-ink-mute/70" />
                 <button onClick={() => onText(EJEMPLO)} className="mt-1.5 text-[11.5px] font-semibold text-ink-mute hover:text-cyan">Cargar datos de ejemplo →</button>
               </div>
             ) : (
               <div>
                 <input ref={fileRef} type="file" accept=".xlsx,.xls,.csv" className="hidden" onChange={(e) => onFile(e.target.files?.[0])} />
                 <button onClick={() => fileRef.current?.click()}
-                  className="flex w-full flex-col items-center gap-2 rounded-xl border border-dashed border-white/15 bg-white/[0.03] py-7 text-ink-soft transition-colors hover:border-cyan/45 hover:bg-white/[0.05]">
+                  className="flex w-full flex-col items-center gap-2 rounded-xl border border-dashed border-[var(--ln-1)] bg-[var(--sf-1)] py-7 text-ink-soft transition-colors hover:border-cyan/45 hover:bg-[var(--sf-1)]">
                   <FileSpreadsheet size={26} className="text-cyan" />
                   <span className="text-[13px] font-semibold text-ink">{fileName || "Elegir archivo .xlsx o .csv"}</span>
                   <span className="text-[11px] text-ink-mute">{cargando ? "Leyendo…" : "Arrastrá o hacé clic para subir el Excel que te entregaron"}</span>
@@ -248,7 +248,7 @@ export function ImportModal({ onClose, onDone }: { onClose: () => void; onDone: 
                     </span>
                   ))}
                   {(["clics", "registros", "ftd", "deposito"] as Field[]).filter((f) => parsed.map[f] < 0).map((f) => (
-                    <span key={f} className="inline-flex items-center gap-1 rounded-md bg-white/5 px-2 py-0.5 text-[11px] font-medium text-ink-mute ring-1 ring-white/10">— {ETIQUETA[f]}</span>
+                    <span key={f} className="inline-flex items-center gap-1 rounded-md bg-[var(--sf-1)] px-2 py-0.5 text-[11px] font-medium text-ink-mute ring-1 ring-[var(--ln-1)]">— {ETIQUETA[f]}</span>
                   ))}
                 </div>
 
@@ -258,10 +258,10 @@ export function ImportModal({ onClose, onDone }: { onClose: () => void; onDone: 
                   <span className="inline-flex items-center gap-1 text-lime"><Plus size={12} /> {nuevas} nuevas</span>
                 </div>
 
-                <div className="overflow-hidden rounded-xl ring-1 ring-white/10">
+                <div className="overflow-hidden rounded-xl ring-1 ring-[var(--ln-1)]">
                   <table className="w-full border-collapse text-[12px]">
                     <thead>
-                      <tr className="bg-white/[0.03] text-[10px] font-medium uppercase tracking-wide text-ink-mute">
+                      <tr className="bg-[var(--sf-1)] text-[10px] font-medium uppercase tracking-wide text-ink-mute">
                         <th className="px-3 py-2 text-left font-medium">Estado</th>
                         <th className="px-3 py-2 text-left font-medium">Destino</th>
                         {parsed.metricCols.map((k) => <th key={k} className="px-3 py-2 text-right font-medium">{ETIQUETA[k]}</th>)}
@@ -288,11 +288,11 @@ export function ImportModal({ onClose, onDone }: { onClose: () => void; onDone: 
                       ))}
                     </tbody>
                   </table>
-                  {parsed.rows.length > 7 && <div className="bg-white/[0.02] px-3 py-1.5 text-center text-[11px] text-ink-mute">y {parsed.rows.length - 7} filas más…</div>}
+                  {parsed.rows.length > 7 && <div className="bg-[var(--sf-1)] px-3 py-1.5 text-center text-[11px] text-ink-mute">y {parsed.rows.length - 7} filas más…</div>}
                 </div>
 
                 {nuevas > 0 && (
-                  <button onClick={() => setCrearNuevas((v) => !v)} className="flex w-full items-center justify-between rounded-xl border border-white/12 bg-white/[0.05] px-3 py-2.5">
+                  <button onClick={() => setCrearNuevas((v) => !v)} className="flex w-full items-center justify-between rounded-xl border border-[var(--ln-1)] bg-[var(--sf-1)] px-3 py-2.5">
                     <span className="text-[12.5px] font-medium text-ink-soft">Crear las {nuevas} fuentes nuevas (las que no hacen match)</span>
                     <span className={`relative h-5 w-9 shrink-0 rounded-full transition-colors ${crearNuevas ? "bg-cyan" : "bg-white/20"}`}>
                       <span className={`absolute top-0.5 h-4 w-4 rounded-full bg-white transition-all ${crearNuevas ? "left-[18px]" : "left-0.5"}`} />
@@ -306,7 +306,7 @@ export function ImportModal({ onClose, onDone }: { onClose: () => void; onDone: 
           <div className="flex items-center justify-between gap-2 border-t border-line px-5 py-4">
             <span className="text-[11.5px] text-ink-mute">El match se hace por el link o código de cada fila.</span>
             <div className="flex items-center gap-2">
-              <button onClick={onClose} className="rounded-xl px-4 py-2 text-[13px] font-semibold text-ink-soft hover:bg-white/5">Cancelar</button>
+              <button onClick={onClose} className="rounded-xl px-4 py-2 text-[13px] font-semibold text-ink-soft hover:bg-[var(--hov)]">Cancelar</button>
               <button onClick={aplicar} disabled={!parsed || !!parsed.fatal || aImportar === 0}
                 className="rounded-xl bg-cyan px-4 py-2 text-[13px] font-bold text-content-inverted transition-opacity enabled:hover:opacity-90 disabled:opacity-40">
                 Importar {aImportar > 0 ? `${aImportar} ${aImportar === 1 ? "fila" : "filas"}` : ""}

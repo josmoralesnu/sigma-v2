@@ -55,7 +55,7 @@ function Distribucion() {
   ];
   return (
     <div>
-      <div className="mb-3 flex h-3 overflow-hidden rounded-full ring-1 ring-white/10">
+      <div className="mb-3 flex h-3 overflow-hidden rounded-full ring-1 ring-[var(--ln-1)]">
         {segs.map((s, i) => (
           <motion.div key={s.k} initial={{ width: 0 }} animate={{ width: `${s.v}%` }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 + i * 0.12 }} style={{ background: SENT[s.k].color }} />
@@ -65,7 +65,7 @@ function Distribucion() {
         {segs.map((s) => {
           const Icon = SENT[s.k].icon;
           return (
-            <div key={s.k} className="rounded-xl bg-white/[0.03] p-3 ring-1 ring-white/10">
+            <div key={s.k} className="rounded-xl bg-[var(--sf-1)] p-3 ring-1 ring-[var(--ln-1)]">
               <div className="mb-1 flex items-center gap-1.5"><Icon size={14} style={{ color: SENT[s.k].color }} /><span className="text-[11px] text-ink-soft">{SENT[s.k].label}</span></div>
               <div className="font-display text-[20px] font-bold text-ink">{s.v}%</div>
             </div>
@@ -87,7 +87,7 @@ function TemaRow({ t }: { t: TemaSent }) {
           <span className="w-9 text-right text-[12px] font-bold tabular-nums" style={{ color }}>{t.sent}</span>
         </div>
       </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-white/8">
+      <div className="h-1.5 overflow-hidden rounded-full bg-[var(--sf-2)]">
         <motion.div className="h-full rounded-full" initial={{ width: 0 }} animate={{ width: `${t.sent}%` }}
           transition={{ duration: 0.7, ease: "easeOut", delay: 0.15 }} style={{ background: color }} />
       </div>
@@ -99,7 +99,7 @@ function ComentarioCard({ c }: { c: (typeof comentarios)[number] }) {
   const s = SENT[c.sent];
   const Icon = s.icon;
   return (
-    <div className="rounded-xl bg-white/[0.025] p-3.5 ring-1 ring-white/8">
+    <div className="rounded-xl bg-[var(--sf-1)] p-3.5 ring-1 ring-[var(--ln-1)]">
       <div className="mb-1.5 flex items-center justify-between gap-2">
         <span className="text-[12.5px] font-semibold text-ink">{c.autor}</span>
         <span className={`inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-semibold ring-1 ${s.cls}`}><Icon size={10} /> {s.label}</span>

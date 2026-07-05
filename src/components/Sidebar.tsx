@@ -14,6 +14,9 @@ import {
   Target,
   Sprout,
   UsersRound,
+  Layers,
+  Send,
+  Home,
   ChevronsUpDown,
   Check,
   Lock,
@@ -43,7 +46,14 @@ export type View =
   | "sentimiento"
   | "atribucion"
   | "organico"
-  | "roster";
+  | "roster"
+  | "puig-inicio"
+  | "puig-dashboard"
+  | "puig-sentimiento"
+  | "puig-marcas"
+  | "puig-campana"
+  | "casting"
+  | "canjes";
 
 type Item = { id: View; label: string; icon: any; badge?: string; betting?: boolean };
 const GRUPOS: { titulo: string; items: Item[] }[] = [
@@ -92,6 +102,37 @@ const GRUPOS: { titulo: string; items: Item[] }[] = [
   },
 ];
 
+/* Puig es un cliente multi-submarca con superficies propias:
+   el foco es submarcas → campañas, casting y canjes (seeding). */
+const PUIG_GRUPOS: { titulo: string; items: Item[] }[] = [
+  {
+    titulo: "Inteligencia",
+    items: [
+      { id: "puig-inicio", label: "Inicio", icon: Home },
+      { id: "cerebro", label: "Cerebro", icon: Network, badge: "IA" },
+    ],
+  },
+  {
+    titulo: "Portafolio",
+    items: [
+      { id: "puig-dashboard", label: "Dashboard", icon: LayoutDashboard, badge: "marca" },
+      { id: "puig-marcas", label: "Submarcas & campañas", icon: Layers },
+    ],
+  },
+  {
+    titulo: "Talento",
+    items: [
+      { id: "casting", label: "Casting", icon: UsersRound, badge: "tabla · tinder" },
+    ],
+  },
+  {
+    titulo: "Seeding",
+    items: [
+      { id: "canjes", label: "Canjes / envíos", icon: Send, badge: "mapa" },
+    ],
+  },
+];
+
 export function Sidebar({
   view,
   setView,
@@ -106,6 +147,7 @@ export function Sidebar({
   betting?: boolean;
 }) {
   const [open, setOpen] = useState(false);
+  const grupos = marca.id === "puig" ? PUIG_GRUPOS : GRUPOS;
 
   return (
     <aside className="glass-rail flex h-full w-[244px] shrink-0 flex-col border-r border-line">
@@ -124,7 +166,7 @@ export function Sidebar({
 
       {/* Navegación */}
       <nav className="flex-1 space-y-4 overflow-y-auto scroll-slim px-3">
-        {GRUPOS.map((g) => (
+        {grupos.map((g) => (
           <div key={g.titulo}>
             <p className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-content-muted">
               {g.titulo}
@@ -142,8 +184,8 @@ export function Sidebar({
                     className={cn(
                       "group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
                       active
-                        ? "bg-white/10 text-content"
-                        : "text-content-secondary hover:bg-white/5 hover:text-content"
+                        ? "bg-[var(--sf-2)] text-content"
+                        : "text-content-secondary hover:bg-[var(--hov)] hover:text-content"
                     )}
                   >
                     <Icon strokeWidth={active ? 2.2 : 1.75} className={cn("h-[18px] w-[18px]", active && "text-cyan")} />
@@ -152,7 +194,7 @@ export function Sidebar({
                       <span
                         className={cn(
                           "rounded-md px-1.5 py-0.5 text-[10px] font-semibold",
-                          active ? "bg-white/10 text-cyan" : "bg-white/5 text-cyan"
+                          active ? "bg-[var(--sf-2)] text-cyan" : "bg-[var(--sf-1)] text-cyan"
                         )}
                       >
                         {item.badge}
@@ -183,7 +225,7 @@ export function Sidebar({
           </button>
 
           {open && (
-            <div className="absolute bottom-full left-0 right-0 z-40 mb-1.5 overflow-hidden rounded-xl bg-[#16161d] shadow-2xl ring-1 ring-white/12">
+            <div className="absolute bottom-full left-0 right-0 z-40 mb-1.5 overflow-hidden rounded-xl bg-[var(--modal)] shadow-2xl ring-1 ring-[var(--ln-1)]">
               {marcas.map((m) => {
                 const locked = !m.disponible; // demo: solo los clientes activos se pueden abrir
                 return (
@@ -199,7 +241,7 @@ export function Sidebar({
                     }}
                     className={cn(
                       "flex w-full items-center gap-2.5 px-3 py-2.5 text-left transition-colors",
-                      locked ? "cursor-not-allowed opacity-60" : "hover:bg-white/5"
+                      locked ? "cursor-not-allowed opacity-60" : "hover:bg-[var(--hov)]"
                     )}
                   >
                     {locked ? (
@@ -232,7 +274,7 @@ export function Sidebar({
 
         <button
           type="button"
-          className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-medium text-content-secondary transition-colors hover:bg-white/5 hover:text-content"
+          className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-medium text-content-secondary transition-colors hover:bg-[var(--hov)] hover:text-content"
         >
           <ShieldCheck className="h-[18px] w-[18px]" />
           Administración
@@ -240,7 +282,7 @@ export function Sidebar({
 
         <button
           type="button"
-          className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-medium text-wine-700 transition-colors hover:bg-white/5"
+          className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-medium text-wine-700 transition-colors hover:bg-[var(--hov)]"
         >
           <Sparkles className="h-[18px] w-[18px]" />
           Vista DEMO
@@ -248,7 +290,7 @@ export function Sidebar({
 
         <button
           type="button"
-          className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-medium text-content-secondary transition-colors hover:bg-white/5 hover:text-negative"
+          className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-medium text-content-secondary transition-colors hover:bg-[var(--hov)] hover:text-negative"
         >
           <LogOut className="h-[18px] w-[18px]" />
           Cerrar sesión

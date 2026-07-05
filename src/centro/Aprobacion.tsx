@@ -27,7 +27,7 @@ const EST_META: Record<EstadoPieza, { cls: string; dot: string }> = {
   Pendiente: { cls: "bg-amber/12 text-amber ring-amber/25", dot: "#f5b54a" },
   Aprobado: { cls: "bg-lime/12 text-lime ring-lime/25", dot: "#9fe870" },
   Cambios: { cls: "bg-cyan/12 text-cyan ring-cyan/25", dot: "var(--color-cyan)" },
-  Descartado: { cls: "bg-white/8 text-ink-mute ring-white/12", dot: "#7a7a85" },
+  Descartado: { cls: "bg-[var(--sf-2)] text-ink-mute ring-[var(--ln-1)]", dot: "#7a7a85" },
 };
 
 /* miniatura de la pieza (img real o gradiente por medio) */
@@ -52,7 +52,7 @@ function PiezaThumb({ p, big = false }: { p: Pieza; big?: boolean }) {
 function MetaRow({ p }: { p: Pieza }) {
   return (
     <div className="flex flex-wrap items-center gap-1.5">
-      <span className="rounded-md bg-white/10 px-2 py-0.5 text-[11px] font-semibold text-ink ring-1 ring-white/15 backdrop-blur">{p.formato}</span>
+      <span className="rounded-md bg-[var(--sf-2)] px-2 py-0.5 text-[11px] font-semibold text-ink ring-1 ring-[var(--ln-2)] backdrop-blur">{p.formato}</span>
       {p.plataforma && (
         <span className="inline-flex items-center gap-1 rounded-md bg-black/40 px-2 py-0.5 text-[11px] font-semibold backdrop-blur" style={{ color: platMeta(p.plataforma).dot }}>
           {p.plataforma}
@@ -88,7 +88,7 @@ function DeckCard({ p, onAprobar, onDescartar, onCambios, onOpen, drag }: {
       }}
       whileTap={drag ? { cursor: "grabbing" } : undefined}
       onClick={() => { if (Math.abs(x.get()) < 6 && Math.abs(y.get()) < 6) onOpen(); }}
-      className={`${card} absolute inset-0 cursor-grab overflow-hidden ring-1 ring-white/12`}
+      className={`${card} absolute inset-0 cursor-grab overflow-hidden ring-1 ring-[var(--ln-1)]`}
     >
       <PiezaThumb p={p} big />
       {/* hints de swipe */}
@@ -136,7 +136,7 @@ function DetalleModal({ pieza, onClose }: { pieza: Pieza; onClose: () => void })
 
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/72 p-4" onClick={onClose}>
-      <div className="relative w-full max-w-3xl overflow-hidden rounded-2xl bg-[#101016] ring-1 ring-white/12" onClick={(e) => e.stopPropagation()} style={{ maxHeight: "90vh" }}>
+      <div className="relative w-full max-w-3xl overflow-hidden rounded-2xl bg-[var(--modal)] ring-1 ring-[var(--ln-1)]" onClick={(e) => e.stopPropagation()} style={{ maxHeight: "90vh" }}>
         <div className="grid md:grid-cols-2" style={{ maxHeight: "90vh" }}>
           {/* preview */}
           <div className="relative min-h-[260px] md:min-h-full">
@@ -150,24 +150,24 @@ function DetalleModal({ pieza, onClose }: { pieza: Pieza; onClose: () => void })
                 <h3 className="mt-2 font-display text-[20px] font-bold leading-tight text-ink">{pieza.titulo}</h3>
                 <p className="text-[12px] text-ink-mute">{pieza.autor} · {MEDIO_LABEL[pieza.medio]}</p>
               </div>
-              <button onClick={onClose} className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-ink-mute hover:bg-white/8 hover:text-ink"><X size={16} /></button>
+              <button onClick={onClose} className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-ink-mute hover:bg-[var(--hov)] hover:text-ink"><X size={16} /></button>
             </div>
             <div className="mb-3"><MetaRow p={pieza} /></div>
-            {pieza.descripcion && <p className="mb-4 rounded-xl bg-white/[0.03] p-3 text-[12.5px] leading-relaxed text-ink-soft ring-1 ring-white/10">{pieza.descripcion}</p>}
+            {pieza.descripcion && <p className="mb-4 rounded-xl bg-[var(--sf-1)] p-3 text-[12.5px] leading-relaxed text-ink-soft ring-1 ring-[var(--ln-1)]">{pieza.descripcion}</p>}
 
             {/* comentarios */}
             <div className="mb-2 flex items-center gap-2 text-[12px] font-semibold text-ink-soft"><MessageSquare size={14} className="text-cyan" /> Comentarios ({pieza.comentarios.length})</div>
             <div className="mb-3 space-y-2">
               {pieza.comentarios.length === 0 && <p className="text-[12px] text-ink-mute">Sin comentarios todavía.</p>}
               {pieza.comentarios.map((c, i) => (
-                <div key={i} className="rounded-lg bg-white/[0.03] p-2.5 ring-1 ring-white/10">
+                <div key={i} className="rounded-lg bg-[var(--sf-1)] p-2.5 ring-1 ring-[var(--ln-1)]">
                   <div className="text-[11px] font-semibold text-ink">{c.autor} <span className="font-normal text-ink-mute">· {c.fecha}</span></div>
                   <div className="text-[12.5px] text-ink-soft">{c.texto}</div>
                 </div>
               ))}
             </div>
             <div className="mb-4 flex gap-2">
-              <input value={txt} onChange={(e) => setTxt(e.target.value)} placeholder="Dejar un comentario…" className="flex-1 rounded-lg bg-white/5 px-3 py-2 text-[12.5px] text-ink outline-none ring-1 ring-white/12 placeholder:text-ink-mute focus:ring-cyan/40" />
+              <input value={txt} onChange={(e) => setTxt(e.target.value)} placeholder="Dejar un comentario…" className="flex-1 rounded-lg bg-[var(--sf-1)] px-3 py-2 text-[12.5px] text-ink outline-none ring-1 ring-[var(--ln-1)] placeholder:text-ink-mute focus:ring-cyan/40" />
               <button onClick={() => { if (txt.trim()) { comentarPieza(pieza.id, { autor: "José Ignacio", texto: txt.trim(), fecha: "2026-06-30" }); setTxt(""); } }}
                 className="grid h-9 w-9 place-items-center rounded-lg bg-cyan text-content-inverted hover:opacity-90"><Send size={15} /></button>
             </div>
@@ -175,16 +175,16 @@ function DetalleModal({ pieza, onClose }: { pieza: Pieza; onClose: () => void })
             {/* acciones */}
             <div className="mt-auto space-y-2">
               <div className="grid grid-cols-3 gap-2">
-                <button onClick={() => setEstado("Descartado")} className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-white/8 py-2.5 text-[12.5px] font-semibold text-ink-soft ring-1 ring-white/12 hover:bg-negative/15 hover:text-negative"><X size={15} /> Descartar</button>
-                <button onClick={() => setEstado("Cambios")} className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-white/8 py-2.5 text-[12.5px] font-semibold text-ink-soft ring-1 ring-white/12 hover:bg-cyan/15 hover:text-cyan"><RotateCcw size={15} /> Cambios</button>
+                <button onClick={() => setEstado("Descartado")} className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-[var(--sf-2)] py-2.5 text-[12.5px] font-semibold text-ink-soft ring-1 ring-[var(--ln-1)] hover:bg-negative/15 hover:text-negative"><X size={15} /> Descartar</button>
+                <button onClick={() => setEstado("Cambios")} className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-[var(--sf-2)] py-2.5 text-[12.5px] font-semibold text-ink-soft ring-1 ring-[var(--ln-1)] hover:bg-cyan/15 hover:text-cyan"><RotateCcw size={15} /> Cambios</button>
                 <button onClick={() => setEstado("Aprobado")} className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-lime py-2.5 text-[12.5px] font-bold text-content-inverted hover:opacity-90"><Check size={15} /> Aprobar</button>
               </div>
               <div className="flex gap-2">
-                <label className="flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl bg-white/5 py-2 text-[12px] font-semibold text-ink-soft ring-1 ring-white/12 hover:bg-white/10">
+                <label className="flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl bg-[var(--sf-1)] py-2 text-[12px] font-semibold text-ink-soft ring-1 ring-[var(--ln-1)] hover:bg-[var(--hov)]">
                   <Upload size={14} /> Subir nueva versión
                   <input type="file" accept="image/*" className="hidden" onChange={nuevaVersion} />
                 </label>
-                <button onClick={() => { removePieza(pieza.id); onClose(); }} title="Eliminar" className="grid h-9 w-9 place-items-center rounded-xl bg-white/5 text-ink-mute ring-1 ring-white/12 hover:bg-negative/15 hover:text-negative"><Trash2 size={15} /></button>
+                <button onClick={() => { removePieza(pieza.id); onClose(); }} title="Eliminar" className="grid h-9 w-9 place-items-center rounded-xl bg-[var(--sf-1)] text-ink-mute ring-1 ring-[var(--ln-1)] hover:bg-negative/15 hover:text-negative"><Trash2 size={15} /></button>
               </div>
             </div>
           </div>
@@ -227,7 +227,7 @@ function CrearIAModal({ medio, onClose, onGenerar }: { medio: Medio; onClose: ()
 
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/72 p-4" onClick={onClose}>
-      <div className="w-full max-w-lg rounded-2xl bg-[#101016] p-6 ring-1 ring-white/12" onClick={(e) => e.stopPropagation()}>
+      <div className="w-full max-w-lg rounded-2xl bg-[var(--modal)] p-6 ring-1 ring-[var(--ln-1)]" onClick={(e) => e.stopPropagation()}>
         <div className="mb-1 flex items-center gap-2">
           <span className="grid h-9 w-9 place-items-center rounded-xl bg-cyan/15 text-cyan ring-1 ring-cyan/25"><Wand2 size={18} /></span>
           <div>
@@ -239,12 +239,12 @@ function CrearIAModal({ medio, onClose, onGenerar }: { medio: Medio; onClose: ()
         <label className="mt-4 block text-[12px] font-semibold text-ink-soft">Prompt</label>
         <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} rows={3}
           placeholder={`Ej: “${cliente.campania}, paleta de marca, claim potente, mood ${medio === "OOH" ? "vía pública" : "energético"}”`}
-          className="mt-1 w-full resize-none rounded-xl bg-white/5 p-3 text-[13px] text-ink outline-none ring-1 ring-white/12 placeholder:text-ink-mute focus:ring-cyan/40" />
+          className="mt-1 w-full resize-none rounded-xl bg-[var(--sf-1)] p-3 text-[13px] text-ink outline-none ring-1 ring-[var(--ln-1)] placeholder:text-ink-mute focus:ring-cyan/40" />
 
         <label className="mt-4 block text-[12px] font-semibold text-ink-soft">Estilo</label>
         <div className="mt-1.5 flex flex-wrap gap-2">
           {ESTILOS.map((s) => (
-            <button key={s} onClick={() => setEstilo(s)} className={`rounded-lg px-3 py-1.5 text-[12px] font-semibold ring-1 ${estilo === s ? "bg-cyan text-content-inverted ring-cyan" : "bg-white/5 text-ink-soft ring-white/12 hover:bg-white/10"}`}>{s}</button>
+            <button key={s} onClick={() => setEstilo(s)} className={`rounded-lg px-3 py-1.5 text-[12px] font-semibold ring-1 ${estilo === s ? "bg-cyan text-content-inverted ring-cyan" : "bg-[var(--sf-1)] text-ink-soft ring-[var(--ln-1)] hover:bg-[var(--hov)]"}`}>{s}</button>
           ))}
         </div>
 
@@ -252,7 +252,7 @@ function CrearIAModal({ medio, onClose, onGenerar }: { medio: Medio; onClose: ()
         <input type="range" min={2} max={6} value={cantidad} onChange={(e) => setCantidad(+e.target.value)} className="mt-1 w-full accent-[var(--color-cyan)]" />
 
         <div className="mt-5 flex justify-end gap-2">
-          <button onClick={onClose} className="rounded-xl bg-white/5 px-4 py-2 text-[13px] font-semibold text-ink-soft ring-1 ring-white/12 hover:bg-white/10">Cancelar</button>
+          <button onClick={onClose} className="rounded-xl bg-[var(--sf-1)] px-4 py-2 text-[13px] font-semibold text-ink-soft ring-1 ring-[var(--ln-1)] hover:bg-[var(--hov)]">Cancelar</button>
           <button onClick={generar} disabled={generando} className="inline-flex items-center gap-2 rounded-xl bg-cyan px-4 py-2 text-[13px] font-bold text-content-inverted hover:opacity-90 disabled:opacity-60">
             {generando ? <><Sparkles size={15} className="animate-pulse" /> Generando…</> : <><Wand2 size={15} /> Generar {cantidad}</>}
           </button>
@@ -293,7 +293,7 @@ export function Aprobacion() {
         subtitulo={<><span>{cliente.campania}</span><span className="text-ink-mute">·</span><span>{MEDIO_LABEL[medio]}</span><Chip>{pendientes.length} por revisar</Chip></>}
         right={
           <>
-            <div className="flex rounded-xl bg-white/5 p-1 ring-1 ring-white/12">
+            <div className="flex rounded-xl bg-[var(--sf-1)] p-1 ring-1 ring-[var(--ln-1)]">
               <button onClick={() => setVista("deck")} className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12.5px] font-semibold ${vista === "deck" ? "bg-cyan text-content-inverted" : "text-ink-soft hover:text-ink"}`}><Layers size={14} /> Deck</button>
               <button onClick={() => setVista("tablero")} className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12.5px] font-semibold ${vista === "tablero" ? "bg-cyan text-content-inverted" : "text-ink-soft hover:text-ink"}`}><LayoutGrid size={14} /> Tablero</button>
             </div>
@@ -309,9 +309,9 @@ export function Aprobacion() {
           const active = m === medio;
           return (
             <button key={m} onClick={() => setMedio(m)}
-              className={`inline-flex items-center gap-2 rounded-xl px-3.5 py-2 text-[12.5px] font-semibold ring-1 transition ${active ? "bg-cyan text-content-inverted ring-cyan" : "bg-white/5 text-ink-soft ring-white/12 hover:bg-white/10"}`}>
+              className={`inline-flex items-center gap-2 rounded-xl px-3.5 py-2 text-[12.5px] font-semibold ring-1 transition ${active ? "bg-cyan text-content-inverted ring-cyan" : "bg-[var(--sf-1)] text-ink-soft ring-[var(--ln-1)] hover:bg-[var(--hov)]"}`}>
               {MEDIO_LABEL[m]}
-              {n > 0 && <span className={`rounded-md px-1.5 text-[11px] ${active ? "bg-black/20 text-content-inverted" : "bg-white/10 text-ink"}`}>{n}</span>}
+              {n > 0 && <span className={`rounded-md px-1.5 text-[11px] ${active ? "bg-black/20 text-content-inverted" : "bg-[var(--sf-2)] text-ink"}`}>{n}</span>}
             </button>
           );
         })}
@@ -343,7 +343,7 @@ export function Aprobacion() {
                 <>
                   {/* cartas apiladas (fondo) */}
                   {pendientes.slice(1, 3).map((p, i) => (
-                    <div key={p.id} className={`${card} absolute inset-0 ring-1 ring-white/8`} style={{ transform: `translateY(${(i + 1) * 10}px) scale(${1 - (i + 1) * 0.035})`, opacity: 0.5 - i * 0.2, zIndex: 1 }}>
+                    <div key={p.id} className={`${card} absolute inset-0 ring-1 ring-[var(--ln-1)]`} style={{ transform: `translateY(${(i + 1) * 10}px) scale(${1 - (i + 1) * 0.035})`, opacity: 0.5 - i * 0.2, zIndex: 1 }}>
                       <PiezaThumb p={p} big />
                     </div>
                   ))}
@@ -367,8 +367,8 @@ export function Aprobacion() {
             {/* botones de acción */}
             {top && (
               <div className="mt-5 flex items-center justify-center gap-4">
-                <button onClick={() => resolver(top, "Descartado")} title="Descartar" className="grid h-14 w-14 place-items-center rounded-full bg-white/5 text-negative ring-1 ring-white/12 transition hover:scale-105 hover:bg-negative/15"><X size={24} /></button>
-                <button onClick={() => resolver(top, "Cambios")} title="Pedir cambios" className="grid h-12 w-12 place-items-center rounded-full bg-white/5 text-cyan ring-1 ring-white/12 transition hover:scale-105 hover:bg-cyan/15"><RotateCcw size={20} /></button>
+                <button onClick={() => resolver(top, "Descartado")} title="Descartar" className="grid h-14 w-14 place-items-center rounded-full bg-[var(--sf-1)] text-negative ring-1 ring-[var(--ln-1)] transition hover:scale-105 hover:bg-negative/15"><X size={24} /></button>
+                <button onClick={() => resolver(top, "Cambios")} title="Pedir cambios" className="grid h-12 w-12 place-items-center rounded-full bg-[var(--sf-1)] text-cyan ring-1 ring-[var(--ln-1)] transition hover:scale-105 hover:bg-cyan/15"><RotateCcw size={20} /></button>
                 <button onClick={() => resolver(top, "Aprobado")} title="Aprobar" className="grid h-14 w-14 place-items-center rounded-full bg-lime/15 text-lime ring-1 ring-lime/30 transition hover:scale-105 hover:bg-lime/25"><Check size={24} /></button>
               </div>
             )}
@@ -381,7 +381,7 @@ export function Aprobacion() {
               <h3 className="mb-3 text-[14px] font-bold text-ink">Estado de {MEDIO_LABEL[medio]}</h3>
               <div className="grid grid-cols-2 gap-3">
                 {ESTADOS_PIEZA.map((e) => (
-                  <div key={e} className="rounded-xl bg-white/[0.03] p-3 ring-1 ring-white/10">
+                  <div key={e} className="rounded-xl bg-[var(--sf-1)] p-3 ring-1 ring-[var(--ln-1)]">
                     <div className="flex items-center gap-2">
                       <span className="h-2.5 w-2.5 rounded-full" style={{ background: EST_META[e].dot }} />
                       <span className="text-[12px] text-ink-soft">{e}</span>
@@ -402,21 +402,21 @@ export function Aprobacion() {
           {ESTADOS_PIEZA.map((e) => {
             const items = delMedio.filter((p) => p.estado === e);
             return (
-              <div key={e} className="rounded-2xl bg-white/[0.02] p-3 ring-1 ring-white/8">
+              <div key={e} className="rounded-2xl bg-[var(--sf-1)] p-3 ring-1 ring-[var(--ln-1)]">
                 <div className="mb-3 flex items-center justify-between px-1">
                   <span className="inline-flex items-center gap-2 text-[13px] font-bold text-ink"><span className="h-2.5 w-2.5 rounded-full" style={{ background: EST_META[e].dot }} /> {e}</span>
-                  <span className="rounded-md bg-white/8 px-1.5 py-0.5 text-[11px] font-semibold text-ink-soft">{items.length}</span>
+                  <span className="rounded-md bg-[var(--sf-2)] px-1.5 py-0.5 text-[11px] font-semibold text-ink-soft">{items.length}</span>
                 </div>
                 <div className="space-y-2.5">
                   <AnimatePresence>
                     {items.map((p) => (
                       <motion.button layout key={p.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                        onClick={() => setDetalle(p)} className="group block w-full overflow-hidden rounded-xl text-left ring-1 ring-white/10 hover:ring-white/25">
+                        onClick={() => setDetalle(p)} className="group block w-full overflow-hidden rounded-xl text-left ring-1 ring-[var(--ln-1)] hover:ring-white/25">
                         <div className="relative h-28">
                           <PiezaThumb p={p} />
                           <div className="absolute bottom-2 left-2 right-2 z-10"><MetaRow p={p} /></div>
                         </div>
-                        <div className="bg-white/[0.03] p-2.5">
+                        <div className="bg-[var(--sf-1)] p-2.5">
                           <div className="truncate text-[12.5px] font-semibold text-ink">{p.titulo}</div>
                           <div className="mt-0.5 flex items-center justify-between text-[10.5px] text-ink-mute">
                             <span className="truncate">{p.autor}</span>
@@ -426,7 +426,7 @@ export function Aprobacion() {
                       </motion.button>
                     ))}
                   </AnimatePresence>
-                  {items.length === 0 && <div className="grid h-20 place-items-center rounded-xl text-[11.5px] text-ink-mute ring-1 ring-dashed ring-white/10"><ImageOff size={16} /></div>}
+                  {items.length === 0 && <div className="grid h-20 place-items-center rounded-xl text-[11.5px] text-ink-mute ring-1 ring-dashed ring-[var(--ln-1)]"><ImageOff size={16} /></div>}
                 </div>
               </div>
             );

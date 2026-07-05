@@ -50,7 +50,7 @@ export function Campañas({ campañas }: { campañas: Campaña[] }) {
             </div>
             <div className="w-32">
               <div className="mb-1 flex justify-between font-mono text-[9px] text-ink-mute"><span>avance</span><span>{c.progreso}%</span></div>
-              <div className="h-1.5 overflow-hidden rounded-full bg-white/10"><div className="h-full rounded-full bg-gradient-to-r from-cyan to-violet" style={{ width: `${c.progreso}%` }} /></div>
+              <div className="h-1.5 overflow-hidden rounded-full bg-[var(--sf-2)]"><div className="h-full rounded-full bg-gradient-to-r from-cyan to-violet" style={{ width: `${c.progreso}%` }} /></div>
             </div>
           </motion.div>
           );
@@ -121,7 +121,7 @@ export function Tendencias() {
               </div>
               <div className="text-right"><div className="font-mono text-[15px] font-bold text-lime">+{t.momentum}%</div><div className="font-mono text-[10px] text-ink-mute">{t.volumen}</div></div>
             </div>
-            <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-white/10"><motion.div initial={{ width: 0 }} animate={{ width: `${Math.min(100, t.momentum / 1.5)}%` }} transition={{ delay: 0.2 + i * 0.06, duration: 0.7 }} className="h-full rounded-full bg-gradient-to-r from-cyan to-violet" /></div>
+            <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-[var(--sf-2)]"><motion.div initial={{ width: 0 }} animate={{ width: `${Math.min(100, t.momentum / 1.5)}%` }} transition={{ delay: 0.2 + i * 0.06, duration: 0.7 }} className="h-full rounded-full bg-gradient-to-r from-cyan to-violet" /></div>
           </motion.div>
         ))}
       </div>

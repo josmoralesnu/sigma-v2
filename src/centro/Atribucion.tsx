@@ -22,7 +22,7 @@ const TIPO_META: Record<FuenteTipo, { icon: any; cls: string; bar: string; chip:
   Código: { icon: Tag, cls: "text-amber", bar: "bg-amber", chip: "bg-amber/12 text-amber ring-amber/25", desc: "Código promo que el usuario tipea al registrarse" },
 };
 
-const field = "w-full rounded-xl border border-white/12 bg-white/[0.05] px-3 py-2.5 text-[13px] text-ink outline-none transition-colors focus:border-cyan/60 focus:bg-white/[0.08]";
+const field = "w-full rounded-xl border border-[var(--ln-1)] bg-[var(--sf-1)] px-3 py-2.5 text-[13px] text-ink outline-none transition-colors focus:border-cyan/60 focus:bg-[var(--sf-2)]";
 const lbl = "mb-1.5 block text-[11px] font-semibold uppercase tracking-wide text-ink-mute";
 
 /* ---------------- Chip de destino con copiar ---------------- */
@@ -36,7 +36,7 @@ function DestinoChip({ tipo, destino }: { tipo: FuenteTipo; destino: string }) {
   const cod = tipo === "Código";
   return (
     <button onClick={copiar} title="Copiar"
-      className="group/cp inline-flex max-w-full items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.04] px-2 py-1 text-[11.5px] font-medium text-ink-soft transition-colors hover:border-cyan/40 hover:text-ink">
+      className="group/cp inline-flex max-w-full items-center gap-1.5 rounded-lg border border-[var(--ln-1)] bg-[var(--sf-1)] px-2 py-1 text-[11.5px] font-medium text-ink-soft transition-colors hover:border-cyan/40 hover:text-ink">
       {cod ? <Tag size={11} className="shrink-0 text-amber" /> : <Link2 size={11} className="shrink-0 text-cyan" />}
       <span className={`truncate ${cod ? "font-mono tracking-wide" : ""}`}>{destino}</span>
       {copiado ? <Check size={11} className="shrink-0 text-lime" /> : <Copy size={11} className="shrink-0 text-ink-mute opacity-0 transition-opacity group-hover/cp:opacity-100" />}
@@ -106,10 +106,10 @@ function AtribModal({ item, onClose }: { item?: Atribucion | null; onClose: () =
         <div className="absolute inset-0 bg-black/72 backdrop-blur-md" onClick={onClose} />
         <motion.div initial={{ opacity: 0, y: 16, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 12 }}
           transition={{ type: "spring", stiffness: 320, damping: 28 }}
-          className="relative z-10 w-full max-w-lg overflow-hidden rounded-2xl ring-1 ring-white/12 shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)]" style={{ background: "#101016" }}>
+          className="relative z-10 w-full max-w-lg overflow-hidden rounded-2xl ring-1 ring-[var(--ln-1)] shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)]" style={{ background: "#101016" }}>
           <div className="flex items-center justify-between border-b border-line px-5 py-4">
             <h3 className="font-display text-[17px] font-bold text-ink">{editing ? "Editar fuente de FTD" : "Nueva fuente de FTD"}</h3>
-            <button onClick={onClose} className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-white/10 hover:text-ink"><X size={17} /></button>
+            <button onClick={onClose} className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-[var(--hov)] hover:text-ink"><X size={17} /></button>
           </div>
 
           <div className="space-y-4 p-5">
@@ -121,7 +121,7 @@ function AtribModal({ item, onClose }: { item?: Atribucion | null; onClose: () =
                   const M = TIPO_META[t]; const Icon = M.icon; const on = tipo === t;
                   return (
                     <button key={t} onClick={() => cambiarTipo(t)}
-                      className={`flex flex-col items-center gap-1 rounded-xl border px-2 py-2.5 text-[12px] font-semibold transition-colors ${on ? "border-cyan/50 bg-cyan/10 text-ink" : "border-white/10 bg-white/[0.03] text-ink-mute hover:bg-white/[0.06]"}`}>
+                      className={`flex flex-col items-center gap-1 rounded-xl border px-2 py-2.5 text-[12px] font-semibold transition-colors ${on ? "border-cyan/50 bg-cyan/10 text-ink" : "border-[var(--ln-1)] bg-[var(--sf-1)] text-ink-mute hover:bg-[var(--sf-2)]"}`}>
                       <Icon size={16} className={on ? M.cls : ""} /> {t}
                     </button>
                   );
@@ -185,7 +185,7 @@ function AtribModal({ item, onClose }: { item?: Atribucion | null; onClose: () =
               {pesos(Number(deposito) || 0)} CLP · ticket {ftd > 0 ? pesos(Math.round((Number(deposito) || 0) / ftd)) : "—"} · conv. registro→FTD {pct(Number(ftd) || 0, Number(registros) || 0)}
             </p>
 
-            <button onClick={() => setActivo((v) => !v)} className="flex w-full items-center justify-between rounded-xl border border-white/12 bg-white/[0.05] px-3 py-2.5">
+            <button onClick={() => setActivo((v) => !v)} className="flex w-full items-center justify-between rounded-xl border border-[var(--ln-1)] bg-[var(--sf-1)] px-3 py-2.5">
               <span className="text-[13px] font-medium text-ink-soft">Fuente activa</span>
               <span className={`relative h-5 w-9 rounded-full transition-colors ${activo ? "bg-cyan" : "bg-white/20"}`}>
                 <span className={`absolute top-0.5 h-4 w-4 rounded-full bg-white transition-all ${activo ? "left-[18px]" : "left-0.5"}`} />
@@ -194,7 +194,7 @@ function AtribModal({ item, onClose }: { item?: Atribucion | null; onClose: () =
           </div>
 
           <div className="flex items-center justify-end gap-2 border-t border-line px-5 py-4">
-            <button onClick={onClose} className="rounded-xl px-4 py-2 text-[13px] font-semibold text-ink-soft hover:bg-white/5">Cancelar</button>
+            <button onClick={onClose} className="rounded-xl px-4 py-2 text-[13px] font-semibold text-ink-soft hover:bg-[var(--hov)]">Cancelar</button>
             <button onClick={guardar} disabled={!valido} className="rounded-xl bg-cyan px-4 py-2 text-[13px] font-bold text-content-inverted transition-opacity enabled:hover:opacity-90 disabled:opacity-40">{editing ? "Guardar" : "Agregar fuente"}</button>
           </div>
         </motion.div>
@@ -226,7 +226,7 @@ function TipoCard({ tipo, ftd, share }: { tipo: FuenteTipo; ftd: number; share: 
         <span className="text-[11px] tabular-nums text-ink-mute">{share.toFixed(0)}%</span>
       </div>
       <div className="font-display text-[22px] font-bold tabular-nums text-ink">{short(ftd)} <span className="text-[12px] font-medium text-ink-mute">FTD</span></div>
-      <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/8">
+      <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[var(--sf-2)]">
         <motion.div className={`h-full rounded-full ${M.bar}`} initial={{ width: 0 }} animate={{ width: `${share}%` }} transition={{ duration: 0.7, ease: "easeOut" }} />
       </div>
     </motion.div>
@@ -275,7 +275,7 @@ export function Atribucion() {
         right={
           <>
             <DatosPruebaBadge />
-            <button onClick={() => setImportar(true)} className="inline-flex items-center gap-2 rounded-xl border border-white/12 bg-white/[0.04] px-3.5 py-2 text-[13px] font-semibold text-ink-soft transition-colors hover:bg-white/[0.08] hover:text-ink">
+            <button onClick={() => setImportar(true)} className="inline-flex items-center gap-2 rounded-xl border border-[var(--ln-1)] bg-[var(--sf-1)] px-3.5 py-2 text-[13px] font-semibold text-ink-soft transition-colors hover:bg-[var(--sf-2)] hover:text-ink">
               <FileSpreadsheet size={15} /> Importar Excel
             </button>
             <button onClick={() => setModal({})} className="inline-flex items-center gap-2 rounded-xl bg-cyan px-3.5 py-2 text-[13px] font-bold text-content-inverted transition-opacity hover:opacity-90">
@@ -308,7 +308,7 @@ export function Atribucion() {
       <div className="mb-4 flex flex-wrap gap-2">
         {(["Todas", ...FUENTES] as const).map((f) => (
           <button key={f} onClick={() => setFiltro(f)}
-            className={`rounded-lg px-3 py-1.5 text-[12.5px] font-semibold ring-1 transition-colors ${filtro === f ? "bg-cyan/15 text-cyan ring-cyan/30" : "bg-white/[0.03] text-ink-soft ring-white/10 hover:bg-white/[0.06]"}`}>{f}</button>
+            className={`rounded-lg px-3 py-1.5 text-[12.5px] font-semibold ring-1 transition-colors ${filtro === f ? "bg-cyan/15 text-cyan ring-cyan/30" : "bg-[var(--sf-1)] text-ink-soft ring-[var(--ln-1)] hover:bg-[var(--sf-2)]"}`}>{f}</button>
         ))}
       </div>
 
@@ -333,14 +333,14 @@ export function Atribucion() {
                 const ticket = a.ftd ? Math.round(a.deposito / a.ftd) : 0;
                 return (
                   <motion.tr layout key={a.id} initial={{ opacity: 0 }} animate={{ opacity: a.activo ? 1 : 0.5 }} exit={{ opacity: 0 }}
-                    transition={{ type: "spring", stiffness: 600, damping: 42 }} className="group border-t border-line hover:bg-white/[0.02]">
+                    transition={{ type: "spring", stiffness: 600, damping: 42 }} className="group border-t border-line hover:bg-[var(--sf-1)]">
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white/5 text-[16px] ring-1 ring-white/10">{a.avatar}</div>
+                        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[var(--sf-1)] text-[16px] ring-1 ring-[var(--ln-1)]">{a.avatar}</div>
                         <div className="min-w-0 leading-tight">
                           <div className="flex items-center gap-1.5 text-[13px] font-semibold text-ink">
                             {a.nombre}
-                            {!a.activo && <span className="rounded bg-white/8 px-1 py-0.5 text-[9px] font-semibold text-ink-mute">pausada</span>}
+                            {!a.activo && <span className="rounded bg-[var(--sf-2)] px-1 py-0.5 text-[9px] font-semibold text-ink-mute">pausada</span>}
                           </div>
                           <div className="flex items-center gap-1.5 text-[11px] text-ink-mute">
                             <span className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[9.5px] font-semibold ring-1 ${M.chip}`}><Icon size={9} /> {a.tipo}</span>
@@ -357,8 +357,8 @@ export function Atribucion() {
                     <td className="px-3 py-3 text-right text-[12px] tabular-nums text-ink-mute">{ticket ? pesos(ticket) : "—"}</td>
                     <td className="px-5 py-3">
                       <div className="flex items-center justify-end gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-                        <button onClick={() => setModal({ item: a })} title="Editar" className="grid h-7 w-7 place-items-center rounded-lg text-ink-mute hover:bg-white/10 hover:text-ink"><Pencil size={13} /></button>
-                        <button onClick={() => removeAtrib(a.id)} title="Eliminar" className="grid h-7 w-7 place-items-center rounded-lg text-ink-mute hover:bg-white/10 hover:text-negative"><Trash2 size={13} /></button>
+                        <button onClick={() => setModal({ item: a })} title="Editar" className="grid h-7 w-7 place-items-center rounded-lg text-ink-mute hover:bg-[var(--hov)] hover:text-ink"><Pencil size={13} /></button>
+                        <button onClick={() => removeAtrib(a.id)} title="Eliminar" className="grid h-7 w-7 place-items-center rounded-lg text-ink-mute hover:bg-[var(--hov)] hover:text-negative"><Trash2 size={13} /></button>
                       </div>
                     </td>
                   </motion.tr>
@@ -370,7 +370,7 @@ export function Atribucion() {
         {lista.length === 0 && (
           <div className="grid place-items-center py-16 text-center">
             <p className="text-[13px] text-ink-mute">Sin fuentes de atribución para ese filtro.</p>
-            <button onClick={() => setModal({})} className="mt-3 inline-flex items-center gap-2 rounded-xl border border-line px-3.5 py-2 text-[13px] font-semibold text-ink-soft hover:bg-white/5"><Plus size={15} /> Agregar la primera</button>
+            <button onClick={() => setModal({})} className="mt-3 inline-flex items-center gap-2 rounded-xl border border-line px-3.5 py-2 text-[13px] font-semibold text-ink-soft hover:bg-[var(--hov)]"><Plus size={15} /> Agregar la primera</button>
           </div>
         )}
       </div>

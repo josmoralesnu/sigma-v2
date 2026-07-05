@@ -125,7 +125,7 @@ export function Contenidos() {
         {FILTROS.map((f) => (
           <button key={f} onClick={() => setFiltro(f)}
             className={`rounded-lg px-3 py-1.5 text-[12.5px] font-semibold ring-1 transition-colors ${
-              filtro === f ? "bg-cyan/15 text-cyan ring-cyan/30" : "bg-white/[0.03] text-ink-soft ring-white/10 hover:bg-white/[0.06]"
+              filtro === f ? "bg-cyan/15 text-cyan ring-cyan/30" : "bg-[var(--sf-1)] text-ink-soft ring-[var(--ln-1)] hover:bg-[var(--sf-2)]"
             }`}>{f}</button>
         ))}
       </div>
@@ -142,7 +142,7 @@ export function Contenidos() {
       {lista.length === 0 && (
         <div className="grid place-items-center py-20 text-center">
           <p className="text-[13px] text-ink-mute">Sin contenidos para ese filtro.</p>
-          <button onClick={() => setModal({})} className="mt-3 inline-flex items-center gap-2 rounded-xl border border-line px-3.5 py-2 text-[13px] font-semibold text-ink-soft hover:bg-white/5"><Plus size={15} /> Subir el primero</button>
+          <button onClick={() => setModal({})} className="mt-3 inline-flex items-center gap-2 rounded-xl border border-line px-3.5 py-2 text-[13px] font-semibold text-ink-soft hover:bg-[var(--hov)]"><Plus size={15} /> Subir el primero</button>
         </div>
       )}
 

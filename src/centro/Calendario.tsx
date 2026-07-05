@@ -44,9 +44,9 @@ export function Calendario() {
           <>
             <DatosPruebaBadge />
             <div className="glass flex items-center gap-1 rounded-xl p-1">
-              <button className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-white/5"><ChevronLeft size={16} /></button>
+              <button className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-[var(--hov)]"><ChevronLeft size={16} /></button>
               <span className="px-2 text-[13px] font-semibold text-ink">{nombre}</span>
-              <button className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-white/5"><ChevronRight size={16} /></button>
+              <button className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-[var(--hov)]"><ChevronRight size={16} /></button>
             </div>
             <button onClick={() => setModal({ defaults: { estado: "Programado" } })} className="inline-flex items-center gap-2 rounded-xl bg-cyan px-3.5 py-2 text-[13px] font-bold text-content-inverted transition-opacity hover:opacity-90">
               <Plus size={15} /> Agendar
@@ -69,14 +69,14 @@ export function Calendario() {
           {celdas.map((d, i) => {
             const evs = d ? eventosDe(d) : [];
             return (
-              <div key={i} className={`group/cell relative min-h-[116px] border-b border-r border-line p-2 ${d ? "" : "bg-white/[0.015]"}`}>
+              <div key={i} className={`group/cell relative min-h-[116px] border-b border-r border-line p-2 ${d ? "" : "bg-[var(--sf-1)]"}`}>
                 {d && (
                   <>
                     <div className="mb-1.5 flex items-center justify-between">
                       <span className="text-[12px] font-semibold text-ink-soft">{d}</span>
                       <button onClick={() => setModal({ defaults: { fecha: iso(d), estado: "Programado" } })}
                         title="Agendar este día"
-                        className="grid h-5 w-5 place-items-center rounded-md text-ink-mute opacity-0 transition-opacity hover:bg-white/10 hover:text-cyan group-hover/cell:opacity-100">
+                        className="grid h-5 w-5 place-items-center rounded-md text-ink-mute opacity-0 transition-opacity hover:bg-[var(--hov)] hover:text-cyan group-hover/cell:opacity-100">
                         <Plus size={13} />
                       </button>
                     </div>

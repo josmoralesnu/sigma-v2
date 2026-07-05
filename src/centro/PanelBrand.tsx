@@ -21,7 +21,7 @@ const KPI_ICON: Record<string, any> = {
 function RoiRing({ roi, label, nota }: { roi: string; label: string; nota: string }) {
   return (
     <motion.div initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2, type: "spring", stiffness: 220, damping: 18 }}
-      className="grid h-28 w-28 shrink-0 place-items-center rounded-full bg-white/10 text-center ring-1 ring-white/20 backdrop-blur-md">
+      className="grid h-28 w-28 shrink-0 place-items-center rounded-full bg-[var(--sf-2)] text-center ring-1 ring-white/20 backdrop-blur-md">
       <div>
         <div className="text-[10px] font-semibold uppercase tracking-wide text-white/70">{label.replace(" (EMV)", "")}</div>
         <div className="font-display text-[30px] font-bold leading-none text-white"><Conf px={8}>{roi}</Conf></div>
@@ -47,7 +47,7 @@ function Curva({ fechas, puntos, label, unidad }: { fechas: string[]; puntos: nu
       <div className="relative h-[200px] w-full">
         {/* líneas guía */}
         <div className="absolute inset-0 flex flex-col justify-between">
-          {[0, 1, 2, 3].map((i) => <div key={i} className="h-px w-full bg-white/[0.06]" />)}
+          {[0, 1, 2, 3].map((i) => <div key={i} className="h-px w-full bg-[var(--sf-2)]" />)}
         </div>
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full overflow-visible">
           <defs>
@@ -64,7 +64,7 @@ function Curva({ fechas, puntos, label, unidad }: { fechas: string[]; puntos: nu
         </svg>
         {/* valor del último punto */}
         <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2 }}
-          className="absolute -translate-x-1/2 rounded-lg bg-white/10 px-2 py-1 text-center ring-1 ring-white/15 backdrop-blur"
+          className="absolute -translate-x-1/2 rounded-lg bg-[var(--sf-2)] px-2 py-1 text-center ring-1 ring-[var(--ln-2)] backdrop-blur"
           style={{ left: `${last[0]}%`, top: `${last[1]}%`, transform: "translate(-50%,-130%)" }}>
           <div className="font-display text-[13px] font-bold leading-none text-ink"><Conf px={5}>{short(puntos[puntos.length - 1])}</Conf></div>
           <div className="text-[9px] text-ink-mute">{unidad}</div>
@@ -114,7 +114,7 @@ export function PanelBrand() {
             <p className="mt-2.5 text-[13.5px] leading-relaxed text-ink-soft">{bp.campania.bajada}</p>
             <div className="mt-4 flex flex-wrap gap-2">
               {bp.campania.badges.map((b) => (
-                <span key={b} className="rounded-lg bg-white/8 px-2.5 py-1 text-[11.5px] font-semibold text-ink-soft ring-1 ring-white/12">{b}</span>
+                <span key={b} className="rounded-lg bg-[var(--sf-2)] px-2.5 py-1 text-[11.5px] font-semibold text-ink-soft ring-1 ring-[var(--ln-1)]">{b}</span>
               ))}
             </div>
             <button className="mt-5 inline-flex items-center gap-2 rounded-xl bg-cyan px-4 py-2.5 text-[13px] font-bold text-content-inverted transition-opacity hover:opacity-90">
@@ -155,7 +155,7 @@ export function PanelBrand() {
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {galeria.map((p) => (
-              <div key={p.id} className="overflow-hidden rounded-xl ring-1 ring-white/10">
+              <div key={p.id} className="overflow-hidden rounded-xl ring-1 ring-[var(--ln-1)]">
                 <div className="relative grid h-28 place-items-center overflow-hidden">
                   <Thumb img={p.img} tipo={p.tipo} />
                   <span className="absolute left-2 top-2 z-10 rounded-md bg-black/45 px-1.5 py-0.5 text-[9px] font-semibold text-white/90 backdrop-blur">{p.tipo}</span>
@@ -186,9 +186,9 @@ export function PanelBrand() {
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             {bp.topCreators.map((c, i) => (
               <motion.div key={c.handle} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }}
-                className="rounded-xl bg-white/[0.03] p-4 ring-1 ring-white/10">
+                className="rounded-xl bg-[var(--sf-1)] p-4 ring-1 ring-[var(--ln-1)]">
                 <div className="mb-3 flex items-center justify-between">
-                  <div className="grid h-11 w-11 place-items-center rounded-full bg-white/5 text-[20px] ring-1 ring-white/10">{c.avatar}</div>
+                  <div className="grid h-11 w-11 place-items-center rounded-full bg-[var(--sf-1)] text-[20px] ring-1 ring-[var(--ln-1)]">{c.avatar}</div>
                   <span className="rounded-md bg-cyan/15 px-2 py-0.5 text-[10.5px] font-bold text-cyan ring-1 ring-cyan/25">{c.badge}</span>
                 </div>
                 <div className="text-[13.5px] font-semibold text-ink"><Conf px={5} className="max-w-full truncate">{c.nombre}</Conf></div>
@@ -218,7 +218,7 @@ export function PanelBrand() {
               <span className="text-[12px] text-ink-mute">{bp.goal.label} {bp.goal.objetivo}</span>
               <span className="font-display text-[26px] font-bold text-cyan"><Conf px={7}>{bp.goal.actual}</Conf></span>
             </div>
-            <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/8">
+            <div className="mt-2 h-2 overflow-hidden rounded-full bg-[var(--sf-2)]">
               <motion.div className="h-full rounded-full bg-cyan" initial={{ width: 0 }} animate={{ width: `${bp.goal.pct}%` }} transition={{ duration: 0.9, ease: "easeOut" }} />
             </div>
             <div className="mt-3 inline-flex items-center gap-1.5 text-[11.5px] font-semibold text-lime"><Sparkles size={13} /> Objetivo de ROI superado</div>

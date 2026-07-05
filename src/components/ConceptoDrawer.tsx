@@ -128,7 +128,7 @@ function Body({ c, onClose }: { c: Concepto; onClose: () => void }) {
         </Section>
       </div>
 
-      <div className="flex shrink-0 items-center gap-3 border-t border-line bg-white/5 p-4">
+      <div className="flex shrink-0 items-center gap-3 border-t border-line bg-[var(--sf-1)] p-4">
         <button onClick={onClose} className="rounded-xl border border-line px-4 py-3 text-[12.5px] font-semibold text-ink-soft transition-colors hover:text-ink">Volver</button>
         <button className="group flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-3 text-[13px] font-bold text-void transition-all" style={{ background: color, boxShadow: `0 0 26px -6px ${color}` }}>
           <Sparkles size={15} /> Aprobar concepto <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />

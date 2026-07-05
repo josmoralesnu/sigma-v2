@@ -24,7 +24,7 @@ const CALIDAD: Record<Calidad, string> = {
   "Excelente": "bg-lime/12 text-lime ring-lime/25",
   "Muy bueno": "bg-cyan/12 text-cyan ring-cyan/25",
   "Bueno": "bg-amber/12 text-amber ring-amber/25",
-  "Regular": "bg-white/5 text-ink-mute ring-white/10",
+  "Regular": "bg-[var(--sf-1)] text-ink-mute ring-[var(--ln-1)]",
 };
 const FUNNEL_ICON = [Eye, MousePointerClick, UserPlus, Trophy];
 
@@ -94,9 +94,9 @@ function Embudo() {
         {conectores.map((c) => (
           <div key={c.label} className="flex flex-col items-center text-center">
             <div className="flex w-full items-center text-ink-mute/40">
-              <span className="h-px flex-1 bg-white/10" />
+              <span className="h-px flex-1 bg-[var(--sf-2)]" />
               <ChevronChev />
-              <span className="h-px flex-1 bg-white/10" />
+              <span className="h-px flex-1 bg-[var(--sf-2)]" />
             </div>
             <div className="mt-1 text-[11px] text-ink-soft">{c.label}</div>
             <div className="text-[13px] font-bold text-cyan"><Conf px={5}>{c.valor}</Conf></div>
@@ -168,7 +168,7 @@ function Tabla() {
             <motion.tr layout key={c.handle} transition={{ type: "spring", stiffness: 600, damping: 42 }} className="border-t border-line">
               <td className="py-3 pr-3">
                 <div className="flex items-center gap-3">
-                  <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white/5 text-[16px] ring-1 ring-white/10">{c.avatar}</div>
+                  <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[var(--sf-1)] text-[16px] ring-1 ring-[var(--ln-1)]">{c.avatar}</div>
                   <div className="min-w-0 leading-tight">
                     <div className="flex items-center gap-1 text-[13px] font-semibold text-ink">
                       <Conf px={5} className="max-w-full truncate">{c.nombre}</Conf>
@@ -205,7 +205,7 @@ function ContenidoTop() {
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {top.map((c) => (
-          <div key={c.id} className="overflow-hidden rounded-xl ring-1 ring-white/10">
+          <div key={c.id} className="overflow-hidden rounded-xl ring-1 ring-[var(--ln-1)]">
             <div className="relative grid h-28 place-items-center overflow-hidden">
               <Thumb img={c.img} tipo={c.tipo} />
               <span className="absolute left-2.5 top-2.5 z-10 rounded-md bg-black/45 px-2 py-0.5 text-[10px] font-semibold text-white/90 backdrop-blur">{c.tipo}</span>
@@ -238,7 +238,7 @@ function Insights() {
         <h3 className="text-[15px] font-bold text-ink">Insights clave</h3>
       </div>
       <p className="text-[13px] leading-relaxed text-ink-soft">{vocab.panelInsight.cuerpo}</p>
-      <div className="mt-4 rounded-xl bg-white/[0.04] p-3.5 ring-1 ring-white/10">
+      <div className="mt-4 rounded-xl bg-[var(--sf-1)] p-3.5 ring-1 ring-[var(--ln-1)]">
         <div className="mb-2 text-[12px] font-semibold text-ink">Impacto estimado</div>
         {vocab.panelInsight.impactos.map((txt, i) => (
           <div key={i} className={`flex items-center gap-2 text-[13px] ${i ? "mt-1.5" : ""}`}>
@@ -264,7 +264,7 @@ function Recs() {
           const Icon = REC_ICON[i] ?? Target;
           const alta = r.prioridad === "Alta";
           return (
-            <div key={i} className="flex items-center gap-3 rounded-xl p-2.5 transition-colors hover:bg-white/5">
+            <div key={i} className="flex items-center gap-3 rounded-xl p-2.5 transition-colors hover:bg-[var(--hov)]">
               <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-cyan/12 text-cyan"><Icon size={16} /></div>
               <span className="flex-1 text-[12.5px] font-medium leading-snug text-ink-soft">{r.texto}</span>
               <span className={`shrink-0 rounded-md px-2 py-0.5 text-[11px] font-semibold ring-1 ${alta ? "bg-rose/12 text-rose ring-rose/25" : "bg-amber/12 text-amber ring-amber/25"}`}>{r.prioridad}</span>

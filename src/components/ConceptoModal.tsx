@@ -175,7 +175,7 @@ function Body({ c, initialBudget, onAprobar, onClose }: { c: Concepto; initialBu
 
             {/* controles de paquete: piezas + derecho a imagen */}
             <div className="mt-3 grid grid-cols-2 gap-2">
-              <div className="flex items-center justify-between rounded-lg border border-line bg-white/5 px-2.5 py-2">
+              <div className="flex items-center justify-between rounded-lg border border-line bg-[var(--sf-1)] px-2.5 py-2">
                 <span className="text-[10.5px] leading-tight text-ink-soft">Piezas<br /><span className="text-ink-mute">1 reel + 2 hist.</span></span>
                 <div className="flex items-center gap-1.5">
                   <button onClick={() => setPieces((p) => Math.max(1, p - 1))} className="grid h-5 w-5 place-items-center rounded-md border border-line text-ink-soft transition-colors hover:text-ink"><Minus size={11} /></button>
@@ -248,7 +248,7 @@ function Body({ c, initialBudget, onAprobar, onClose }: { c: Concepto; initialBu
       </div>
 
       {/* footer */}
-      <div className="flex shrink-0 items-center gap-3 border-t border-line bg-white/5 p-4">
+      <div className="flex shrink-0 items-center gap-3 border-t border-line bg-[var(--sf-1)] p-4">
         <div className="flex items-center gap-2 font-mono text-[10px] text-ink-mute">
           <Check size={12} className="text-lime" /> plan listo · CLP {fmtCLP(plan.totalFee)} asignado · <span className="inline-flex items-center gap-1"><Lock size={10} /> resultados confidenciales</span>
         </div>
@@ -304,14 +304,14 @@ function DesgloseInversion({ plan }: { plan: Plan }) {
     .map((t) => ({ t, value: plan.inversionPorTier[t], count: plan.porTier[t], color: acentoHex[TIER_CONFIG[t].color] }));
 
   if (total <= 0 || segs.length === 0) {
-    return <div className="mt-3 rounded-xl border border-dashed border-line bg-white/5 px-3 py-4 text-center text-[11px] text-ink-mute">Sube el presupuesto para ver la mezcla de inversión.</div>;
+    return <div className="mt-3 rounded-xl border border-dashed border-line bg-[var(--sf-1)] px-3 py-4 text-center text-[11px] text-ink-mute">Sube el presupuesto para ver la mezcla de inversión.</div>;
   }
 
   const R = 42, SW = 13, C = 2 * Math.PI * R;
   let acc = 0;
 
   return (
-    <div className="mt-3 rounded-xl border border-line bg-white/5 p-3">
+    <div className="mt-3 rounded-xl border border-line bg-[var(--sf-1)] p-3">
       <div className="kicker mb-2.5">inversión en creadores · por categoría</div>
       <div className="flex items-center gap-4">
         <div className="relative h-[104px] w-[104px] shrink-0">

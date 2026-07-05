@@ -13,7 +13,7 @@ export interface ModalInit {
   defaults?: Partial<Post>;      // valores iniciales (p.ej. agendar → fecha/estado)
 }
 
-const field = "w-full rounded-xl border border-white/12 bg-white/[0.05] px-3 py-2.5 text-[13px] text-ink outline-none transition-colors focus:border-cyan/60 focus:bg-white/[0.08]";
+const field = "w-full rounded-xl border border-[var(--ln-1)] bg-[var(--sf-1)] px-3 py-2.5 text-[13px] text-ink outline-none transition-colors focus:border-cyan/60 focus:bg-[var(--sf-2)]";
 const label = "mb-1.5 block text-[11px] font-semibold uppercase tracking-wide text-ink-mute";
 
 export function ContentModal({ init, onClose }: { init: ModalInit; onClose: () => void }) {
@@ -75,19 +75,19 @@ export function ContentModal({ init, onClose }: { init: ModalInit; onClose: () =
         <motion.div
           initial={{ opacity: 0, y: 16, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 12, scale: 0.98 }}
           transition={{ type: "spring", stiffness: 320, damping: 28 }}
-          className="relative z-10 w-full max-w-2xl overflow-hidden rounded-2xl ring-1 ring-white/12 shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)]"
+          className="relative z-10 w-full max-w-2xl overflow-hidden rounded-2xl ring-1 ring-[var(--ln-1)] shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)]"
           style={{ background: "#101016" }}
         >
           {/* header */}
           <div className="flex items-center justify-between border-b border-line px-5 py-4">
             <h3 className="font-display text-[17px] font-bold text-ink">{editing ? "Editar contenido" : "Subir contenido"}</h3>
-            <button onClick={onClose} className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-white/10 hover:text-ink"><X size={17} /></button>
+            <button onClick={onClose} className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-[var(--hov)] hover:text-ink"><X size={17} /></button>
           </div>
 
           {/* link paste — auto-detección */}
           <div className="border-b border-line px-5 py-3.5">
             <label className={label}>Pegar link del post</label>
-            <div className="flex items-center gap-2 rounded-xl border border-white/12 bg-white/[0.05] px-3 transition-colors focus-within:border-cyan/60">
+            <div className="flex items-center gap-2 rounded-xl border border-[var(--ln-1)] bg-[var(--sf-1)] px-3 transition-colors focus-within:border-cyan/60">
               <Link2 size={15} className="shrink-0 text-ink-mute" />
               <input className="w-full bg-transparent py-2.5 text-[13px] text-ink outline-none placeholder:text-ink-mute" value={link} onChange={(e) => onLink(e.target.value)} placeholder="instagram.com/reel/… · tiktok.com/@… · youtube.com/…" />
               {detectado && <span className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-md bg-cyan/15 px-2 py-0.5 text-[10.5px] font-semibold text-cyan"><Sparkles size={10} /> {detectado.replace("Detectado: ", "")}</span>}
@@ -98,7 +98,7 @@ export function ContentModal({ init, onClose }: { init: ModalInit; onClose: () =
           <div className="grid grid-cols-1 gap-5 p-5 sm:grid-cols-[200px_1fr]">
             {/* preview + upload */}
             <div>
-              <div className="relative grid h-44 place-items-center overflow-hidden rounded-xl ring-1 ring-white/10">
+              <div className="relative grid h-44 place-items-center overflow-hidden rounded-xl ring-1 ring-[var(--ln-1)]">
                 <Thumb img={img} tipo={tipo} />
                 <span className="absolute left-2.5 top-2.5 z-10 rounded-md bg-black/50 px-2 py-0.5 text-[10px] font-semibold text-white/90 backdrop-blur">{tipo}</span>
                 {promo && <span className="absolute right-2.5 top-2.5 z-10 rounded-md bg-cyan/85 px-1.5 py-0.5 text-[9px] font-bold text-content-inverted">PROMO</span>}
@@ -107,10 +107,10 @@ export function ContentModal({ init, onClose }: { init: ModalInit; onClose: () =
               </div>
               <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => onFile(e.target.files?.[0])} />
               <div className="mt-2 flex gap-2">
-                <button onClick={() => fileRef.current?.click()} className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-white/12 bg-white/[0.05] py-2 text-[12px] font-semibold text-ink-soft hover:bg-white/[0.09]">
+                <button onClick={() => fileRef.current?.click()} className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-[var(--ln-1)] bg-[var(--sf-1)] py-2 text-[12px] font-semibold text-ink-soft hover:bg-[var(--sf-2)]">
                   <Upload size={13} /> {img ? "Cambiar" : "Subir imagen"}
                 </button>
-                {img && <button onClick={() => setImg(undefined)} className="grid w-9 place-items-center rounded-lg border border-white/12 text-ink-mute hover:text-negative"><Trash2 size={14} /></button>}
+                {img && <button onClick={() => setImg(undefined)} className="grid w-9 place-items-center rounded-lg border border-[var(--ln-1)] text-ink-mute hover:text-negative"><Trash2 size={14} /></button>}
               </div>
               <p className="mt-1.5 flex items-center gap-1 text-[10px] text-ink-mute"><ImageIcon size={10} /> opcional · se guarda en el navegador</p>
             </div>
@@ -161,7 +161,7 @@ export function ContentModal({ init, onClose }: { init: ModalInit; onClose: () =
                 </div>
               </div>
 
-              <button onClick={() => setPromo((v) => !v)} className="flex w-full items-center justify-between rounded-xl border border-white/12 bg-white/[0.05] px-3 py-2.5">
+              <button onClick={() => setPromo((v) => !v)} className="flex w-full items-center justify-between rounded-xl border border-[var(--ln-1)] bg-[var(--sf-1)] px-3 py-2.5">
                 <span className="text-[13px] font-medium text-ink-soft">{vocab.promoLabel}</span>
                 <span className={`relative h-5 w-9 rounded-full transition-colors ${promo ? "bg-cyan" : "bg-white/20"}`}>
                   <span className={`absolute top-0.5 h-4 w-4 rounded-full bg-white transition-all ${promo ? "left-[18px]" : "left-0.5"}`} />
@@ -172,7 +172,7 @@ export function ContentModal({ init, onClose }: { init: ModalInit; onClose: () =
 
           {/* footer */}
           <div className="flex items-center justify-end gap-2 border-t border-line px-5 py-4">
-            <button onClick={onClose} className="rounded-xl px-4 py-2 text-[13px] font-semibold text-ink-soft hover:bg-white/5">Cancelar</button>
+            <button onClick={onClose} className="rounded-xl px-4 py-2 text-[13px] font-semibold text-ink-soft hover:bg-[var(--hov)]">Cancelar</button>
             <button onClick={guardar} disabled={!valido} className="rounded-xl bg-cyan px-4 py-2 text-[13px] font-bold text-content-inverted transition-opacity enabled:hover:opacity-90 disabled:opacity-40">
               {editing ? "Guardar cambios" : "Crear contenido"}
             </button>

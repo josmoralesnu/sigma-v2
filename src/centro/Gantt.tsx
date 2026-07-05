@@ -15,7 +15,7 @@ const ACENTO: Record<AcentoGantt, string> = {
   amber: "var(--color-amber)", rose: "var(--color-rose)", coral: "var(--color-coral)",
 };
 const pct = (d: number) => (d / ganttDias) * 100;
-const field = "w-full rounded-xl border border-white/12 bg-white/[0.05] px-3 py-2.5 text-[13px] text-ink outline-none transition-colors focus:border-cyan/60 focus:bg-white/[0.08]";
+const field = "w-full rounded-xl border border-[var(--ln-1)] bg-[var(--sf-1)] px-3 py-2.5 text-[13px] text-ink outline-none transition-colors focus:border-cyan/60 focus:bg-[var(--sf-2)]";
 const lbl = "mb-1.5 block text-[11px] font-semibold uppercase tracking-wide text-ink-mute";
 const clamp = (n: number) => Math.max(0, Math.min(ganttDias, n));
 
@@ -48,10 +48,10 @@ function FaseModal({ tarea, onClose }: { tarea?: TareaGantt | null; onClose: () 
         <div className="absolute inset-0 bg-black/72 backdrop-blur-md" onClick={onClose} />
         <motion.div initial={{ opacity: 0, y: 16, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 12 }}
           transition={{ type: "spring", stiffness: 320, damping: 28 }}
-          className="relative z-10 w-full max-w-md overflow-hidden rounded-2xl ring-1 ring-white/12 shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)]" style={{ background: "#101016" }}>
+          className="relative z-10 w-full max-w-md overflow-hidden rounded-2xl ring-1 ring-[var(--ln-1)] shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)]" style={{ background: "#101016" }}>
           <div className="flex items-center justify-between border-b border-line px-5 py-4">
             <h3 className="font-display text-[17px] font-bold text-ink">{editing ? "Editar fase" : "Nueva fase"}</h3>
-            <button onClick={onClose} className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-white/10 hover:text-ink"><X size={17} /></button>
+            <button onClick={onClose} className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-[var(--hov)] hover:text-ink"><X size={17} /></button>
           </div>
           <div className="space-y-3.5 p-5">
             <div><label className={lbl}>Fase</label><input className={field} value={fase} onChange={(e) => setFase(e.target.value)} placeholder="Ej: Fase de grupos" autoFocus /></div>
@@ -76,10 +76,10 @@ function FaseModal({ tarea, onClose }: { tarea?: TareaGantt | null; onClose: () 
           </div>
           <div className="flex items-center justify-between gap-2 border-t border-line px-5 py-4">
             {editing ? (
-              <button onClick={() => { removeTarea(tarea!.id); onClose(); }} className="inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[13px] font-semibold text-ink-mute hover:bg-white/5 hover:text-negative"><Trash2 size={14} /> Eliminar</button>
+              <button onClick={() => { removeTarea(tarea!.id); onClose(); }} className="inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[13px] font-semibold text-ink-mute hover:bg-[var(--hov)] hover:text-negative"><Trash2 size={14} /> Eliminar</button>
             ) : <span />}
             <div className="flex gap-2">
-              <button onClick={onClose} className="rounded-xl px-4 py-2 text-[13px] font-semibold text-ink-soft hover:bg-white/5">Cancelar</button>
+              <button onClick={onClose} className="rounded-xl px-4 py-2 text-[13px] font-semibold text-ink-soft hover:bg-[var(--hov)]">Cancelar</button>
               <button onClick={guardar} disabled={!valido} className="rounded-xl bg-cyan px-4 py-2 text-[13px] font-bold text-content-inverted transition-opacity enabled:hover:opacity-90 disabled:opacity-40">{editing ? "Guardar" : "Crear fase"}</button>
             </div>
           </div>
@@ -101,17 +101,17 @@ function HitoModal({ onClose }: { onClose: () => void }) {
         <div className="absolute inset-0 bg-black/72 backdrop-blur-md" onClick={onClose} />
         <motion.div initial={{ opacity: 0, y: 16, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 12 }}
           transition={{ type: "spring", stiffness: 320, damping: 28 }}
-          className="relative z-10 w-full max-w-sm overflow-hidden rounded-2xl ring-1 ring-white/12 shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)]" style={{ background: "#101016" }}>
+          className="relative z-10 w-full max-w-sm overflow-hidden rounded-2xl ring-1 ring-[var(--ln-1)] shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)]" style={{ background: "#101016" }}>
           <div className="flex items-center justify-between border-b border-line px-5 py-4">
             <h3 className="font-display text-[17px] font-bold text-ink">Nuevo hito</h3>
-            <button onClick={onClose} className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-white/10 hover:text-ink"><X size={17} /></button>
+            <button onClick={onClose} className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-[var(--hov)] hover:text-ink"><X size={17} /></button>
           </div>
           <div className="space-y-3.5 p-5">
             <div><label className={lbl}>Nombre del hito</label><input className={field} value={label} onChange={(e) => setLabel(e.target.value)} placeholder="Ej: Cuartos de final" autoFocus /></div>
             <div><label className={lbl}>Fecha</label><input type="date" min="2026-06-01" max="2026-07-19" className={field} value={dia} onChange={(e) => setDia(e.target.value)} /></div>
           </div>
           <div className="flex items-center justify-end gap-2 border-t border-line px-5 py-4">
-            <button onClick={onClose} className="rounded-xl px-4 py-2 text-[13px] font-semibold text-ink-soft hover:bg-white/5">Cancelar</button>
+            <button onClick={onClose} className="rounded-xl px-4 py-2 text-[13px] font-semibold text-ink-soft hover:bg-[var(--hov)]">Cancelar</button>
             <button onClick={() => { if (valido) { addHito({ dia: clamp(ganttIdx(dia)), label: label.trim() }); onClose(); } }} disabled={!valido} className="rounded-xl bg-cyan px-4 py-2 text-[13px] font-bold text-content-inverted transition-opacity enabled:hover:opacity-90 disabled:opacity-40">Crear hito</button>
           </div>
         </motion.div>
@@ -191,7 +191,7 @@ export function Gantt() {
               </div>
 
               {tareas.map((t) => (
-                <div key={t.id} className="grid items-center border-b border-line last:border-0 hover:bg-white/[0.02]" style={{ gridTemplateColumns: "248px 1fr" }}>
+                <div key={t.id} className="grid items-center border-b border-line last:border-0 hover:bg-[var(--sf-1)]" style={{ gridTemplateColumns: "248px 1fr" }}>
                   <button onClick={() => setFaseModal({ tarea: t })} className="min-w-0 px-4 py-3 text-left hover:text-cyan">
                     <div className="truncate text-[13px] font-semibold text-ink">{t.fase}</div>
                     <div className="truncate text-[11px] text-ink-mute">{t.responsable}</div>
@@ -207,7 +207,7 @@ export function Gantt() {
               {tareas.length === 0 && (
                 <div className="grid place-items-center py-16 text-center">
                   <p className="text-[13px] text-ink-mute">Sin fases todavía.</p>
-                  <button onClick={() => setFaseModal({})} className="mt-3 inline-flex items-center gap-2 rounded-xl border border-line px-3.5 py-2 text-[13px] font-semibold text-ink-soft hover:bg-white/5"><Plus size={15} /> Crear la primera fase</button>
+                  <button onClick={() => setFaseModal({})} className="mt-3 inline-flex items-center gap-2 rounded-xl border border-line px-3.5 py-2 text-[13px] font-semibold text-ink-soft hover:bg-[var(--hov)]"><Plus size={15} /> Crear la primera fase</button>
                 </div>
               )}
             </div>

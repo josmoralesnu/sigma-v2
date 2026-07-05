@@ -28,6 +28,7 @@ export interface Marca {
   disponible?: boolean; // cliente activo en el demo (no censurado)
 }
 export const marcas: Marca[] = [
+  { id: "puig", nombre: "Puig", rubro: "Fragancias & Beauty · Multi-submarca", glyph: "P", acento: "amber", campañasActivas: 7, disponible: true },
   { id: "estelarbet", nombre: "EstelarBet", rubro: "Apuestas deportivas · Casino online", glyph: "★", acento: "violet", campañasActivas: 3, disponible: true },
   { id: "copec", nombre: "Copec", rubro: "Energía · Estaciones · App", glyph: "⬢", acento: "cyan", campañasActivas: 3, disponible: true },
   { id: "betsson", nombre: "Betsson", rubro: "Apuestas deportivas · Casino", glyph: "◆", acento: "lime", campañasActivas: 3, disponible: true },
@@ -718,7 +719,121 @@ const ESTELARBET: BrandDataset = {
 /* ============================================================
    Registro de datasets + bindings activos (live bindings)
    ============================================================ */
-export const DATASETS: Record<string, BrandDataset> = { copec: COPEC, betsson: BETSSON, estelarbet: ESTELARBET };
+/* ============================================================
+   CLIENTE D — PUIG (casa de fragancias & beauty · multi-submarca)
+   Foco: grandes campañas de muchos microinfluencers por submarca
+   (Carolina Herrera, Rabanne, Jean Paul Gaultier, Charlotte Tilbury).
+   Superficies propias de Puig (submarcas, casting, canjes) viven en
+   src/puig/*. Aquí solo lo mínimo para el switcher/portafolio.
+   ============================================================ */
+const PUIG: BrandDataset = {
+  cliente: {
+    marca: "Puig",
+    campania: "Puig · Beauty Squad Chile",
+    categoria: "Fragancias & Beauty · multi-submarca",
+    mercado: "Chile",
+    objetivo: "Activar grandes squads de microinfluencers por submarca (Carolina Herrera, Rabanne, JPG, Charlotte Tilbury) para saturar el feed de belleza con contenido auténtico y medir el impacto del seeding.",
+    presupuesto: "CLP 90M",
+    ventana: "Temporada · Ene–Abr",
+  },
+  competidores: [
+    { id: "pk1", nombre: "L'Oréal Luxe", sov: 31, territorio: "Portafolio prestige · retail masivo", tono: "Aspiracional, escala", amenaza: "alta" },
+    { id: "pk2", nombre: "Estée Lauder Cos.", sov: 22, territorio: "Beauty prestige · skincare", tono: "Elegante, editorial", amenaza: "alta" },
+    { id: "pk3", nombre: "Coty", sov: 14, territorio: "Fragancia celebrity", tono: "Pop, licencias", amenaza: "media" },
+  ],
+  analisis: {
+    sentimiento: 71,
+    tendenciaSentimiento: 6,
+    sov: 27,
+    seguidoresIG: 512_000,
+    liderazgo: "4 submarcas activas · #1 en fragancia prestige",
+    comunidadExtra: "sumando las 4 submarcas",
+    kpiLider: { label: "Submarcas", value: "4", extra: "activas en Chile" },
+    crisis: {
+      titulo: "Saturación del feed de belleza",
+      detalle: "El feed de belleza está saturado de contenido pagado que se lee como aviso. La oportunidad es escala + autenticidad: muchos microinfluencers reales por submarca en vez de pocas caras grandes.",
+      severidad: "media",
+    },
+    fortalezas: [
+      "Portafolio de submarcas deseadas (CH, Rabanne, JPG, Charlotte Tilbury)",
+      "Producto físico ideal para seeding / canjes",
+      "Alta afinidad de creadores de belleza con las submarcas",
+    ],
+    amenazas: [
+      "L'Oréal Luxe domina share of voice con presupuestos grandes",
+      "Contenido de belleza percibido como saturado y poco creíble",
+      "Logística de canjes a regiones más lenta y cara",
+    ],
+  },
+  fuentesAnalisis: [
+    { id: "pf1", titulo: "El seeding de producto supera al post pagado en recall", fuente: "Beauty benchmark", tipo: "Caso", fecha: "2025", url: "#" },
+    { id: "pf2", titulo: "Ranking de creadores de belleza en Chile", fuente: "Favikon", tipo: "Ranking", fecha: "Abr 2026", url: "https://www.favikon.com/" },
+    { id: "pf3", titulo: "Declaración de publicidad de influencers (#ad)", fuente: "SERNAC", tipo: "Regulatorio", fecha: "2024", url: "https://www.sernac.cl/" },
+  ],
+  oportunidades: [
+    { id: "po1", titulo: "Squads de microinfluencers", detalle: "Cambiar pocas caras grandes por decenas de microinfluencers con alto engagement por submarca.", territorio: "Escala + autenticidad", acento: "amber", impacto: "alto" },
+    { id: "po2", titulo: "Seeding como contenido", detalle: "Convertir el envío de canjes en el propio contenido: unboxing, primera impresión, GRWM con el producto.", territorio: "Seeding / canjes", acento: "rose", impacto: "alto" },
+    { id: "po3", titulo: "Cobertura de regiones", detalle: "Sumar creadoras de regiones para dejar de concentrar todo en la RM y ganar comunidades locales.", territorio: "Regiones", acento: "cyan", impacto: "medio" },
+  ],
+  tendencias: [
+    { id: "pt1", nombre: "GRWM / Get Ready With Me", plataforma: "TikTok", momentum: 96, volumen: "3.1M/sem" },
+    { id: "pt2", nombre: "Perfume TikTok / #perfumetok", plataforma: "TikTok", momentum: 88, volumen: "2.2M/sem" },
+    { id: "pt3", nombre: "Unboxing / PR haul", plataforma: "Reels", momentum: 61, volumen: "1.1M/sem" },
+  ],
+  aprendizajes: [
+    { id: "pa1", titulo: "Muchos micro > pocos macro", detalle: "Squads de microinfluencers logran mejor CPE y más contenido único que una campaña de una celebrity.", fuente: "Benchmark seeding" },
+    { id: "pa2", titulo: "El canje ES el contenido", detalle: "El unboxing del PR kit genera contenido orgánico espontáneo; hay que optimizar el packaging para grabarlo.", fuente: "Caso beauty" },
+  ],
+  influencers: tiered([
+    { id: "pi1", nombre: "Javi Beauty", handle: "@javi.beauty", arquetipo: "lifestyle", mood: "glam · cercano", seguidores: 42_000, engagement: 6.4, fit: 92, ciudad: "Santiago", avatar: "💄" },
+    { id: "pi2", nombre: "Cata Skin", handle: "@cata.skincl", arquetipo: "lifestyle", mood: "skincare · didáctico", seguidores: 28_000, engagement: 7.1, fit: 90, ciudad: "Viña del Mar", avatar: "🧴" },
+    { id: "pi3", nombre: "Feña Fragancias", handle: "@fenya.perfumes", arquetipo: "lifestyle", mood: "perfumetok", seguidores: 18_500, engagement: 8.3, fit: 94, ciudad: "Concepción", avatar: "🌸" },
+    { id: "pi4", nombre: "Dani GRWM", handle: "@dani.grwm", arquetipo: "comedia", mood: "grwm · divertido", seguidores: 63_000, engagement: 5.2, fit: 88, ciudad: "Santiago", avatar: "✨" },
+    { id: "pi5", nombre: "Trini Makeup", handle: "@trini.mua", arquetipo: "lifestyle", mood: "pro · editorial", seguidores: 9_800, engagement: 9.1, fit: 89, ciudad: "La Serena", avatar: "🎨" },
+  ]),
+  conceptos: [
+    { id: "pc1", titulo: "El squad del verano", territorio: "Squad micro · fragancia", mood: "auténtico · escala", arquetipo: "lifestyle", acento: "amber", nivel: 1, rationale: "Muchos microinfluencers, un mismo aroma: en vez de una cara grande, decenas de creadoras reales muestran su primera impresión del perfume. Escala + autenticidad.", ideasContenido: ["Primera impresión del aroma en 15s", "GRWM usando el perfume de la submarca", "Reto: adivina las notas"], tendencias: ["pt2"], aprendizaje: "pa1", influencers: ["pi1", "pi3", "pi5"], confianza: 90, alcance: 1_400_000, engagement: 7.4, cpm: 3.2, riesgo: "Bajo" },
+    { id: "pc2", titulo: "Abre tu PR kit", territorio: "Seeding · unboxing", mood: "sorpresa · cálido", arquetipo: "lifestyle", acento: "rose", nivel: 1, rationale: "El envío del canje es el contenido. Optimizamos el packaging para que el unboxing sea grabable y espontáneo.", ideasContenido: ["Unboxing del PR kit", "Reacción al recibir la caja", "Qué venía adentro"], tendencias: ["pt3"], aprendizaje: "pa2", influencers: ["pi2", "pi4"], confianza: 84, alcance: 900_000, engagement: 8.0, cpm: 3.6, riesgo: "Bajo" },
+  ],
+  conceptoVariantes: {
+    pc1: { titulos: ["El squad del verano", "Un aroma, mil caras", "El perfume que todas usan"], rationales: ["Muchos microinfluencers, un mismo aroma: en vez de una cara grande, decenas de creadoras reales muestran su primera impresión del perfume. Escala + autenticidad."], ideasPool: ["Primera impresión del aroma en 15s", "GRWM usando el perfume", "Reto: adivina las notas", "Mi perfume para el verano"] },
+    pc2: { titulos: ["Abre tu PR kit", "Llegó tu caja", "Unboxing sin filtro"], rationales: ["El envío del canje es el contenido. Optimizamos el packaging para que el unboxing sea grabable y espontáneo."], ideasPool: ["Unboxing del PR kit", "Reacción al recibir la caja", "Qué venía adentro", "Primera vez con la submarca"] },
+  },
+  insightsReunion: [
+    { id: "pr1", texto: "Quieren campañas grandes de muchos microinfluencers por submarca, no pocas caras caras.", tag: "estrategia" },
+    { id: "pr2", texto: "El casting es clave: necesitan verlo en tabla y también como un swipe rápido.", tag: "casting" },
+    { id: "pr3", texto: "El seguimiento de los canjes (envíos) hoy se pierde; quieren verlo por región.", tag: "logística" },
+  ],
+  pasosCompetencia: ["Rastreando el rubro belleza…", "Mapeando L'Oréal Luxe, Estée Lauder y Coty…", "Midiendo share of voice por submarca…"],
+  pasosBrief: ["Leyendo el brief de Puig…", "Separando por submarca…", "Alineando el squad de microinfluencers…"],
+  pasosTranscripcion: ["Transcribiendo la reunión…", "Detectando foco por submarca…", "Marcando el casting y los canjes…"],
+  actividadSeed: [
+    { t: "hace 5 min", txt: "Casting de Carolina Herrera: 3 nuevas microinfluencers seleccionadas", color: "amber" },
+    { t: "hace 40 min", txt: "Canjes Rabanne: 6 kits despachados a regiones", color: "rose" },
+    { t: "hace 2 h", txt: "Charlotte Tilbury: squad de 24 microinfluencers activado", color: "cyan" },
+  ],
+  campañas: [
+    { id: "pcamp1", nombre: "Good Girl · Squad Verano", marca: "Puig", estado: "Activa", progreso: 62, alcance: "1.4M", ventana: "Ene–Abr" },
+    { id: "pcamp2", nombre: "1 Million · Seeding masivo", marca: "Puig", estado: "En estrategia", progreso: 34, alcance: "—", ventana: "Feb–Mar" },
+    { id: "pcamp3", nombre: "Charlotte Tilbury · Beauty Squad", marca: "Puig", estado: "Activa", progreso: 71, alcance: "980K", ventana: "Ene–Mar" },
+  ],
+  transcript: `[00:05] Cliente (Puig): tenemos varias submarcas y queremos verlas por separado — Carolina Herrera, Rabanne, JPG, Charlotte Tilbury.
+[03:12] Cliente: el volumen importa. Preferimos 40 microinfluencers reales que 2 caras grandes.
+[07:40] Cliente: para el casting necesitamos algo tipo tabla con las métricas, y también algo rápido tipo swipe para decidir.
+[12:20] Cliente: y por favor, que podamos seguir los canjes: qué se envió, a quién, y a qué región.`,
+  contextoItems: ["Brief Puig", "4 submarcas", "Casting", "Canjes"],
+  espacioBlanco: {
+    titulo: "Espacio en blanco para Puig",
+    detalle: "Nadie está haciendo squads grandes de microinfluencers reales por submarca con seeding trazable. Puig puede saturar el feed de belleza con autenticidad y medir cada canje.",
+  },
+  guiarPlaceholders: { idea: "Ej: 40 creadoras, un aroma", territorio: "Ej: Fragancia · GRWM" },
+  objetivoDefault: "Squad micro por submarca + seeding",
+  refLinks: ["tiktok.com/@javi.beauty/video/…", "instagram.com/reel/prkit-unboxing…"],
+  briefDefault: `Campaña "Puig · Beauty Squad Chile". Objetivo: activar squads grandes de microinfluencers por submarca (Carolina Herrera, Rabanne, JPG, Charlotte Tilbury), con seeding de producto (canjes) trazable por región. Foco en autenticidad y volumen de contenido. Todo contenido declarado como publicidad.`,
+  kpiPrincipal: "Contenido + alcance del squad",
+};
+
+export const DATASETS: Record<string, BrandDataset> = { copec: COPEC, betsson: BETSSON, estelarbet: ESTELARBET, puig: PUIG };
 
 export let cliente = COPEC.cliente;
 export let competidores = COPEC.competidores;
@@ -746,7 +861,7 @@ export let briefDefault = COPEC.briefDefault;
 export let kpiPrincipal = COPEC.kpiPrincipal;
 
 /* acento de marca (hex) para piezas que no usan tokens CSS, p. ej. el cerebro 3D */
-const BRAND_ACCENT: Record<string, string> = { copec: "#1f7aed", betsson: "#ff6a00", estelarbet: "#5b6cff" };
+const BRAND_ACCENT: Record<string, string> = { copec: "#1f7aed", betsson: "#ff6a00", estelarbet: "#5b6cff", puig: "#c9a24b" };
 export let accentHex = BRAND_ACCENT.copec;
 
 /* Cambia el cliente activo — las pantallas se remontan (key={marca.id}) y releen estos bindings. */

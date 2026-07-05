@@ -19,6 +19,15 @@ import { Atribucion } from "./centro/Atribucion";
 import { Roster } from "./centro/Roster";
 import { GrillasOrganicas } from "./centro/GrillasOrganicas";
 import { Aprobacion } from "./centro/Aprobacion";
+import { PuigDashboard } from "./puig/PuigDashboard";
+import { PuigInicio } from "./puig/PuigInicio";
+import { PuigSentimiento } from "./puig/PuigSentimiento";
+import { Submarcas } from "./puig/Submarcas";
+import { Casting } from "./puig/Casting";
+import { Canjes } from "./puig/Canjes";
+import { CampañaDetalle } from "./puig/CampañaDetalle";
+import { PuigProvider } from "./puig/store";
+import { pcampañas } from "./puig/pdata";
 import { CentroProvider } from "./centro/store";
 import { setPanelData } from "./centro/panel";
 import { marcas, campañas as campañasSeed, actividadSeed, cliente, fmt, setBrandData, type Marca, type Campaña } from "./lib/data";
@@ -29,7 +38,7 @@ import { BUDGET_DEFAULT, type Plan } from "./lib/budget";
 interface ActividadItem { t: string; txt: string; color: string }
 
 export default function App() {
-  const [view, setViewRaw] = useState<View>("inicio");
+  const [view, setViewRaw] = useState<View>(() => (marcas[0].id === "puig" ? "puig-inicio" : "inicio"));
   // inicializa los live bindings de data.ts con la marca por defecto (si no, arrancan en COPEC)
   const [marca, setMarca] = useState<Marca>(() => { setBrandData(marcas[0].id); setPanelData(marcas[0].id); return marcas[0]; });
   const betting = BETTING.has(marca.id);
@@ -38,6 +47,18 @@ export default function App() {
 
   const [cerebroToken, setCerebroToken] = useState(0);
   const [cerebroAnimated, setCerebroAnimated] = useState(0);
+
+  // tema claro/oscuro (persistido)
+  const [theme, setTheme] = useState<"dark" | "light">(() => {
+    try { return (localStorage.getItem("sigma.theme") as "dark" | "light") || "dark"; } catch { return "dark"; }
+  });
+  const toggleTheme = () => setTheme((t) => { const n = t === "dark" ? "light" : "dark"; try { localStorage.setItem("sigma.theme", n); } catch { /* noop */ } return n; });
+
+  // Puig: campaña activa para el detalle/panel y el casting
+  const [puigCamp, setPuigCamp] = useState(pcampañas[0].id);
+  const [puigSub, setPuigSub] = useState<string>("todas");
+  const abrirCampaña = (id: string) => { setPuigCamp(id); go("puig-campana"); };
+  const abrirSubmarca = (id: string) => { setPuigSub(id); go("puig-marcas"); };
 
   // loop de retroalimentación: campañas creadas + actividad alimentan al sistema
   const [campañasExtra, setCampañasExtra] = useState<Campaña[]>([]);
@@ -66,7 +87,7 @@ export default function App() {
     setCerebroAnimated(0);
     setSeq(0);
     setThinking(false);
-    setViewRaw("inicio");
+    setViewRaw(m.id === "puig" ? "puig-inicio" : "inicio");
   };
 
   const onAprobar = (titulo: string, plan: Plan) => {
@@ -87,15 +108,16 @@ export default function App() {
   const allCampañas = [...campañasExtra, ...campañasSeed];
 
   return (
+    <PuigProvider>
     <CentroProvider key={marca.id} brandId={marca.id}>
-    <div className={`grain relative flex h-screen w-screen overflow-hidden bg-canvas brand-${marca.id}`}>
+    <div className={`grain relative flex h-screen w-screen overflow-hidden bg-canvas brand-${marca.id} ${theme === "light" ? "theme-light" : ""}`}>
       <div className="pointer-events-none absolute inset-0 bg-aura opacity-70" />
       <div className="pointer-events-none absolute inset-0 bg-grid opacity-40" />
 
       <Sidebar view={view} setView={go} marca={marca} setMarca={cambiarMarca} betting={betting} />
 
       <div className="relative flex min-w-0 flex-1 flex-col">
-        <Topbar view={view} marca={marca} thinking={thinking} />
+        <Topbar view={view} marca={marca} thinking={thinking} theme={theme} onToggleTheme={toggleTheme} onNueva={() => go("nueva")} />
 
         <main key={marca.id} className="relative min-h-0 flex-1">
           {view === "inicio" && <Home setView={go} marca={marca} campañas={allCampañas} actividad={actividad} />}
@@ -128,6 +150,13 @@ export default function App() {
           {view === "organico" && <GrillasOrganicas />}
           {view === "produccion" && <Aprobacion />}
           {view === "roster" && <Roster />}
+          {view === "puig-inicio" && <PuigInicio onOpenSubmarca={abrirSubmarca} onCerebro={() => go("cerebro")} onDashboard={() => go("puig-dashboard")} />}
+          {view === "puig-sentimiento" && <PuigSentimiento onBack={() => go("puig-dashboard")} />}
+          {view === "puig-dashboard" && <PuigDashboard onOpenSubmarca={abrirSubmarca} onVerCampanas={() => { setPuigSub("todas"); go("puig-marcas"); }} onVerSentimiento={() => go("puig-sentimiento")} />}
+          {view === "puig-marcas" && <Submarcas onCasting={() => go("casting")} onCanjes={() => go("canjes")} onOpenCampaña={abrirCampaña} initialSub={puigSub} />}
+          {view === "puig-campana" && <CampañaDetalle campId={puigCamp} onBack={() => go("puig-marcas")} onCasting={() => go("casting")} />}
+          {view === "casting" && <Casting campId={puigCamp} onCampChange={setPuigCamp} />}
+          {view === "canjes" && <Canjes />}
         </main>
       </div>
 
@@ -147,5 +176,6 @@ export default function App() {
       </AnimatePresence>
     </div>
     </CentroProvider>
+    </PuigProvider>
   );
 }

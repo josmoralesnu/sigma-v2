@@ -32,7 +32,7 @@ function CurvaSeguidores({ fechas, puntos }: { fechas: string[]; puntos: number[
       </div>
       <div className="relative h-[200px] w-full">
         <div className="absolute inset-0 flex flex-col justify-between">
-          {[0, 1, 2, 3].map((i) => <div key={i} className="h-px w-full bg-white/[0.06]" />)}
+          {[0, 1, 2, 3].map((i) => <div key={i} className="h-px w-full bg-[var(--sf-2)]" />)}
         </div>
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full overflow-visible">
           <defs>
@@ -48,7 +48,7 @@ function CurvaSeguidores({ fechas, puntos }: { fechas: string[]; puntos: number[
             initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.1, type: "spring", stiffness: 300 }} />
         </svg>
         <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2 }}
-          className="absolute rounded-lg bg-white/10 px-2 py-1 text-center ring-1 ring-white/15 backdrop-blur"
+          className="absolute rounded-lg bg-[var(--sf-2)] px-2 py-1 text-center ring-1 ring-[var(--ln-2)] backdrop-blur"
           style={{ left: `${last[0]}%`, top: `${last[1]}%`, transform: "translate(-50%,-130%)" }}>
           <div className="font-display text-[13px] font-bold leading-none text-ink"><Conf px={5}>+{short(puntos[puntos.length - 1])}</Conf></div>
           <div className="text-[9px] text-ink-mute">nuevos</div>
@@ -98,7 +98,7 @@ function SplitReach({ organico: org, pago }: { organico: number; pago: number })
                 <span className="inline-flex items-center gap-1.5 font-semibold text-ink-soft"><r.Icon size={13} /> {r.label}</span>
                 <span className="font-display font-bold tabular-nums text-ink"><Conf px={5}>{r.val}%</Conf></span>
               </div>
-              <div className="h-2.5 overflow-hidden rounded-full bg-white/8">
+              <div className="h-2.5 overflow-hidden rounded-full bg-[var(--sf-2)]">
                 <motion.div className="h-full rounded-full" style={{ background: r.color }}
                   initial={{ width: 0 }} animate={{ width: `${r.val}%` }} transition={{ duration: 0.9, delay: 0.2 + i * 0.1, ease: "easeOut" }} />
               </div>
@@ -146,7 +146,7 @@ function SerieTemporal({ serie }: { serie: OrganicoData["serie"] }) {
         </div>
       </div>
       <div className="relative h-[200px] w-full">
-        <div className="absolute inset-0 flex flex-col justify-between">{[0, 1, 2, 3].map((i) => <div key={i} className="h-px w-full bg-white/[0.06]" />)}</div>
+        <div className="absolute inset-0 flex flex-col justify-between">{[0, 1, 2, 3].map((i) => <div key={i} className="h-px w-full bg-[var(--sf-2)]" />)}</div>
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full overflow-visible">
           <defs>
             <linearGradient id="s-pag" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={FUENTE_META.paginas.color} stopOpacity="0.28" /><stop offset="100%" stopColor={FUENTE_META.paginas.color} stopOpacity="0" /></linearGradient>
@@ -170,7 +170,7 @@ function FuenteCard({ f }: { f: OrgFuente }) {
     <motion.div variants={item} className={`${card} p-5`}>
       <div className="mb-3 flex items-start justify-between">
         <div className="flex items-center gap-2.5">
-          <span className="grid h-10 w-10 place-items-center rounded-xl ring-1 ring-white/12" style={{ background: `${m.color}22`, color: m.color }}><Icon size={18} /></span>
+          <span className="grid h-10 w-10 place-items-center rounded-xl ring-1 ring-[var(--ln-1)]" style={{ background: `${m.color}22`, color: m.color }}><Icon size={18} /></span>
           <div>
             <div className="text-[15px] font-bold text-ink">{f.label}</div>
             <div className="text-[11px] text-ink-mute">{f.desc}</div>
@@ -188,7 +188,7 @@ function FuenteCard({ f }: { f: OrgFuente }) {
         <div className="space-y-1.5">
           {f.ejemplos.map((e) => (
             <div key={e.handle} className="flex items-center gap-2.5">
-              <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-white/5 text-[15px] ring-1 ring-white/10">{e.avatar}</span>
+              <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-[var(--sf-1)] text-[15px] ring-1 ring-[var(--ln-1)]">{e.avatar}</span>
               <div className="min-w-0 flex-1"><div className="truncate text-[12px] font-semibold text-ink"><Conf px={4}>{e.nombre}</Conf></div><div className="text-[10px] text-ink-mute"><Conf px={3}>{e.handle}</Conf></div></div>
               <div className="shrink-0 text-right"><div className="text-[11.5px] font-bold tabular-nums text-ink"><Conf px={4}>{short(e.alcance)}</Conf></div></div>
             </div>
@@ -218,38 +218,38 @@ function SigmaExplica({ insights, onClose }: { insights: string[]; onClose: () =
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-black/50" onClick={onClose}>
       <motion.aside initial={{ x: 60, opacity: 0.6 }} animate={{ x: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 320, damping: 34 }}
-        className="flex h-full w-full max-w-[440px] flex-col bg-[#101016] ring-1 ring-white/12" onClick={(e) => e.stopPropagation()}>
+        className="flex h-full w-full max-w-[440px] flex-col bg-[var(--modal)] ring-1 ring-[var(--ln-1)]" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between border-b border-line px-5 py-4">
           <div className="flex items-center gap-2.5">
             <span className="grid h-9 w-9 place-items-center rounded-xl bg-cyan/15 text-cyan ring-1 ring-cyan/25"><Sparkles size={17} /></span>
             <div><h3 className="font-display text-[16px] font-bold text-ink">Sigma explica</h3><p className="text-[11px] text-ink-mute">Insights del orgánico</p></div>
           </div>
-          <button onClick={onClose} className="grid h-8 w-8 place-items-center rounded-lg text-ink-mute hover:bg-white/8 hover:text-ink"><X size={16} /></button>
+          <button onClick={onClose} className="grid h-8 w-8 place-items-center rounded-lg text-ink-mute hover:bg-[var(--hov)] hover:text-ink"><X size={16} /></button>
         </div>
 
         <div className="flex-1 space-y-3 overflow-y-auto scroll-slim p-5">
           <div className="text-[10.5px] font-semibold uppercase tracking-wide text-ink-mute">Lo que veo</div>
           {insights.map((t, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 * i }}
-              className="flex gap-2.5 rounded-xl bg-white/[0.03] p-3 text-[12.5px] leading-relaxed text-ink-soft ring-1 ring-white/10">
+              className="flex gap-2.5 rounded-xl bg-[var(--sf-1)] p-3 text-[12.5px] leading-relaxed text-ink-soft ring-1 ring-[var(--ln-1)]">
               <Sparkles size={14} className="mt-0.5 shrink-0 text-cyan" /> <span><Rich text={t} /></span>
             </motion.div>
           ))}
 
           {msgs.map((m, i) => (
             <div key={i} className={m.role === "user" ? "flex justify-end" : "flex justify-start"}>
-              <div className={`max-w-[85%] rounded-2xl px-3.5 py-2 text-[12.5px] leading-relaxed ${m.role === "user" ? "bg-cyan text-content-inverted" : "bg-white/[0.05] text-ink-soft ring-1 ring-white/10"}`}>{m.text}</div>
+              <div className={`max-w-[85%] rounded-2xl px-3.5 py-2 text-[12.5px] leading-relaxed ${m.role === "user" ? "bg-cyan text-content-inverted" : "bg-[var(--sf-1)] text-ink-soft ring-1 ring-[var(--ln-1)]"}`}>{m.text}</div>
             </div>
           ))}
         </div>
 
         <div className="border-t border-line p-4">
           <div className="mb-2.5 flex flex-wrap gap-1.5">
-            {sugeridas.map((s) => <button key={s} onClick={() => enviar(s)} className="rounded-lg bg-white/5 px-2.5 py-1 text-[11px] font-medium text-ink-soft ring-1 ring-white/12 hover:bg-white/10">{s}</button>)}
+            {sugeridas.map((s) => <button key={s} onClick={() => enviar(s)} className="rounded-lg bg-[var(--sf-1)] px-2.5 py-1 text-[11px] font-medium text-ink-soft ring-1 ring-[var(--ln-1)] hover:bg-[var(--hov)]">{s}</button>)}
           </div>
           <div className="flex gap-2">
             <input value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") enviar(q); }} placeholder="Preguntale a Sigma sobre el orgánico…"
-              className="flex-1 rounded-xl bg-white/5 px-3 py-2.5 text-[12.5px] text-ink outline-none ring-1 ring-white/12 placeholder:text-ink-mute focus:ring-cyan/40" />
+              className="flex-1 rounded-xl bg-[var(--sf-1)] px-3 py-2.5 text-[12.5px] text-ink outline-none ring-1 ring-[var(--ln-1)] placeholder:text-ink-mute focus:ring-cyan/40" />
             <button onClick={() => enviar(q)} className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-cyan text-content-inverted hover:opacity-90"><Send size={16} /></button>
           </div>
         </div>
@@ -348,7 +348,7 @@ export function GrillasOrganicas() {
                     <span className="font-display font-bold tabular-nums text-ink"><Conf px={5}>{short(p.alcance)}</Conf></span>
                   </span>
                 </div>
-                <div className="h-2.5 overflow-hidden rounded-full bg-white/8">
+                <div className="h-2.5 overflow-hidden rounded-full bg-[var(--sf-2)]">
                   <motion.div className="h-full rounded-full bg-cyan" initial={{ width: 0 }} animate={{ width: `${(p.alcance / maxPlat) * 100}%` }}
                     transition={{ duration: 0.9, delay: 0.1 + 0.08 * i, ease: "easeOut" }} />
                 </div>
@@ -365,7 +365,7 @@ export function GrillasOrganicas() {
           </div>
           <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-2 gap-3">
             {senales.map((s) => (
-              <motion.div key={s.label} variants={item} whileHover={{ y: -3 }} className="rounded-xl bg-white/[0.03] p-4 ring-1 ring-white/10">
+              <motion.div key={s.label} variants={item} whileHover={{ y: -3 }} className="rounded-xl bg-[var(--sf-1)] p-4 ring-1 ring-[var(--ln-1)]">
                 <span className="grid h-9 w-9 place-items-center rounded-lg bg-cyan/12 text-cyan ring-1 ring-cyan/20"><s.Icon size={16} /></span>
                 <div className="mt-3 font-display text-[22px] font-bold leading-none text-ink"><Conf px={7}>{short(s.valor)}</Conf></div>
                 <div className="mt-1.5 text-[12px] font-semibold text-ink-soft">{s.label}</div>
@@ -382,10 +382,10 @@ export function GrillasOrganicas() {
           <h3 className="text-[15px] font-bold text-ink">Top piezas orgánicas</h3>
           <span className="text-[11.5px] text-ink-mute">por alcance earned</span>
         </div>
-        <div className="overflow-hidden rounded-xl ring-1 ring-white/10">
+        <div className="overflow-hidden rounded-xl ring-1 ring-[var(--ln-1)]">
           <table className="w-full text-left text-[13px]">
             <thead>
-              <tr className="bg-white/[0.03] text-[11px] uppercase tracking-wide text-ink-mute">
+              <tr className="bg-[var(--sf-1)] text-[11px] uppercase tracking-wide text-ink-mute">
                 <th className="px-4 py-2.5 font-semibold">Pieza</th>
                 <th className="px-4 py-2.5 font-semibold">Plataforma</th>
                 <th className="px-4 py-2.5 text-right font-semibold">Alcance</th>
@@ -397,10 +397,10 @@ export function GrillasOrganicas() {
             <tbody>
               {o.piezas.map((p, i) => (
                 <motion.tr key={p.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 * i }}
-                  className="border-t border-line hover:bg-white/[0.02]">
+                  className="border-t border-line hover:bg-[var(--sf-1)]">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2.5">
-                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white/5 text-[16px] ring-1 ring-white/10">{p.avatar}</span>
+                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-[var(--sf-1)] text-[16px] ring-1 ring-[var(--ln-1)]">{p.avatar}</span>
                       <div className="min-w-0">
                         <div className="truncate font-semibold text-ink">{p.titulo}</div>
                         <div className="text-[11px] text-ink-mute"><Conf px={4}>{p.autor}</Conf> · {p.tipo}</div>

@@ -11,7 +11,7 @@ export function BrandTile({ marca, size = 36, className = "" }: { marca: Marca; 
 
   if (marca.id === "copec")
     return (
-      <span className={base + " border border-white/15 bg-white"} style={{ ...dims, paddingInline: size * 0.16 }}>
+      <span className={base + " border border-[var(--ln-1)] bg-white"} style={{ ...dims, paddingInline: size * 0.16 }}>
         <img src="/copec-logo.svg" alt="Copec" className="w-full" />
       </span>
     );
@@ -27,6 +27,12 @@ export function BrandTile({ marca, size = 36, className = "" }: { marca: Marca; 
         <img src="/estelarbet-iso.jpg" alt="EstelarBet" className="h-full w-full object-cover" />
       </span>
     );
+  if (marca.id === "puig")
+    return (
+      <span className={base + " font-display font-bold"} style={{ ...dims, background: "#141210", color: "#c9a24b", fontSize: size * 0.5, letterSpacing: "-0.02em" }}>
+        P
+      </span>
+    );
   return (
     <span className={base + " font-semibold"} style={{ ...dims, background: `${acentoHex[marca.acento]}24`, color: acentoHex[marca.acento], fontSize: size * 0.4 }}>
       {marca.glyph}
@@ -37,7 +43,7 @@ export function BrandTile({ marca, size = 36, className = "" }: { marca: Marca; 
 export function BrandLockup({ marca, className = "" }: { marca: Marca; className?: string }) {
   if (marca.id === "copec")
     return (
-      <span className={"inline-flex items-center rounded-xl border border-white/15 bg-white px-3 py-2 shadow-sm " + className}>
+      <span className={"inline-flex items-center rounded-xl border border-[var(--ln-1)] bg-white px-3 py-2 shadow-sm " + className}>
         <img src="/copec-logo.svg" alt="Copec" className="h-[18px] w-auto" />
       </span>
     );
@@ -55,6 +61,13 @@ export function BrandLockup({ marca, className = "" }: { marca: Marca; className
         </span>
         {/* wordmark blanco-sobre-negro: screen elimina el negro sobre fondos oscuros */}
         <img src="/estelarbet-logo.png" alt="EstelarBet" className="h-[15px] w-auto" style={{ mixBlendMode: "screen" }} />
+      </span>
+    );
+  if (marca.id === "puig")
+    return (
+      <span className={"inline-flex items-center gap-2.5 " + className}>
+        <span className="grid h-7 w-7 place-items-center rounded-lg font-display text-[15px] font-bold" style={{ background: "#141210", color: "#c9a24b" }}>P</span>
+        <span className="font-display text-[19px] font-bold uppercase tracking-[0.22em] text-content">Puig</span>
       </span>
     );
   return (

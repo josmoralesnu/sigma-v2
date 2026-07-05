@@ -103,7 +103,7 @@ export function Home({ setView, marca, campañas, actividad }: { setView: (v: Vi
                   <span className="chip py-0.5">{c.estado}</span>
                   <div className="w-28">
                     <div className="mb-1 flex justify-between font-mono text-[9px] text-ink-mute"><span>avance</span><span>{c.progreso}%</span></div>
-                    <div className="h-1.5 overflow-hidden rounded-full bg-white/10"><div className="h-full rounded-full bg-gradient-to-r from-cyan to-violet" style={{ width: `${c.progreso}%` }} /></div>
+                    <div className="h-1.5 overflow-hidden rounded-full bg-[var(--sf-2)]"><div className="h-full rounded-full bg-gradient-to-r from-cyan to-violet" style={{ width: `${c.progreso}%` }} /></div>
                   </div>
                 </div>
                 );
@@ -144,7 +144,7 @@ function SectionHead({ icon: Icon, title, action, onAction }: { icon: any; title
   return (
     <div className="mb-3 flex items-center justify-between">
       <div className="flex items-center gap-2.5">
-        <span className="grid h-8 w-8 place-items-center rounded-lg border border-line bg-white/5 text-cyan"><Icon size={15} /></span>
+        <span className="grid h-8 w-8 place-items-center rounded-lg border border-line bg-[var(--sf-1)] text-cyan"><Icon size={15} /></span>
         <span className="text-[14px] font-bold text-content">{title}</span>
       </div>
       {action && <button onClick={onAction} className="flex items-center gap-1 text-[11.5px] font-semibold text-content-secondary transition-colors hover:text-cyan">{action} <ArrowRight size={13} /></button>}

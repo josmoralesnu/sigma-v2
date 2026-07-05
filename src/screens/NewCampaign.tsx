@@ -66,7 +66,7 @@ export function NewCampaign({ marca, presupuesto, setPresupuesto, onFinish, onTh
                   <span
                     className={cn(
                       "grid h-9 w-9 place-items-center rounded-xl border transition-all",
-                      active ? "border-cyan/50 bg-white/10 text-cyan glass glow-cyan" : done ? "border-lime/40 bg-lime/10 text-lime" : "border-line text-ink-mute"
+                      active ? "border-cyan/50 bg-[var(--sf-2)] text-cyan glass glow-cyan" : done ? "border-lime/40 bg-lime/10 text-lime" : "border-line text-ink-mute"
                     )}
                   >
                     {done ? <Check size={16} /> : <Icon size={16} />}
@@ -171,7 +171,7 @@ function StepCompetencia() {
   const [done, setDone] = useState(false);
   return (
     <Card title="Analizando la competencia" sub="Sigma rastrea el rubro y busca el espacio en blanco.">
-      <div className="rounded-xl border border-line bg-white/5 p-4">
+      <div className="rounded-xl border border-line bg-[var(--sf-1)] p-4">
         <ReasoningStream steps={pasosCompetencia} running={running} perStep={1000} onDone={() => { setRunning(false); setDone(true); }} />
       </div>
 
@@ -188,7 +188,7 @@ function StepCompetencia() {
                   <span className="font-mono text-[11px]" style={{ color: amenazaColor[k.amenaza] }}>amenaza {k.amenaza}</span>
                 </div>
                 <div className="mt-2 flex items-center gap-3">
-                  <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/10">
+                  <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[var(--sf-2)]">
                     <motion.div initial={{ width: 0 }} animate={{ width: `${k.sov}%` }} transition={{ delay: 0.2 + i * 0.1, duration: 0.7 }} className="h-full rounded-full bg-gradient-to-r from-cyan to-violet" />
                   </div>
                   <span className="font-mono text-[11px] text-ink-soft">{k.sov}% SOV</span>
@@ -282,7 +282,7 @@ function StepBrief() {
             <button onClick={() => setFile(null)} className="grid h-7 w-7 place-items-center rounded-lg border border-line text-ink-mute transition-colors hover:text-rose"><X size={14} /></button>
           </div>
         ) : (
-          <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-line bg-white/5 px-4 py-7 text-center transition-colors hover:border-cyan/40 hover:bg-cyan/[0.03]">
+          <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-line bg-[var(--sf-1)] px-4 py-7 text-center transition-colors hover:border-cyan/40 hover:bg-cyan/[0.03]">
             <span className="grid h-11 w-11 place-items-center rounded-xl border border-line bg-surface-2 text-cyan"><Upload size={20} /></span>
             <span className="text-[12.5px] font-semibold text-ink">Arrastra el brief o haz clic para subir</span>
             <span className="font-mono text-[10px] text-ink-mute">PDF · hasta 10&nbsp;MB</span>
@@ -334,7 +334,7 @@ function StepAnalizar({ onFinish, onThinking }: { onFinish: () => void; onThinki
         </div>
       </div>
 
-      <div className="rounded-xl border border-line bg-white/5 p-4">
+      <div className="rounded-xl border border-line bg-[var(--sf-1)] p-4">
         <ReasoningStream steps={pasosBrief} running={running} perStep={1200} onDone={() => { setRunning(false); setDone(true); onThinking(false); }} />
       </div>
 

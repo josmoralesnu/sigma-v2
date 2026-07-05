@@ -71,7 +71,7 @@ export function Insights({ onContinue, onThinking }: { onContinue: () => void; o
               {/* import state */}
               {(phase === "import" || phase === "loading") && (
                 <div
-                  className="rounded-xl border border-dashed border-line bg-white/5 p-6 text-center transition-colors hover:border-cyan/40"
+                  className="rounded-xl border border-dashed border-line bg-[var(--sf-1)] p-6 text-center transition-colors hover:border-cyan/40"
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={(e) => { e.preventDefault(); const f = e.dataTransfer.files?.[0]; if (f) importar(f.name); }}
                 >
@@ -101,7 +101,7 @@ export function Insights({ onContinue, onThinking }: { onContinue: () => void; o
                     <Check size={13} /> transcripción importada
                     {fileName && <span className="flex items-center gap-1 rounded-md border border-line bg-surface/60 px-1.5 py-0.5 font-mono text-[10px] text-ink-soft"><FileAudio size={10} className="text-cyan" /> {fileName}</span>}
                   </div>
-                  <div className="max-h-[240px] overflow-y-auto rounded-xl border border-line bg-white/5 p-3.5 font-mono text-[11px] leading-relaxed text-ink-soft">
+                  <div className="max-h-[240px] overflow-y-auto rounded-xl border border-line bg-[var(--sf-1)] p-3.5 font-mono text-[11px] leading-relaxed text-ink-soft">
                     {transcript.split("\n").map((l, i) => <p key={i} className="mb-1.5">{l}</p>)}
                   </div>
 
@@ -111,7 +111,7 @@ export function Insights({ onContinue, onThinking }: { onContinue: () => void; o
                     </button>
                   )}
                   {(phase === "running" || phase === "done") && (
-                    <div className="mt-4 rounded-xl border border-line bg-white/5 p-3.5">
+                    <div className="mt-4 rounded-xl border border-line bg-[var(--sf-1)] p-3.5">
                       <ReasoningStream steps={pasosTranscripcion} running={phase === "running"} perStep={1100} onDone={() => { setPhase("done"); onThinking(false); }} />
                     </div>
                   )}

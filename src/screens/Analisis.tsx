@@ -79,7 +79,7 @@ export function Analisis({ onGenerar }: { onGenerar: () => void }) {
                 </div>
                 <p className="mt-1 text-[11.5px] leading-snug text-content-secondary">{k.territorio}</p>
                 <div className="mt-2.5 flex items-center gap-2">
-                  <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/10"><div className="h-full rounded-full bg-gradient-to-r from-cyan to-violet" style={{ width: `${k.sov}%` }} /></div>
+                  <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[var(--sf-2)]"><div className="h-full rounded-full bg-gradient-to-r from-cyan to-violet" style={{ width: `${k.sov}%` }} /></div>
                   <span className="font-mono text-[10px] text-content-secondary">{k.sov}%</span>
                 </div>
               </motion.div>
@@ -157,7 +157,7 @@ function FuentesPanel({ open }: { open: boolean }) {
                       {...(real ? { href: f.url, target: "_blank", rel: "noreferrer" } : {})}
                       className={"group glass flex items-start gap-3 rounded-xl p-3 transition-colors " + (real ? "glass-hover" : "")}
                     >
-                      <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-line bg-white/5 font-mono text-[10px] text-cyan">{i + 1}</span>
+                      <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-line bg-[var(--sf-1)] font-mono text-[10px] text-cyan">{i + 1}</span>
                       <span className="min-w-0 flex-1">
                         <span className="block text-[12.5px] font-semibold leading-snug text-content">{f.titulo}</span>
                         <span className="mt-0.5 flex items-center gap-1.5 font-mono text-[10px] text-ink-mute">
@@ -204,7 +204,7 @@ function ListCard({ icon: Icon, title, color, items }: { icon: any; title: strin
 function SectionHead({ icon: Icon, title, sub }: { icon: any; title: string; sub: string }) {
   return (
     <div className="mb-3 flex items-center gap-2.5">
-      <span className="grid h-8 w-8 place-items-center rounded-lg border border-line bg-white/5 text-cyan"><Icon size={15} /></span>
+      <span className="grid h-8 w-8 place-items-center rounded-lg border border-line bg-[var(--sf-1)] text-cyan"><Icon size={15} /></span>
       <div><div className="text-[14px] font-bold text-content">{title}</div><div className="kicker">{sub}</div></div>
     </div>
   );
